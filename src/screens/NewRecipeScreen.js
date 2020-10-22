@@ -10,283 +10,434 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   TextInput,
+  Alert,
 } from 'react-native';
+import {Picker} from '@react-native-community/picker';
 import SafeAreaView from 'react-native-safe-area-view';
 import Plus from '../../assets/plus.png';
+import Minus from '../../assets/minus.png';
+import UpDown from '../../assets/up-and-down.png';
 
-function NewRecipeScreen({navigation}) {
-  return (
-    <SafeAreaView>
-      <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-      <ScrollView>
-        <View style={styles.titleContainer}>
-          <TextInput
-            style={styles.titleInputMask}
-            placeholder="Nome da receita"
-            underlineColorAndroid="transparent"
-          />
-          <View style={styles.parametersRow} marginTop={-5}>
+class NewRecipeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      title: '',
+      style: '',
+      og: '',
+      fg: '',
+      ibu: '',
+      abv: '',
+      color: '',
+      ingredients: [],
+      ramps: [],
+      boil: [],
+      fermentation: [],
+      ageing: [],
+      carbonation: '',
+      unit: '',
+      inputLinkClicked: false,
+    };
+  }
+
+  handleAddSecondInput = () => {
+    this.setState({
+      inputLinkClicked: true,
+    });
+  };
+
+  handleRemoveSecondInput = () => {
+    this.setState({
+      inputLinkClicked: false,
+    });
+  };
+
+  addRecipe = () => {
+    let title = this.state.title;
+    let style = this.state.style;
+    let og = this.state.og;
+    let fg = this.state.fg;
+    let ibu = this.state.ibu;
+    let abv = this.state.abv;
+    let color = this.state.color;
+    let ingredients = this.state.ingredients;
+
+    Alert.alert('Receita salva com sucesso!');
+    this.props.navigation.goBack();
+  };
+
+  render() {
+    return (
+      <SafeAreaView>
+        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+        <ScrollView>
+          <View style={styles.titleContainer}>
             <TextInput
-              style={styles.styleInputMask}
-              placeholder="Estilo"
+              onChangeText={(title) => this.setState({title})}
+              value={this.state.title}
+              style={styles.titleInputMask}
+              placeholder="Nome da receita"
               underlineColorAndroid="transparent"
             />
-            <TextInput
-              style={styles.styleInputMask}
-              placeholder="Volume (L)"
-              underlineColorAndroid="transparent"
-              width={90}
-              marginLeft={5}
-            />
-          </View>
-        </View>
-        <View marginTop={10}>
-          <Text style={styles.sectionText}>Parâmetros:</Text>
-          <View style={styles.parametersRow}>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="OG"
-              underlineColorAndroid="transparent"
-              width={80}
-              marginLeft={10}
-            />
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="FG"
-              underlineColorAndroid="transparent"
-              width={80}
-              marginLeft={10}
-            />
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="IBU"
-              underlineColorAndroid="transparent"
-              width={80}
-              marginLeft={10}
-            />
-          </View>
-          <View style={styles.parametersRow} marginTop={-5}>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="ABV (%)"
-              underlineColorAndroid="transparent"
-              width={80}
-              marginLeft={10}
-            />
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Color"
-              underlineColorAndroid="transparent"
-              width={80}
-              marginLeft={10}
-            />
-          </View>
-        </View>
-        <View marginTop={10}>
-          <Text style={styles.sectionText}>Ingredientes:</Text>
-          <View style={styles.parametersRow}>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Qte"
-              underlineColorAndroid="transparent"
-              width={50}
-            />
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Und"
-              underlineColorAndroid="transparent"
-              width={50}
-              marginLeft={10}
-            />
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Nome"
-              underlineColorAndroid="transparent"
-              width={220}
-              marginLeft={10}
-            />
-            <View style={styles.addButtonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  alert('you clicked me');
-                }}>
-                <Image source={Plus} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View marginTop={10}>
-          <View backgroundColor={'#000000'} height={1} marginBottom={15} />
-          <Text style={styles.stageText}>Etapas</Text>
-        </View>
-        <Text style={styles.sectionText}>* Brassagem</Text>
-        <Text style={styles.innerSectionText}>Rampas:</Text>
-        <View style={styles.parametersRow}>
-          <TextInput
-            style={styles.bodyInputMask}
-            placeholder="Temp. (ºC)"
-            underlineColorAndroid="transparent"
-            width={80}
-          />
-          <View style={styles.addButtonContainer}>
-            <Text style={styles.smallBodyText}> por </Text>
-          </View>
-          <TextInput
-            style={styles.bodyInputMask}
-            placeholder="Tempo (min)"
-            underlineColorAndroid="transparent"
-            width={120}
-            marginLeft={10}
-          />
-          <View style={styles.addButtonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                alert('you clicked me');
-              }}>
-              <Image source={Plus} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View marginTop={10}>
-          <Text style={styles.innerSectionText}>Fervura:</Text>
-          <View style={styles.parametersRow}>
-            <View>
-              <View style={styles.parametersRow}>
-                <TextInput
-                  style={styles.bodyInputMask}
-                  placeholder="Qte"
-                  underlineColorAndroid="transparent"
-                  width={50}
-                />
-                <TextInput
-                  style={styles.bodyInputMask}
-                  placeholder="Und"
-                  underlineColorAndroid="transparent"
-                  width={50}
-                  marginLeft={10}
-                />
-                <TextInput
-                  style={styles.bodyInputMask}
-                  placeholder="Nome"
-                  underlineColorAndroid="transparent"
-                  width={150}
-                  marginLeft={10}
-                />
-              </View>
-              <View style={styles.parametersSecondRow}>
-                <View style={styles.addButtonContainer}>
-                  <Text style={styles.smallBodyText}> por </Text>
-                </View>
-                <TextInput
-                  style={styles.bodyInputMask}
-                  placeholder="Tempo (min)"
-                  underlineColorAndroid="transparent"
-                  width={90}
-                  marginLeft={10}
-                />
-              </View>
-            </View>
-            <View style={styles.addButtonContainer} height={80} marginLeft={20}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  alert('you clicked me');
-                }}>
-                <Image source={Plus} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View marginTop={5}>
-          <Text style={styles.sectionText}>* Fermentação</Text>
-          <View style={styles.parametersRow}>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Temp. (ºC)"
-              underlineColorAndroid="transparent"
-              width={80}
-            />
-            <View style={styles.addButtonContainer}>
-              <Text style={styles.smallBodyText}> por </Text>
-            </View>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Tempo (dias)"
-              underlineColorAndroid="transparent"
-              width={120}
-              marginLeft={10}
-            />
-            <View style={styles.addButtonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  alert('you clicked me');
-                }}>
-                <Image source={Plus} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View marginTop={5}>
-          <Text style={styles.sectionText}>* Maturação</Text>
-          <View style={styles.parametersRow}>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Temp. (ºC)"
-              underlineColorAndroid="transparent"
-              width={80}
-            />
-            <View style={styles.addButtonContainer}>
-              <Text style={styles.smallBodyText}> por </Text>
-            </View>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Tempo (dias)"
-              underlineColorAndroid="transparent"
-              width={120}
-              marginLeft={10}
-            />
-            <View style={styles.addButtonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  alert('you clicked me');
-                }}>
-                <Image source={Plus} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View marginTop={5}>
-          <Text style={styles.sectionText}>* Carbonatação</Text>
-          <View style={styles.parametersRow}>
-            <TextInput
-              style={styles.bodyInputMask}
-              placeholder="Pressão (kpa)"
-              underlineColorAndroid="transparent"
-              width={120}
-            />
-          </View>
-        </View>
-        <View marginTop={10}>
-          <View backgroundColor={'#000000'} height={1} marginBottom={5} />
-        </View>
-        <View marginTop={10} marginBottom={10}>
-          <TouchableHighlight>
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Salvar"
-                color="#000000"
-                onPress={() => navigation.goBack()}
+            <View style={styles.parametersRow} marginTop={-5}>
+              <TextInput
+                onChangeText={(style) => this.setState({style})}
+                value={this.state.style}
+                style={styles.styleInputMask}
+                placeholder="Estilo"
+                underlineColorAndroid="transparent"
+              />
+              <TextInput
+                onChangeText={(volume) => this.setState({volume})}
+                value={this.state.volume}
+                style={styles.styleInputMask}
+                keyboardType="numeric"
+                placeholder="Volume (L)"
+                underlineColorAndroid="transparent"
+                width={90}
+                marginLeft={5}
               />
             </View>
-          </TouchableHighlight>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+          </View>
+          <View marginTop={10}>
+            <Text style={styles.sectionText}>Parâmetros:</Text>
+            <View style={styles.parametersRow}>
+              <TextInput
+                onChangeText={(og) => this.setState({og})}
+                value={this.state.og}
+                style={styles.bodyInputMask}
+                placeholder="OG"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={80}
+                marginLeft={10}
+              />
+              <TextInput
+                onChangeText={(fg) => this.setState({fg})}
+                value={this.state.fg}
+                style={styles.bodyInputMask}
+                placeholder="FG"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={80}
+                marginLeft={10}
+              />
+              <TextInput
+                onChangeText={(ibu) => this.setState({ibu})}
+                value={this.state.ibu}
+                style={styles.bodyInputMask}
+                placeholder="IBU"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={80}
+                marginLeft={10}
+              />
+            </View>
+            <View style={styles.parametersRow} marginTop={-5}>
+              <TextInput
+                onChangeText={(abv) => this.setState({abv})}
+                value={this.state.abv}
+                style={styles.bodyInputMask}
+                placeholder="ABV (%)"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={80}
+                marginLeft={10}
+              />
+              <TextInput
+                onChangeText={(color) => this.setState({color})}
+                value={this.state.color}
+                style={styles.bodyInputMask}
+                placeholder="Color"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={80}
+                marginLeft={10}
+              />
+            </View>
+          </View>
+          <View marginTop={10}>
+            <Text style={styles.sectionText}>Ingredientes:</Text>
+            <View style={styles.parametersRow}>
+              <TextInput
+                style={styles.bodyInputMask}
+                placeholder="Qte"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={50}
+              />
+              <View style={styles.onePickerContainer}>
+                <Picker
+                  style={styles.onePicker}
+                  itemStyle={styles.onePickerItem}
+                  selectedValue={this.state.recipe}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({recipe: itemValue})
+                  }>
+                  <Picker.Item label="g" value="gramas" />
+                  <Picker.Item label="Kg" value="kilogramas" />
+                  <Picker.Item label="L" value="litros" />
+                  <Picker.Item label="mL" value="mililitros" />
+                </Picker>
+                <View style={styles.signContainer}>
+                  <Image source={UpDown} style={{height: 10, width: 10}} />
+                </View>
+              </View>
+              <TextInput
+                style={styles.bodyInputMask}
+                placeholder="Nome"
+                underlineColorAndroid="transparent"
+                width={200}
+                marginLeft={5}
+              />
+              <View style={styles.addButtonContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={this.handleAddSecondInput}>
+                  <Image source={Plus} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.addButtonContainer} marginLeft={-1} />
+            </View>
+            <View>
+              {this.state.inputLinkClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.recipe}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({recipe: itemValue})
+                      }>
+                      <Picker.Item label="g" value="gramas" />
+                      <Picker.Item label="Kg" value="kilogramas" />
+                      <Picker.Item label="L" value="litros" />
+                      <Picker.Item label="mL" value="mililitros" />
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={this.handleAddSecondInput}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={this.handleRemoveSecondInput}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+          </View>
+          <View marginTop={10}>
+            <View backgroundColor={'#000000'} height={1} marginBottom={15} />
+            <Text style={styles.stageText}>Etapas</Text>
+          </View>
+          <Text style={styles.sectionText}>* Brassagem</Text>
+          <Text style={styles.innerSectionText}>Rampas:</Text>
+          <View style={styles.parametersRow}>
+            <TextInput
+              style={styles.bodyInputMask}
+              placeholder="Temp. (ºC)"
+              keyboardType="numeric"
+              underlineColorAndroid="transparent"
+              width={80}
+            />
+            <View style={styles.addButtonContainer}>
+              <Text style={styles.smallBodyText}> por </Text>
+            </View>
+            <TextInput
+              style={styles.bodyInputMask}
+              placeholder="Tempo (min)"
+              keyboardType="numeric"
+              underlineColorAndroid="transparent"
+              width={120}
+              marginLeft={10}
+            />
+            <View style={styles.addButtonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  alert('you clicked me');
+                }}>
+                <Image source={Plus} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View marginTop={10}>
+            <Text style={styles.innerSectionText}>Fervura:</Text>
+            <View style={styles.parametersRow}>
+              <View>
+                <View style={styles.parametersRow}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Und"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                    marginLeft={10}
+                  />
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={150}
+                    marginLeft={10}
+                  />
+                </View>
+                <View style={styles.parametersSecondRow}>
+                  <View style={styles.addButtonContainer}>
+                    <Text style={styles.smallBodyText}> por </Text>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Tempo (min)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={90}
+                    marginLeft={10}
+                  />
+                </View>
+              </View>
+              <View
+                style={styles.addButtonContainer}
+                height={80}
+                marginLeft={20}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    alert('you clicked me');
+                  }}>
+                  <Image source={Plus} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <Text style={styles.sectionText}>* Fermentação</Text>
+            <View style={styles.parametersRow}>
+              <TextInput
+                style={styles.bodyInputMask}
+                placeholder="Temp. (ºC)"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={80}
+              />
+              <View style={styles.addButtonContainer}>
+                <Text style={styles.smallBodyText}> por </Text>
+              </View>
+              <TextInput
+                style={styles.bodyInputMask}
+                placeholder="Tempo (dias)"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={120}
+                marginLeft={10}
+              />
+              <View style={styles.addButtonContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    alert('you clicked me');
+                  }}>
+                  <Image source={Plus} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <Text style={styles.sectionText}>* Maturação</Text>
+            <View style={styles.parametersRow}>
+              <TextInput
+                style={styles.bodyInputMask}
+                placeholder="Temp. (ºC)"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={80}
+              />
+              <View style={styles.addButtonContainer}>
+                <Text style={styles.smallBodyText}> por </Text>
+              </View>
+              <TextInput
+                style={styles.bodyInputMask}
+                placeholder="Tempo (dias)"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={120}
+                marginLeft={10}
+              />
+              <View style={styles.addButtonContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    alert('you clicked me');
+                  }}>
+                  <Image source={Plus} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <Text style={styles.sectionText}>* Carbonatação</Text>
+            <View style={styles.parametersRow}>
+              <TextInput
+                style={styles.bodyInputMask}
+                placeholder="Pressão (kpa)"
+                keyboardType="numeric"
+                underlineColorAndroid="transparent"
+                width={120}
+              />
+            </View>
+          </View>
+          <View marginTop={10}>
+            <View backgroundColor={'#000000'} height={1} marginBottom={5} />
+          </View>
+          <View marginTop={10} marginBottom={10}>
+            <TouchableHighlight>
+              <View style={styles.buttonContainer}>
+                <Button
+                  title="Salvar"
+                  color="#000000"
+                  onPress={() => this.addRecipe()}
+                />
+              </View>
+            </TouchableHighlight>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -394,6 +545,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 0,
     marginTop: -5,
+  },
+  onePickerContainer: {
+    backgroundColor: '#fff',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 55,
+    height: 30,
+    marginLeft: 5,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  onePicker: {
+    width: 35,
+    height: 30,
+  },
+  onePickerItem: {
+    height: 30,
+    color: 'black',
+    fontSize: 10,
+    textAlign: 'left',
+    marginLeft: 10,
+  },
+  signContainer: {
+    height: 30,
+    width: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
