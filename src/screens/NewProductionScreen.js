@@ -17,6 +17,9 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
 import UpDown from '../../assets/up-and-down.png';
 import CalendarIcon from '../../assets/calendar.png';
+import AsyncStorage from '@react-native-community/async-storage';
+
+const PRODUCTIONS_KEY = 'PRODUCTIONS_TOKEN_B';
 
 class NewProductionScreen extends React.Component {
   constructor(props) {
@@ -29,42 +32,201 @@ class NewProductionScreen extends React.Component {
       '-' +
       new Date().getDate();
 
+    const todayPt =
+      new Date().getDate() +
+      '/' +
+      (new Date().getMonth() + 1) +
+      '/' +
+      new Date().getFullYear();
+
     this.state = {
-      recipe: '',
-      selectedDate: today,
+      selectedRecipe: '',
+      selectedBrewDate: today,
+      selectedFermentationDate: today,
+      selectedAgeingDate: today,
+      selectedCarbonationDate: today,
+      selectedFillingDate: today,
       today: today,
-      brewDate:
-        new Date().getDate() +
-        '/' +
-        (new Date().getMonth() + 1) +
-        '/' +
-        new Date().getFullYear(),
-      modalCalendarVisible: false,
+      brewDate: todayPt,
+      fermentationDate: todayPt,
+      carbonationDate: todayPt,
+      ageingDate: todayPt,
+      fillingDate: todayPt,
+      modalBrewCalendarVisible: false,
+      modalFermentationCalendarVisible: false,
+      modalCarbonationCalendarVisible: false,
+      modalAgeingCalendarVisible: false,
+      modalFillingCalendarVisible: false,
       volume: '',
+      og: '',
+      fg: '',
+      isFinished: false,
+      recipes: [],
+      productions: [],
     };
   }
 
-  openModalCalendar = () => {
+  componentDidMount() {
+    this.getProductions();
+  }
+
+  getProductions = async () => {
+    try {
+      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      if (value !== null) {
+        this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  openModalBrewCalendar = () => {
     this.setState({
-      modalCalendarVisible: true,
+      modalBrewCalendarVisible: true,
     });
   };
 
-  closeModalCalendar = () => {
+  closeModalBrewCalendar = () => {
     this.setState({
-      modalCalendarVisible: false,
+      modalBrewCalendarVisible: false,
     });
   };
 
   setBrewDay(dayObj) {
     const {dateString, day, month, year} = dayObj;
     const newbrewDate = day + '/' + month + '/' + year;
-    this.setState({brewDate: newbrewDate, selectedDate: dateString});
+    this.setState({brewDate: newbrewDate, selectedBrewDate: dateString});
+  }
+
+  openModalFermentationCalendar = () => {
+    this.setState({
+      modalFermentationCalendarVisible: true,
+    });
+  };
+
+  closeModalFermentationCalendar = () => {
+    this.setState({
+      modalFermentationCalendarVisible: false,
+    });
+  };
+
+  setFermentationDay(dayObj) {
+    const {dateString, day, month, year} = dayObj;
+    const newFermentationDate = day + '/' + month + '/' + year;
+    this.setState({
+      fermentationDate: newFermentationDate,
+      selectedFermentationDate: dateString,
+    });
+  }
+
+  openModalCarbonationCalendar = () => {
+    this.setState({
+      modalCarbonationCalendarVisible: true,
+    });
+  };
+
+  closeModalCarbonationCalendar = () => {
+    this.setState({
+      modalCarbonationCalendarVisible: false,
+    });
+  };
+
+  setCarbonationDay(dayObj) {
+    const {dateString, day, month, year} = dayObj;
+    const newCarbonationDate = day + '/' + month + '/' + year;
+    this.setState({
+      carbonationDate: newCarbonationDate,
+      selectedCarbonationDate: dateString,
+    });
+  }
+
+  openModalAgeingCalendar = () => {
+    this.setState({
+      modalAgeingCalendarVisible: true,
+    });
+  };
+
+  closeModalAgeingCalendar = () => {
+    this.setState({
+      modalAgeingCalendarVisible: false,
+    });
+  };
+
+  setAgeingDay(dayObj) {
+    const {dateString, day, month, year} = dayObj;
+    const newAgeingDate = day + '/' + month + '/' + year;
+    this.setState({
+      ageingDate: newAgeingDate,
+      selectedAgeingDate: dateString,
+    });
+  }
+
+  openModalFillingCalendar = () => {
+    this.setState({
+      modalFillingCalendarVisible: true,
+    });
+  };
+
+  closeModalFillingCalendar = () => {
+    this.setState({
+      modalFillingCalendarVisible: false,
+    });
+  };
+
+  setFillingDay(dayObj) {
+    const {dateString, day, month, year} = dayObj;
+    const newFillingDate = day + '/' + month + '/' + year;
+    this.setState({
+      fillingDate: newFillingDate,
+      selectedFillingDate: dateString,
+    });
   }
 
   addProduction = () => {
+    const production = {
+      id: Date.now() + this.state.selectedRecipe,
+      name: this.state.selectedRecipe,
+      volume: this.state.volume,
+      og: this.state.og,
+      fg: this.state.fg,
+      isFinished: this.state.isFinished,
+      brewDate: this.state.brewDate,
+      fermentationDate: this.state.fermentationDate,
+      carbonationDate: this.state.carbonationDate,
+      ageingDate: this.state.ageingDate,
+      fillingDate: this.state.fillingDate,
+      createdAt: new Date(),
+    };
+
+    const productions = this.state.productions;
+    let allProductions = [];
+
+    if (productions != null) {
+      if (productions.length === 0) {
+        allProductions = [production];
+      } else {
+        allProductions = productions.concat(production);
+      }
+    }
+
+    AsyncStorage.setItem(
+      PRODUCTIONS_KEY,
+      JSON.stringify(allProductions),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Production added');
+      },
+    ).catch((err) => {
+      console.log('error is: ' + err);
+    });
+
     Alert.alert('Produção salva com sucesso!');
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('Produções', {productions: allProductions});
   };
 
   render() {
@@ -80,9 +242,9 @@ class NewProductionScreen extends React.Component {
               <Picker
                 style={styles.onePicker}
                 itemStyle={styles.onePickerItem}
-                selectedValue={this.state.recipe}
+                selectedValue={this.state.selectedRecipe}
                 onValueChange={(itemValue, itemIndex) =>
-                  this.setState({recipe: itemValue})
+                  this.setState({selectedRecipe: itemValue})
                 }>
                 <Picker.Item label="Hornero Vivaz" value="Hornero Vivaz" />
                 <Picker.Item label="BeerH Pilsen" value="BeerH Pilsen" />
@@ -116,7 +278,7 @@ class NewProductionScreen extends React.Component {
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
-                <TouchableHighlight onPress={this.openModalCalendar}>
+                <TouchableHighlight onPress={this.openModalBrewCalendar}>
                   <Text style={styles.dateStyle}>{this.state.brewDate}</Text>
                 </TouchableHighlight>
               </View>
@@ -133,8 +295,11 @@ class NewProductionScreen extends React.Component {
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
-                <TouchableHighlight onPress={this.openModalCalendar}>
-                  <Text style={styles.dateStyle}>{this.state.brewDate}</Text>
+                <TouchableHighlight
+                  onPress={this.openModalFermentationCalendar}>
+                  <Text style={styles.dateStyle}>
+                    {this.state.fermentationDate}
+                  </Text>
                 </TouchableHighlight>
               </View>
               <View style={styles.signContainer}>
@@ -150,8 +315,8 @@ class NewProductionScreen extends React.Component {
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
-                <TouchableHighlight onPress={this.openModalCalendar}>
-                  <Text style={styles.dateStyle}>{this.state.brewDate}</Text>
+                <TouchableHighlight onPress={this.openModalAgeingCalendar}>
+                  <Text style={styles.dateStyle}>{this.state.ageingDate}</Text>
                 </TouchableHighlight>
               </View>
               <View style={styles.signContainer}>
@@ -167,8 +332,10 @@ class NewProductionScreen extends React.Component {
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
-                <TouchableHighlight onPress={this.openModalCalendar}>
-                  <Text style={styles.dateStyle}>{this.state.brewDate}</Text>
+                <TouchableHighlight onPress={this.openModalCarbonationCalendar}>
+                  <Text style={styles.dateStyle}>
+                    {this.state.carbonationDate}
+                  </Text>
                 </TouchableHighlight>
               </View>
               <View style={styles.signContainer}>
@@ -184,8 +351,8 @@ class NewProductionScreen extends React.Component {
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
-                <TouchableHighlight onPress={this.openModalCalendar}>
-                  <Text style={styles.dateStyle}>{this.state.brewDate}</Text>
+                <TouchableHighlight onPress={this.openModalFillingCalendar}>
+                  <Text style={styles.dateStyle}>{this.state.fillingDate}</Text>
                 </TouchableHighlight>
               </View>
               <View style={styles.signContainer}>
@@ -206,9 +373,10 @@ class NewProductionScreen extends React.Component {
           </View>
 
           <Modal
+            name="BrewModal"
             animationType="slide"
             transparent={true}
-            visible={this.state.modalCalendarVisible}
+            visible={this.state.modalBrewCalendarVisible}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
@@ -220,7 +388,7 @@ class NewProductionScreen extends React.Component {
                     markingType="simple"
                     minDate={this.state.today}
                     markedDates={{
-                      [this.state.selectedDate]: {
+                      [this.state.selectedBrewDate]: {
                         selected: true,
                         selectedColor: 'blue',
                       },
@@ -230,7 +398,139 @@ class NewProductionScreen extends React.Component {
                 </View>
                 <TouchableHighlight
                   style={styles.openButton}
-                  onPress={this.closeModalCalendar}>
+                  onPress={this.closeModalBrewCalendar}>
+                  <Text style={styles.textStyle}>Fechar</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            name="FermentationModal"
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalFermentationCalendarVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Data inicial da fermentação
+                </Text>
+                <View style={styles.calendarContainer}>
+                  <Calendar
+                    markingType="simple"
+                    minDate={this.state.selectedBrewDate}
+                    markedDates={{
+                      [this.state.selectedFermentationDate]: {
+                        selected: true,
+                        selectedColor: 'blue',
+                      },
+                    }}
+                    onDayPress={this.setFermentationDay.bind(this)}
+                  />
+                </View>
+                <TouchableHighlight
+                  style={styles.openButton}
+                  onPress={this.closeModalFermentationCalendar}>
+                  <Text style={styles.textStyle}>Fechar</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            name="AgeingModal"
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalAgeingCalendarVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Data inicial da maturação</Text>
+                <View style={styles.calendarContainer}>
+                  <Calendar
+                    markingType="simple"
+                    minDate={this.state.selectedFermentationDate}
+                    markedDates={{
+                      [this.state.selectedAgeingDate]: {
+                        selected: true,
+                        selectedColor: 'blue',
+                      },
+                    }}
+                    onDayPress={this.setAgeingDay.bind(this)}
+                  />
+                </View>
+                <TouchableHighlight
+                  style={styles.openButton}
+                  onPress={this.closeModalAgeingCalendar}>
+                  <Text style={styles.textStyle}>Fechar</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            name="CarbonationModal"
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalCarbonationCalendarVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Data inicial da carbonatação
+                </Text>
+                <View style={styles.calendarContainer}>
+                  <Calendar
+                    markingType="simple"
+                    minDate={this.state.selectedAgeingDate}
+                    markedDates={{
+                      [this.state.selectedCarbonationDate]: {
+                        selected: true,
+                        selectedColor: 'blue',
+                      },
+                    }}
+                    onDayPress={this.setCarbonationDay.bind(this)}
+                  />
+                </View>
+                <TouchableHighlight
+                  style={styles.openButton}
+                  onPress={this.closeModalCarbonationCalendar}>
+                  <Text style={styles.textStyle}>Fechar</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            name="FillingModal"
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalFillingCalendarVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Data de envase</Text>
+                <View style={styles.calendarContainer}>
+                  <Calendar
+                    markingType="simple"
+                    minDate={this.state.selectedAgeingDate}
+                    markedDates={{
+                      [this.state.selectedFillingDate]: {
+                        selected: true,
+                        selectedColor: 'blue',
+                      },
+                    }}
+                    onDayPress={this.setFillingDay.bind(this)}
+                  />
+                </View>
+                <TouchableHighlight
+                  style={styles.openButton}
+                  onPress={this.closeModalFillingCalendar}>
                   <Text style={styles.textStyle}>Fechar</Text>
                 </TouchableHighlight>
               </View>
@@ -269,7 +569,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     marginLeft: 15,
-    marginBottom: 5,
+    marginBottom: 3,
     display: 'flex',
     flexDirection: 'row',
   },

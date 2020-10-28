@@ -17,6 +17,9 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Plus from '../../assets/plus.png';
 import Minus from '../../assets/minus.png';
 import UpDown from '../../assets/up-and-down.png';
+import AsyncStorage from '@react-native-community/async-storage';
+
+const RECIPES_KEY = 'RECIPES_TOKEN_BR';
 
 class NewRecipeScreen extends React.Component {
   constructor(props) {
@@ -25,6 +28,7 @@ class NewRecipeScreen extends React.Component {
     this.state = {
       title: '',
       style: '',
+      volume: '',
       og: '',
       fg: '',
       ibu: '',
@@ -38,8 +42,25 @@ class NewRecipeScreen extends React.Component {
       carbonation: '',
       unit: '',
       inputLinkClicked: false,
+      recipes: [],
     };
   }
+
+  componentDidMount() {
+    this.getRecipes();
+  }
+
+  getRecipes = async () => {
+    try {
+      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      if (value !== null) {
+        this.setState({recipes: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   handleAddSecondInput = () => {
     this.setState({
@@ -54,17 +75,48 @@ class NewRecipeScreen extends React.Component {
   };
 
   addRecipe = () => {
-    let title = this.state.title;
-    let style = this.state.style;
-    let og = this.state.og;
-    let fg = this.state.fg;
-    let ibu = this.state.ibu;
-    let abv = this.state.abv;
-    let color = this.state.color;
-    let ingredients = this.state.ingredients;
+    const recipe = {
+      id: Date.now() + this.state.title,
+      title: this.state.title,
+      volume: this.state.volume,
+      style: this.state.style,
+      og: this.state.og,
+      fg: this.state.fg,
+      ibu: this.state.ibu,
+      abv: this.state.abv,
+      color: this.state.color,
+      ingredients: this.state.ingredients,
+      ramps: this.state.ramps,
+      boil: this.state.boil,
+      fermentation: this.state.fermentation,
+      ageing: this.state.ageing,
+      carbonation: this.state.carbonation,
+      createdAt: new Date(),
+    };
+
+    const recipes = this.state.recipes;
+    let allRecipes = [this.state.recipes, recipe];
+
+    if (recipes != null) {
+      if (recipes.length === 0) {
+        allRecipes = [recipe];
+      } else {
+        allRecipes = recipes.concat(recipe);
+      }
+    }
+
+    AsyncStorage.setItem(RECIPES_KEY, JSON.stringify(allRecipes), (err) => {
+      if (err) {
+        console.log('an error occured');
+        throw err;
+      }
+      console.log('Success. Recipe added');
+    }).catch((err) => {
+      console.log('error is: ' + err);
+    });
 
     Alert.alert('Receita salva com sucesso!');
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('Receitas', {recipes: allRecipes});
   };
 
   render() {
