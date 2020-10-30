@@ -18,8 +18,7 @@ import Plus from '../../assets/plus.png';
 import Minus from '../../assets/minus.png';
 import UpDown from '../../assets/up-and-down.png';
 import AsyncStorage from '@react-native-community/async-storage';
-
-const RECIPES_KEY = 'RECIPES_TOKEN_BR';
+import {RECIPES_KEY} from '../statics/Statics';
 
 class NewRecipeScreen extends React.Component {
   constructor(props) {

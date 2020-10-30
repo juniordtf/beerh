@@ -12,9 +12,13 @@ import {
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import Chefhat from '../../assets/chef-hat.png';
+import BeerCupYellow from '../../assets/beerCupYellow.png';
+import BeerCupOrange from '../../assets/beerCupOrange.png';
+import BeerCupRed from '../../assets/beerCupRed.png';
+import BeerCupBrown from '../../assets/beerCupBrown.png';
+import BeerCupBlack from '../../assets/beerCupBlack.png';
 import AsyncStorage from '@react-native-community/async-storage';
-
-const RECIPES_KEY = 'RECIPES_TOKEN_BR';
+import {RECIPES_KEY} from '../statics/Statics';
 
 class RecipesScreen extends React.Component {
   constructor(props) {
@@ -40,6 +44,23 @@ class RecipesScreen extends React.Component {
     }
   };
 
+  renderCupImage(color) {
+    var imgSource;
+
+    if (color < 10) {
+      imgSource = BeerCupYellow;
+    } else if (color >= 10 && color < 28) {
+      imgSource = BeerCupOrange;
+    } else if (color >= 28 && color < 36) {
+      imgSource = BeerCupRed;
+    } else if (color >= 36 && color < 60) {
+      imgSource = BeerCupBrown;
+    } else {
+      imgSource = BeerCupBlack;
+    }
+    return <Image source={imgSource} />;
+  }
+
   renderItem = ({item}) => {
     const createdAt = new Date(item.createdAt);
     const createdAtFormatted =
@@ -51,28 +72,35 @@ class RecipesScreen extends React.Component {
     return (
       <View>
         <TouchableOpacity>
-          <View style={styles.listItemContainer}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.listItemTitle}>{item.title}</Text>
-              <Text style={styles.listItemTitle}> - </Text>
-              <Text style={styles.listItemTitle2}>{item.style}</Text>
-              <Text style={styles.listItemTitle2}> ({item.volume}L)</Text>
+          <View style={styles.sectionContainer}>
+            <View style={styles.boxContainerLeft}>
+              {this.renderCupImage(item.color)}
             </View>
-            <View style={styles.rowContainer} marginTop={5}>
-              <Text style={styles.listItemBodyField}>OG: </Text>
-              <Text style={styles.listItemBody}>{item.og}</Text>
-              <Text style={styles.listItemBodyField}> FG: </Text>
-              <Text style={styles.listItemBody}>{item.fg}</Text>
-              <Text style={styles.listItemBodyField}> IBU: </Text>
-              <Text style={styles.listItemBody}>{item.ibu}</Text>
-              <Text style={styles.listItemBodyField}> ABV: </Text>
-              <Text style={styles.listItemBody}>{item.abv}%</Text>
-              <Text style={styles.listItemBodyField}> Cor: </Text>
-              <Text style={styles.listItemBody}>{item.color} EBC</Text>
-            </View>
-            <View style={styles.rowContainer} marginTop={2}>
-              <Text style={styles.listItemBodyField}>Data de criação: </Text>
-              <Text style={styles.listItemBody}>{createdAtFormatted}</Text>
+            <View style={styles.boxContainerRight}>
+              <View style={styles.listItemContainer}>
+                <View style={styles.rowContainer}>
+                  <Text style={styles.listItemTitle}>{item.title}</Text>
+                  <Text style={styles.listItemTitle}> - </Text>
+                  <Text style={styles.listItemTitle2}>{item.style}</Text>
+                  <Text style={styles.listItemTitle2}> ({item.volume}L)</Text>
+                </View>
+                <View style={styles.rowContainer} marginTop={5}>
+                  <Text style={styles.listItemBodyField}>OG: </Text>
+                  <Text style={styles.listItemBody}>{item.og}</Text>
+                  <Text style={styles.listItemBodyField}> FG: </Text>
+                  <Text style={styles.listItemBody}>{item.fg}</Text>
+                  <Text style={styles.listItemBodyField}> IBU: </Text>
+                  <Text style={styles.listItemBody}>{item.ibu}</Text>
+                  <Text style={styles.listItemBodyField}> ABV: </Text>
+                  <Text style={styles.listItemBody}>{item.abv}%</Text>
+                </View>
+                <View style={styles.rowContainer} marginTop={2}>
+                  <Text style={styles.listItemBodyField}>
+                    Data de criação:{' '}
+                  </Text>
+                  <Text style={styles.listItemBody}>{createdAtFormatted}</Text>
+                </View>
+              </View>
             </View>
           </View>
         </TouchableOpacity>
@@ -121,6 +149,9 @@ class RecipesScreen extends React.Component {
     }
   }
 }
+
+const marginHorizontal = 2;
+const marginVertical = 2;
 
 const styles = StyleSheet.create({
   container: {
@@ -190,6 +221,33 @@ const styles = StyleSheet.create({
   rowContainer: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  sectionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  boxContainerLeft: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 50,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  boxContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: 30,
+    marginRight: marginHorizontal,
+    width: 180,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

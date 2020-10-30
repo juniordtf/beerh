@@ -13,8 +13,10 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import SafeAreaView from 'react-native-safe-area-view';
 import EmptyBox from '../../assets/EmptyBox.png';
-
-const PRODUCTIONS_KEY = 'PRODUCTIONS_TOKEN_B';
+import GoldCircle from '../../assets/goldCircle.png';
+import GreenCircle from '../../assets/greenCircle.png';
+import GreyCircle from '../../assets/greyCircle.png';
+import {PRODUCTIONS_KEY} from '../statics/Statics';
 
 class ProductionScreen extends React.Component {
   constructor(props) {
@@ -41,19 +43,41 @@ class ProductionScreen extends React.Component {
     }
   };
 
+  renderProductionStatusImage(status) {
+    var imgSource;
+
+    if (status === 'in progress') {
+      imgSource = GreenCircle;
+    } else if (status === 'finished') {
+      imgSource = GoldCircle;
+    } else {
+      imgSource = GreyCircle;
+    }
+    return <Image source={imgSource} />;
+  }
+
   renderItem = ({item}) => {
     return (
       <View>
         <TouchableOpacity>
-          <View style={styles.listItemContainer}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.listItemTitle}>{item.name}</Text>
-              <Text style={styles.listItemTitle2}>{item.style}</Text>
-              <Text style={styles.listItemTitle2}> ({item.volume}L)</Text>
+          <View style={styles.sectionContainer}>
+            <View style={styles.boxContainerLeft}>
+              {this.renderProductionStatusImage(item.status)}
             </View>
-            <View style={styles.rowContainer} marginTop={5}>
-              <Text style={styles.listItemBodyField}>Data da brassagem: </Text>
-              <Text style={styles.listItemBody}>{item.brewDate}</Text>
+            <View style={styles.boxContainerRight}>
+              <View style={styles.listItemContainer}>
+                <View style={styles.rowContainer}>
+                  <Text style={styles.listItemTitle}>{item.name}</Text>
+                  <Text style={styles.listItemTitle2}>{item.style}</Text>
+                  <Text style={styles.listItemTitle2}> ({item.volume}L)</Text>
+                </View>
+                <View style={styles.rowContainer} marginTop={5}>
+                  <Text style={styles.listItemBodyField}>
+                    Data da brassagem:{' '}
+                  </Text>
+                  <Text style={styles.listItemBody}>{item.brewDate}</Text>
+                </View>
+              </View>
             </View>
           </View>
         </TouchableOpacity>
@@ -104,6 +128,9 @@ class ProductionScreen extends React.Component {
     }
   }
 }
+
+const marginHorizontal = 1;
+const marginVertical = 1;
 
 const styles = StyleSheet.create({
   container: {
@@ -172,6 +199,31 @@ const styles = StyleSheet.create({
   rowContainer: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  sectionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  boxContainerLeft: {
+    marginTop: marginVertical,
+    marginLeft: 5,
+    marginRight: marginHorizontal,
+    width: 50,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  boxContainerRight: {
+    marginTop: marginVertical,
+    marginLeft: 30,
+    marginRight: marginHorizontal,
+    width: 150,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

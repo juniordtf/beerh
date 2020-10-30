@@ -18,8 +18,8 @@ import SafeAreaView from 'react-native-safe-area-view';
 import UpDown from '../../assets/up-and-down.png';
 import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
-
-const PRODUCTIONS_KEY = 'PRODUCTIONS_TOKEN_B';
+import {RECIPES_KEY} from '../statics/Statics';
+import {PRODUCTIONS_KEY} from '../statics/Statics';
 
 class NewProductionScreen extends React.Component {
   constructor(props) {
@@ -57,10 +57,10 @@ class NewProductionScreen extends React.Component {
       modalCarbonationCalendarVisible: false,
       modalAgeingCalendarVisible: false,
       modalFillingCalendarVisible: false,
-      volume: '',
       og: '',
       fg: '',
-      isFinished: false,
+      estimatedTime: '',
+      status: 'not started',
       recipes: [],
       productions: [],
     };
@@ -68,6 +68,7 @@ class NewProductionScreen extends React.Component {
 
   componentDidMount() {
     this.getProductions();
+    this.getRecipes();
   }
 
   getProductions = async () => {
@@ -75,6 +76,18 @@ class NewProductionScreen extends React.Component {
       const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
       if (value !== null) {
         this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getRecipes = async () => {
+    try {
+      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      if (value !== null) {
+        this.setState({recipes: JSON.parse(value)});
         console.log(JSON.parse(value));
       }
     } catch (error) {
@@ -185,18 +198,25 @@ class NewProductionScreen extends React.Component {
   }
 
   addProduction = () => {
+    const currentRecipe = this.state.recipes.find(
+      (x) => x.title === this.state.selectedRecipe,
+    );
+
     const production = {
       id: Date.now() + this.state.selectedRecipe,
       name: this.state.selectedRecipe,
-      volume: this.state.volume,
+      volume: currentRecipe.volume,
       og: this.state.og,
       fg: this.state.fg,
-      isFinished: this.state.isFinished,
+      style: currentRecipe.style,
+      estimatedTime: this.state.estimatedTime,
+      status: this.state.status,
       brewDate: this.state.brewDate,
       fermentationDate: this.state.fermentationDate,
       carbonationDate: this.state.carbonationDate,
       ageingDate: this.state.ageingDate,
       fillingDate: this.state.fillingDate,
+      duration: '',
       createdAt: new Date(),
     };
 
@@ -246,8 +266,15 @@ class NewProductionScreen extends React.Component {
                 onValueChange={(itemValue, itemIndex) =>
                   this.setState({selectedRecipe: itemValue})
                 }>
-                <Picker.Item label="Hornero Vivaz" value="Hornero Vivaz" />
-                <Picker.Item label="BeerH Pilsen" value="BeerH Pilsen" />
+                {this.state.recipes.map((item, index) => {
+                  return (
+                    <Picker.Item
+                      label={item.title}
+                      value={item.title}
+                      key={item.id}
+                    />
+                  );
+                })}
               </Picker>
               <View style={styles.signContainer}>
                 <Image source={UpDown} />
@@ -256,14 +283,18 @@ class NewProductionScreen extends React.Component {
           </View>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>Volume final almejado (L):</Text>
+              <Text style={styles.titleText}>
+                Tempo estimado de brassagem (hrs):
+              </Text>
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
                 <TextInput
                   style={styles.dateStyle}
-                  value={this.state.volume}
-                  onChangeText={(volume) => this.setState({volume})}
+                  value={this.state.estimatedTime}
+                  onChangeText={(estimatedTime) =>
+                    this.setState({estimatedTime})
+                  }
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
                 />
