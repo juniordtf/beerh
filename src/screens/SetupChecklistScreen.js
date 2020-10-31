@@ -24,17 +24,46 @@ class SetupChecklistScreen extends Component {
   }
 
   componentDidMount() {
-    this.continueStopwatch;
+    this.keepStopwatchGoing();
+  }
+
+  keepStopwatchGoing = () => {
     let currentProduction = this.props.route.params?.production;
     this.setState({todaysProduction: currentProduction});
-    console.log(currentProduction.duration);
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
-  }
+  };
 
   renderCheckImage = () => {
     var imgSource = this.state.showCheckImg ? CircleChecked : CircleUnchecked;
     return <Image source={imgSource} />;
+  };
+
+  goToNextView = (currentProduction) => {
+    window.stopwatchComponent.stopStopwatch();
+
+    const productionUpdated = {
+      id: currentProduction.id,
+      name: currentProduction.name,
+      volume: currentProduction.volume,
+      og: currentProduction.og,
+      fg: currentProduction.fg,
+      style: currentProduction.style,
+      estimatedTime: currentProduction.estimatedTime,
+      status: currentProduction.status,
+      brewDate: currentProduction.brewDate,
+      fermentationDate: currentProduction.fermentationDate,
+      carbonationDate: currentProduction.carbonationDate,
+      ageingDate: currentProduction.ageingDate,
+      fillingDate: currentProduction.fillingDate,
+      duration: window.stopwatchComponent.showDisplay(),
+      createdAt: currentProduction.createdAt,
+    };
+
+    this.props.navigation.navigate('Brassagem Parte A', {
+      production: productionUpdated,
+    });
+    window.stopwatchComponent.clearStopwatch();
   };
 
   render() {
@@ -52,19 +81,20 @@ class SetupChecklistScreen extends Component {
         </View>
         <View style={styles.bodyContainer}>
           <View style={styles.rowContainer}>
-            <View style={styles.circle}>
-              <Text style={styles.bodyText}>1</Text>
+            <View style={styles.sectionContainerLeft}>
+              <View style={styles.circle}>
+                <Text style={styles.bodyText}>2</Text>
+              </View>
             </View>
-            <View style={styles.headerContainer}>
-              <Text style={styles.bodyText}> </Text>
-              <Text style={styles.bodyText}>Limpeza</Text>
+            <View style={styles.sectionContainerRight}>
+              <Text style={styles.bodyText}>Montagem</Text>
             </View>
           </View>
         </View>
-        <View style={styles.bodyContainer} marginTop={30}>
+        <View style={styles.bodyContainer} marginTop={15}>
           <View style={styles.rowContainer}>
-            <Image source={ChecklistIcon} />
-            <Text style={styles.bodyText}> Checklist de Limpeza</Text>
+            <Image source={ChecklistIcon} marginLeft={5} />
+            <Text style={styles.bodyText}> Checklist de Montagem</Text>
           </View>
         </View>
         <View style={styles.cardContainer}>
@@ -109,7 +139,7 @@ class SetupChecklistScreen extends Component {
             <Button
               title="Avançar"
               color="#000000"
-              onPress={() => this.props.navigation.navigate('Receitas')}
+              onPress={() => this.goToNextView(this.state.todaysProduction)}
             />
           </View>
         </TouchableHighlight>
@@ -216,6 +246,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     backgroundColor: '#EDEDED',
+  },
+  sectionContainerLeft: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 40,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sectionContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginRight: marginHorizontal,
+    width: 100,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
 });
 

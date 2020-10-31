@@ -1,26 +1,33 @@
-import * as React from 'react';
-import {Text} from 'react-native';
+import React, {Component} from 'react';
+import {Text, View, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import TimerIcon from '../../assets/timer.png';
+import PlayIcon from '../../assets/play-button.png';
+import PauseIcon from '../../assets/pause-button.png';
+import StopIcon from '../../assets/stop-button.png';
 
-export default class Timer extends React.Component {
+class Timer extends Component {
   constructor(props) {
     super(props);
-    this.iniciarCronometro = this.iniciarCronometro.bind(this);
-    this.pararCronometro = this.pararCronometro.bind(this);
-    this.formatarDisplay = this.formatarDisplay.bind(this);
-    this.somarUmMinuto = this.somarUmMinuto.bind(this);
-    this.subtrairUmSegundo = this.subtrairUmSegundo.bind(this);
+    window.timerComponent = this;
+    this.startTimer = this.startTimer.bind(this);
+    this.pauseTimer = this.pauseTimer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.showDisplay = this.showDisplay.bind(this);
+    this.addMinute = this.addMinute.bind(this);
+    this.subtractSecond = this.subtractSecond.bind(this);
 
     this.state = {
       contadorSegundo: 0,
       contadorMinuto: 1,
 
       iniciarHabilitado: true,
+      pausarHabilitado: false,
       pararHabilitado: false,
       somarHabilitado: true,
     };
   }
 
-  subtractSecond() {
+  subtractSecond = () => {
     let segundo = this.state.contadorSegundo;
     let minuto = this.state.contadorMinuto;
 
@@ -38,9 +45,9 @@ export default class Timer extends React.Component {
       contadorSegundo: segundo,
       contadorMinuto: minuto,
     });
-  }
+  };
 
-  formatDisplay() {
+  showDisplay = () => {
     let formatado = '';
 
     if (this.state.contadorMinuto < 10) {
@@ -55,33 +62,45 @@ export default class Timer extends React.Component {
       formatado = formatado + this.state.contadorSegundo;
     }
 
-    return <Text style={estilo.estiloDisplay}>{formatado}</Text>;
-  }
+    return formatado;
+  };
 
-  startTimer() {
-    let intervalId = setInterval(this.subtrairUmSegundo, 1000);
+  startTimer = () => {
+    let intervalId = setInterval(this.subtractSecond, 1000);
     this.setState({
       intervalId: intervalId,
 
       iniciarHabilitado: false,
+      pausarHabilitado: true,
       somarHabilitado: true,
       pararHabilitado: true,
     });
-  }
+  };
 
-  stopTimer() {
+  pauseTimer = () => {
+    clearInterval(this.state.intervalId);
+    this.setState({
+      iniciarHabilitado: true,
+      pausarHabilitado: false,
+      pararHabilitado: false,
+      somarHabilitado: true,
+    });
+  };
+
+  stopTimer = () => {
     clearInterval(this.state.intervalId);
     this.setState({
       contadorSegundo: 0,
       contadorMinuto: 1,
 
       iniciarHabilitado: true,
+      pausarHabilitado: false,
       pararHabilitado: false,
       somarHabilitado: true,
     });
-  }
+  };
 
-  addMinute() {
+  addMinute = () => {
     let minutoAtual = this.state.contadorMinuto;
     let minutoSomado = minutoAtual + 1;
     this.setState({
@@ -91,11 +110,89 @@ export default class Timer extends React.Component {
       pararHabilitado: true,
       somarHabilitado: true,
     });
+  };
+
+  setTimer(minutes) {
+    let minutoAtual = this.state.contadorMinuto;
+    let minutoSomado = minutoAtual + parseInt(minutes, 10);
+    this.setState({
+      contadorMinuto: minutoSomado,
+
+      iniciarHabilitado: true,
+      pararHabilitado: true,
+      somarHabilitado: true,
+    });
+  }
+
+  render() {
+    return (
+      <View>
+        <View style={styles.rowContainer}>
+          <View style={styles.timerContainer}>
+            <Image source={TimerIcon} />
+          </View>
+          <View style={styles.timerContainer}>
+            <Text style={styles.bodyText}>{this.showDisplay()}</Text>
+          </View>
+        </View>
+        <View style={styles.rowContainer} marginLeft={5}>
+          <TouchableHighlight
+            style={styles.timerContainer}
+            onPress={this.startTimer}
+            disabled={!this.state.iniciarHabilitado}>
+            <Image source={PlayIcon} style={styles.imageStyle} />
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.buttonsContainer}
+            onPress={this.pauseTimer}
+            disabled={!this.state.pausarHabilitado}>
+            <Image source={PauseIcon} style={styles.imageStyle} />
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.buttonsContainer}
+            onPress={this.stopTimer}
+            disabled={!this.state.pararHabilitado}>
+            <Image source={StopIcon} style={styles.imageStyle} />
+          </TouchableHighlight>
+        </View>
+      </View>
+    );
   }
 }
 
-const estilo = {
-  estiloDisplay: {
+const marginHorizontal = 2;
+const marginVertical = 2;
+
+const styles = StyleSheet.create({
+  bodyText: {
+    fontSize: 17,
+    color: 'black',
     textAlign: 'center',
   },
-};
+  rowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  imageStyle: {
+    width: 20,
+    height: 20,
+  },
+  timerContainer: {
+    marginTop: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonsContainer: {
+    marginTop: marginVertical,
+    marginRight: marginHorizontal,
+    marginLeft: 5,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+});
+
+export default Timer;

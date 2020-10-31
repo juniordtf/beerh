@@ -74,18 +74,19 @@ class CleaningChecklistScreen extends Component {
         </View>
         <View style={styles.bodyContainer}>
           <View style={styles.rowContainer}>
-            <View style={styles.circle}>
-              <Text style={styles.bodyText}>1</Text>
+            <View style={styles.sectionContainerLeft}>
+              <View style={styles.circle}>
+                <Text style={styles.bodyText}>1</Text>
+              </View>
             </View>
-            <View style={styles.headerContainer}>
-              <Text style={styles.bodyText}> </Text>
+            <View style={styles.sectionContainerRight}>
               <Text style={styles.bodyText}>Limpeza</Text>
             </View>
           </View>
         </View>
-        <View style={styles.bodyContainer} marginTop={30}>
+        <View style={styles.bodyContainer} marginTop={15}>
           <View style={styles.rowContainer}>
-            <Image source={ChecklistIcon} />
+            <Image source={ChecklistIcon} marginLeft={5} />
             <Text style={styles.bodyText}> Checklist de Limpeza</Text>
           </View>
         </View>
@@ -238,6 +239,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     backgroundColor: '#EDEDED',
+  },
+  sectionContainerLeft: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 40,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sectionContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginRight: marginHorizontal,
+    width: 100,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
 });
 

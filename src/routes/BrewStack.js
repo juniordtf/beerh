@@ -3,6 +3,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import BrewScreen from '../screens/BrewScreen';
 import CleaningChecklistScreen from '../screens/CleaningChecklistScreen';
 import SetupChecklistScreen from '../screens/SetupChecklistScreen';
+import BrewPartAScreen from '../screens/BrewPartAScreen';
+import BrewPartBScreen from '../screens/BrewPartBScreen';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +42,34 @@ function BrewStack() {
       <Stack.Screen
         name="Checklist de Montagem"
         component={SetupChecklistScreen}
+        options={{
+          title: 'Brassagem',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Brassagem Parte A"
+        component={BrewPartAScreen}
+        options={{
+          title: 'Brassagem',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Brassagem Parte B"
+        component={BrewPartBScreen}
         options={{
           title: 'Brassagem',
           headerStyle: {

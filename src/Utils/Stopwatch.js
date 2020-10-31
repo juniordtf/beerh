@@ -115,7 +115,7 @@ class Stopwatch extends Component {
 
   continueStopwatch(time) {
     this.setState({
-      contadorSegundo: parseInt(time.slice(6, 8), 10),
+      contadorSegundo: parseInt(time.slice(6, 8), 10) + 1,
       contadorMinuto: parseInt(time.slice(3, 5), 10),
       contadorHora: parseInt(time.slice(0, 2), 10),
     });

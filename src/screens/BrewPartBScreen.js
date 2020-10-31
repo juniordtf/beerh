@@ -8,12 +8,13 @@ import {
   TouchableHighlight,
   Button,
 } from 'react-native';
-import BrewingMill from '../../assets/brewingMill.png';
-import HotWater from '../../assets/hotWater.png';
+import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
+import Timer from '../Utils/Timer';
+import BrewBoiler from '../../assets/brewBoiler.png';
 
-class BrewPartAScreen extends Component {
+class BrewPartBScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +24,8 @@ class BrewPartAScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
+    //window.timerComponent.setTimer(90);
+    //window.timerComponent.startTimer();
   }
 
   keepStopwatchGoing = () => {
@@ -30,33 +33,6 @@ class BrewPartAScreen extends Component {
     this.setState({todaysProduction: currentProduction});
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
-  };
-
-  goToNextView = (currentProduction) => {
-    window.stopwatchComponent.stopStopwatch();
-
-    const productionUpdated = {
-      id: currentProduction.id,
-      name: currentProduction.name,
-      volume: currentProduction.volume,
-      og: currentProduction.og,
-      fg: currentProduction.fg,
-      style: currentProduction.style,
-      estimatedTime: currentProduction.estimatedTime,
-      status: currentProduction.status,
-      brewDate: currentProduction.brewDate,
-      fermentationDate: currentProduction.fermentationDate,
-      carbonationDate: currentProduction.carbonationDate,
-      ageingDate: currentProduction.ageingDate,
-      fillingDate: currentProduction.fillingDate,
-      duration: window.stopwatchComponent.showDisplay(),
-      createdAt: currentProduction.createdAt,
-    };
-
-    this.props.navigation.navigate('Brassagem Parte B', {
-      production: productionUpdated,
-    });
-    window.stopwatchComponent.clearStopwatch();
   };
 
   render() {
@@ -80,58 +56,67 @@ class BrewPartAScreen extends Component {
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Brassagem (1/4)</Text>
+              <Text style={styles.bodyText}>Brassagem (2/4)</Text>
             </View>
           </View>
         </View>
         <View style={styles.bodyContainer} marginTop={15}>
           <View style={styles.rowContainer}>
-            <Text style={styles.bodyText}>
-              {' '}
-              Realizar as tarefas abaixo em paralelo:
-            </Text>
-          </View>
-        </View>
-        <View style={styles.bodyContainer}>
-          <View>
-            <View style={styles.rowContainer}>
-              <View style={styles.boxContainerRight}>
-                <Image source={BrewingMill} />
-              </View>
-              <View style={styles.boxContainerLeft}>
-                <Text style={styles.bodyText}>Moer os grãos</Text>
-              </View>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.boxContainerRight}>
-                <Image source={HotWater} />
-              </View>
-              <View style={styles.boxContainerLeft}>
-                <Text style={styles.bodyText}>
-                  Encher as panelas com água e colocar para esquentar
-                </Text>
-              </View>
-            </View>
+            <Text style={styles.bodyText}>Atividades:</Text>
           </View>
         </View>
         <View style={styles.bodyContainer}>
           <View style={styles.rowContainer}>
-            <View style={styles.boxContainerRight}>
-              <Text style={styles.bodyText}>Obs.:</Text>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
             </View>
-            <View style={styles.boxContainerLeft} alignItems={'flex-start'}>
+            <View style={styles.listContainerRight}>
+              <Text style={styles.bodyText}>Inserir os grãos;</Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
               <Text style={styles.bodyText}>
-                Alterar temperatura do controlador para: 72 °C
+                Alterar temperatura de controle para 68 °C;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
+              <Text style={styles.bodyText}>
+                Ligar sistema de recirculação de mosto;
               </Text>
             </View>
           </View>
         </View>
+        <View style={styles.bodyContainer} marginTop={30}>
+          <View style={styles.sectionContainer}>
+            <View style={styles.boxContainerLeft}>
+              <Image source={BrewBoiler} />
+            </View>
+            <View style={styles.boxContainerRight}>
+              <View>
+                <View style={styles.blackBoxContainer}>
+                  <Text style={styles.redText}>69 °C</Text>
+                </View>
+                <Timer />
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.cardContainer} marginTop={120}></View>
         <TouchableHighlight>
-          <View style={styles.buttonContainer}>
+          <View style={styles.buttonContainer} marginTop={200}>
             <Button
               title="Avançar"
               color="#000000"
-              onPress={() => this.goToNextView(this.state.todaysProduction)}
+              onPress={() => this.props.navigation.navigate('Receitas')}
             />
           </View>
         </TouchableHighlight>
@@ -174,7 +159,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 380,
+    height: 100,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -254,6 +239,45 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
+  listContainerLeft: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 40,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginRight: marginHorizontal,
+    width: 300,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  blackBoxContainer: {
+    marginTop: 15,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    width: 80,
+    height: 30,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: 'black',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#979797',
+  },
+  redText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+
+    color: 'red',
+    textAlign: 'center',
+  },
 });
 
-export default BrewPartAScreen;
+export default BrewPartBScreen;
