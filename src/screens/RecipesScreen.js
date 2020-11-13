@@ -23,6 +23,7 @@ import {RECIPES_KEY} from '../statics/Statics';
 class RecipesScreen extends React.Component {
   constructor(props) {
     super(props);
+    window.recipesScreen = this;
     this.state = {
       recipes: [],
     };
@@ -119,13 +120,16 @@ class RecipesScreen extends React.Component {
 
     if (recipes != null && recipes.length > 0) {
       return (
-        <View style={styles.listContainer}>
-          <FlatList
-            data={recipes}
-            renderItem={this.renderItem}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
+        <SafeAreaView>
+          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <View style={styles.listContainer}>
+            <FlatList
+              data={recipes}
+              renderItem={this.renderItem}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+        </SafeAreaView>
       );
     } else {
       return (

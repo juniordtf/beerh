@@ -21,7 +21,7 @@ import {PRODUCTIONS_KEY} from '../statics/Statics';
 class ProductionScreen extends React.Component {
   constructor(props) {
     super(props);
-
+    window.productionsScreen = this;
     this.state = {
       productions: [],
     };
@@ -56,10 +56,16 @@ class ProductionScreen extends React.Component {
     return <Image source={imgSource} />;
   }
 
+  goToDetailView = (currentProduction) => {
+    this.props.navigation.navigate('Detalhe de Produção', {
+      production: currentProduction,
+    });
+  };
+
   renderItem = ({item}) => {
     return (
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.goToDetailView(item)}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
               {this.renderProductionStatusImage(item.status)}
@@ -69,7 +75,7 @@ class ProductionScreen extends React.Component {
                 <View style={styles.rowContainer}>
                   <Text style={styles.listItemTitle}>{item.name}</Text>
                   <Text style={styles.listItemTitle2}>{item.style}</Text>
-                  <Text style={styles.listItemTitle2}> ({item.volume}L)</Text>
+                  <Text style={styles.listItemTitle2}> ({item.volume} L)</Text>
                 </View>
                 <View style={styles.rowContainer} marginTop={5}>
                   <Text style={styles.listItemBodyField}>
@@ -96,13 +102,16 @@ class ProductionScreen extends React.Component {
 
     if (productions != null && productions.length > 0) {
       return (
-        <View style={styles.listContainer}>
-          <FlatList
-            data={productions}
-            renderItem={this.renderItem}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
+        <SafeAreaView>
+          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <View style={styles.listContainer}>
+            <FlatList
+              data={productions}
+              renderItem={this.renderItem}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+        </SafeAreaView>
       );
     } else {
       return (

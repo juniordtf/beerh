@@ -16,7 +16,7 @@ import {PRODUCTIONS_KEY} from '../statics/Statics';
 class BrewScreen extends React.Component {
   constructor(props) {
     super(props);
-
+    window.brewScreen = this;
     this.state = {
       productions: [],
     };
@@ -67,7 +67,7 @@ class BrewScreen extends React.Component {
               <Text style={styles.listItemTitle}>{todaysProduction.name}</Text>
               <Text style={styles.listItemTitle2}> - </Text>
               <Text style={styles.listItemTitle2}>
-                {todaysProduction.volume}L
+                {todaysProduction.volume} L
               </Text>
             </View>
             <View marginTop={15}>

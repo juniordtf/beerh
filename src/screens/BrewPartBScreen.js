@@ -24,8 +24,6 @@ class BrewPartBScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
-    //window.timerComponent.setTimer(90);
-    //window.timerComponent.startTimer();
   }
 
   keepStopwatchGoing = () => {
@@ -33,6 +31,8 @@ class BrewPartBScreen extends Component {
     this.setState({todaysProduction: currentProduction});
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
+    //window.timerComponent.setTimer(90);
+    //window.timerComponent.startTimer();
   };
 
   render() {
@@ -102,7 +102,7 @@ class BrewPartBScreen extends Component {
             </View>
             <View style={styles.boxContainerRight}>
               <View>
-                <View style={styles.blackBoxContainer}>
+                <View style={styles.blackBoxContainer} marginBottom={15}>
                   <Text style={styles.redText}>69 °C</Text>
                 </View>
                 <Timer />
@@ -110,9 +110,21 @@ class BrewPartBScreen extends Component {
             </View>
           </View>
         </View>
-        <View style={styles.cardContainer} marginTop={120}></View>
+        <View style={styles.cardContainer}>
+          <Text style={styles.bodyTextLeft}>
+            Etapas a serem feitas em paralelo:
+          </Text>
+          <View style={styles.rowContainer}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
+              <Text style={styles.bodyText}>Esquentar a água de lavagem;</Text>
+            </View>
+          </View>
+        </View>
         <TouchableHighlight>
-          <View style={styles.buttonContainer} marginTop={200}>
+          <View style={styles.buttonContainer}>
             <Button
               title="Avançar"
               color="#000000"
@@ -155,11 +167,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardContainer: {
-    marginTop: 15,
+    marginTop: 140,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 100,
+    height: 130,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -171,6 +183,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'black',
     textAlign: 'center',
+  },
+  bodyTextLeft: {
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'left',
+    marginLeft: 15,
+    marginBottom: 5,
+    marginTop: 5,
   },
   circle: {
     width: 25,
@@ -274,7 +294,6 @@ const styles = StyleSheet.create({
   redText: {
     fontSize: 15,
     fontWeight: 'bold',
-
     color: 'red',
     textAlign: 'center',
   },

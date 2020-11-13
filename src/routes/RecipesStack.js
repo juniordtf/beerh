@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {TouchableHighlight, Image, View} from 'react-native';
+import {TouchableOpacity, Image, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import RecipesScreen from '../screens/RecipesScreen';
 import NewRecipeScreen from '../screens/NewRecipeScreen';
 import Add from '../../assets/add.png';
+import Refresh from '../../assets/refreshButton.png';
 
 const Stack = createStackNavigator();
 
@@ -23,12 +24,19 @@ function RecipesStack() {
             fontWeight: 'bold',
           },
           headerRight: () => (
-            <TouchableHighlight
+            <TouchableOpacity
               onPress={() => navigation.navigate('Nova Receita')}>
               <View marginRight={20}>
                 <Image source={Add} />
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => window.recipesScreen.getRecipes()}>
+              <View marginLeft={20}>
+                <Image source={Refresh} />
+              </View>
+            </TouchableOpacity>
           ),
         })}
       />
