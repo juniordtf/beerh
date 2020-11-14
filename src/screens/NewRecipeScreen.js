@@ -19,6 +19,7 @@ import Minus from '../../assets/minus.png';
 import UpDown from '../../assets/up-and-down.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY} from '../statics/Statics';
+import {Units} from '../statics/Statics';
 
 class NewRecipeScreen extends React.Component {
   constructor(props) {
@@ -33,15 +34,42 @@ class NewRecipeScreen extends React.Component {
       ibu: '',
       abv: '',
       color: '',
+      ingredient: '',
       ingredients: [],
+      ramp: '',
       ramps: [],
+      boilIem: '',
       boil: [],
+      fermentationItem: '',
       fermentation: [],
+      ageingItem: '',
       ageing: [],
       carbonation: '',
       unit: '',
-      inputLinkClicked: false,
+      annotation: '',
       recipes: [],
+      units: Units,
+      inputSecondIngridientClicked: false,
+      inputThirdIngridientClicked: false,
+      inputFourthIngridientClicked: false,
+      inputFifthIngridientClicked: false,
+      inputSixthIngridientClicked: false,
+      inputSeventhIngridientClicked: false,
+      inputEightIngridientClicked: false,
+      inputNinthIngridientClicked: false,
+      inputTenthIngridientClicked: false,
+      inputSecondRampClicked: false,
+      inputThirdRampClicked: false,
+      inputFourthRampClicked: false,
+      inputFifthRampClicked: false,
+      inputSecondBoilClicked: false,
+      inputThirdBoilClicked: false,
+      inputFourthBoilClicked: false,
+      inputFifthBoilClicked: false,
+      inputSecondFermentationClicked: false,
+      inputThirdFermentationClicked: false,
+      inputSecondAgeingClicked: false,
+      inputThirdAgeingClicked: false,
     };
   }
 
@@ -61,16 +89,212 @@ class NewRecipeScreen extends React.Component {
     }
   };
 
-  handleAddSecondInput = () => {
-    this.setState({
-      inputLinkClicked: true,
-    });
+  handleAddIngridientInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondIngridientClicked: true,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdIngridientClicked: true,
+      });
+    } else if (value === '2') {
+      this.setState({
+        inputFourthIngridientClicked: true,
+      });
+    } else if (value === '3') {
+      this.setState({
+        inputFifthIngridientClicked: true,
+      });
+    } else if (value === '4') {
+      this.setState({
+        inputSixthIngridientClicked: true,
+      });
+    } else if (value === '5') {
+      this.setState({
+        inputSeventhIngridientClicked: true,
+      });
+    } else if (value === '6') {
+      this.setState({
+        inputEightIngridientClicked: true,
+      });
+    } else if (value === '7') {
+      this.setState({
+        inputNinthIngridientClicked: true,
+      });
+    } else if (value === '8') {
+      this.setState({
+        inputTenthIngridientClicked: true,
+      });
+    }
   };
 
-  handleRemoveSecondInput = () => {
-    this.setState({
-      inputLinkClicked: false,
-    });
+  handleRemoveIngridientInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondIngridientClicked: false,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdIngridientClicked: false,
+      });
+    } else if (value === '2') {
+      this.setState({
+        inputFourthIngridientClicked: false,
+      });
+    } else if (value === '3') {
+      this.setState({
+        inputFifthIngridientClicked: false,
+      });
+    } else if (value === '4') {
+      this.setState({
+        inputSixthIngridientClicked: false,
+      });
+    } else if (value === '5') {
+      this.setState({
+        inputSeventhIngridientClicked: false,
+      });
+    } else if (value === '6') {
+      this.setState({
+        inputEightIngridientClicked: false,
+      });
+    } else if (value === '7') {
+      this.setState({
+        inputNinthIngridientClicked: false,
+      });
+    } else if (value === '8') {
+      this.setState({
+        inputTenthIngridientClicked: false,
+      });
+    }
+  };
+
+  handleAddRampInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondRampClicked: true,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdRampClicked: true,
+      });
+    } else if (value === '2') {
+      this.setState({
+        inputFourthRampClicked: true,
+      });
+    } else if (value === '3') {
+      this.setState({
+        inputFifthRampClicked: true,
+      });
+    }
+  };
+
+  handleRemoveRampInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondRampClicked: false,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdRampClicked: false,
+      });
+    } else if (value === '2') {
+      this.setState({
+        inputFourthRampClicked: false,
+      });
+    } else if (value === '3') {
+      this.setState({
+        inputFifthRampClicked: false,
+      });
+    }
+  };
+
+  handleAddBoilInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondBoilClicked: true,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdBoilClicked: true,
+      });
+    } else if (value === '2') {
+      this.setState({
+        inputFourthBoilClicked: true,
+      });
+    } else if (value === '3') {
+      this.setState({
+        inputFifthBoilClicked: true,
+      });
+    }
+  };
+
+  handleRemoveBoilInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondBoilClicked: false,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdBoilClicked: false,
+      });
+    } else if (value === '2') {
+      this.setState({
+        inputFourthBoilClicked: false,
+      });
+    } else if (value === '3') {
+      this.setState({
+        inputFifthBoilClicked: false,
+      });
+    }
+  };
+
+  handleAddFermentationInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondFermentationClicked: true,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdFermentationClicked: true,
+      });
+    }
+  };
+
+  handleRemoveFermentationInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondFermentationClicked: false,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdFermentationClicked: false,
+      });
+    }
+  };
+
+  handleAddAgeingInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondAgeingClicked: true,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdAgeingClicked: true,
+      });
+    }
+  };
+
+  handleRemoveAgeingInput = (value) => {
+    if (value === '0') {
+      this.setState({
+        inputSecondAgeingClicked: false,
+      });
+    } else if (value === '1') {
+      this.setState({
+        inputThirdAgeingClicked: false,
+      });
+    }
   };
 
   addRecipe = () => {
@@ -90,6 +314,7 @@ class NewRecipeScreen extends React.Component {
       fermentation: this.state.fermentation,
       ageing: this.state.ageing,
       carbonation: this.state.carbonation,
+      annotation: this.state.annotation,
       createdAt: new Date(),
     };
 
@@ -222,14 +447,19 @@ class NewRecipeScreen extends React.Component {
                 <Picker
                   style={styles.onePicker}
                   itemStyle={styles.onePickerItem}
-                  selectedValue={this.state.recipe}
+                  selectedValue={this.state.unit}
                   onValueChange={(itemValue, itemIndex) =>
-                    this.setState({recipe: itemValue})
+                    this.setState({unit: itemValue})
                   }>
-                  <Picker.Item label="g" value="gramas" />
-                  <Picker.Item label="Kg" value="kilogramas" />
-                  <Picker.Item label="L" value="litros" />
-                  <Picker.Item label="mL" value="mililitros" />
+                  {this.state.units.map((item, value) => {
+                    return (
+                      <Picker.Item
+                        label={item.unit}
+                        value={item.unit}
+                        key={item.unit}
+                      />
+                    );
+                  })}
                 </Picker>
                 <View style={styles.signContainer}>
                   <Image source={UpDown} style={{height: 10, width: 10}} />
@@ -245,14 +475,14 @@ class NewRecipeScreen extends React.Component {
               <View style={styles.addButtonContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={this.handleAddSecondInput}>
+                  onPress={() => this.handleAddIngridientInput('0')}>
                   <Image source={Plus} />
                 </TouchableOpacity>
               </View>
               <View style={styles.addButtonContainer} marginLeft={-1} />
             </View>
             <View>
-              {this.state.inputLinkClicked ? (
+              {this.state.inputSecondIngridientClicked ? (
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -264,14 +494,19 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.recipe}
+                      selectedValue={this.state.unit}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({recipe: itemValue})
+                        this.setState({unit: itemValue})
                       }>
-                      <Picker.Item label="g" value="gramas" />
-                      <Picker.Item label="Kg" value="kilogramas" />
-                      <Picker.Item label="L" value="litros" />
-                      <Picker.Item label="mL" value="mililitros" />
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
                     </Picker>
                     <View style={styles.signContainer}>
                       <Image source={UpDown} style={{height: 10, width: 10}} />
@@ -287,17 +522,467 @@ class NewRecipeScreen extends React.Component {
                   <View style={styles.addButtonContainer}>
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={this.handleAddSecondInput}>
+                      onPress={() => this.handleAddIngridientInput('1')}>
                       <Image source={Plus} />
                     </TouchableOpacity>
                   </View>
                   <View style={styles.addButtonContainer} marginLeft={-1}>
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={this.handleRemoveSecondInput}>
+                      onPress={() => this.handleRemoveIngridientInput('0')}>
                       <Image source={Minus} />
                     </TouchableOpacity>
                   </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputThirdIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddIngridientInput('2')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('1')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputFourthIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddIngridientInput('3')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('2')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputFifthIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddIngridientInput('4')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('3')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputSixthIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddIngridientInput('5')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('4')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputSeventhIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddIngridientInput('6')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('5')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputEightIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddIngridientInput('7')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('6')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputNinthIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddIngridientInput('8')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('7')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputTenthIngridientClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Qte"
+                    underlineColorAndroid="transparent"
+                    width={50}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Nome"
+                    underlineColorAndroid="transparent"
+                    width={200}
+                    marginLeft={5}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveIngridientInput('8')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1} />
                 </View>
               ) : (
                 <View />
@@ -332,12 +1017,165 @@ class NewRecipeScreen extends React.Component {
             <View style={styles.addButtonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => {
-                  alert('you clicked me');
-                }}>
+                onPress={() => this.handleAddRampInput('0')}>
                 <Image source={Plus} />
               </TouchableOpacity>
             </View>
+            <View style={styles.addButtonContainer} marginLeft={-1} />
+          </View>
+          <View>
+            {this.state.inputSecondRampClicked ? (
+              <View style={styles.parametersRow} marginTop={-5}>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Temp. (ºC)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={80}
+                />
+                <View style={styles.addButtonContainer}>
+                  <Text style={styles.smallBodyText}> por </Text>
+                </View>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Tempo (min)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={120}
+                  marginLeft={10}
+                />
+                <View style={styles.addButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.handleAddRampInput('1')}>
+                    <Image source={Plus} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.addButtonContainer} marginLeft={-1}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.handleRemoveRampInput('0')}>
+                    <Image source={Minus} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <View />
+            )}
+          </View>
+          <View>
+            {this.state.inputThirdRampClicked ? (
+              <View style={styles.parametersRow} marginTop={-5}>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Temp. (ºC)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={80}
+                />
+                <View style={styles.addButtonContainer}>
+                  <Text style={styles.smallBodyText}> por </Text>
+                </View>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Tempo (min)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={120}
+                  marginLeft={10}
+                />
+                <View style={styles.addButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.handleAddRampInput('2')}>
+                    <Image source={Plus} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.addButtonContainer} marginLeft={-1}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.handleRemoveRampInput('1')}>
+                    <Image source={Minus} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <View />
+            )}
+          </View>
+          <View>
+            {this.state.inputFourthRampClicked ? (
+              <View style={styles.parametersRow} marginTop={-5}>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Temp. (ºC)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={80}
+                />
+                <View style={styles.addButtonContainer}>
+                  <Text style={styles.smallBodyText}> por </Text>
+                </View>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Tempo (min)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={120}
+                  marginLeft={10}
+                />
+                <View style={styles.addButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.handleAddRampInput('3')}>
+                    <Image source={Plus} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.addButtonContainer} marginLeft={-1}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.handleRemoveRampInput('2')}>
+                    <Image source={Minus} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <View />
+            )}
+          </View>
+          <View>
+            {this.state.inputFifthRampClicked ? (
+              <View style={styles.parametersRow} marginTop={-5}>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Temp. (ºC)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={80}
+                />
+                <View style={styles.addButtonContainer}>
+                  <Text style={styles.smallBodyText}> por </Text>
+                </View>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  placeholder="Tempo (min)"
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
+                  width={120}
+                  marginLeft={10}
+                />
+                <View style={styles.addButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.handleRemoveRampInput('3')}>
+                    <Image source={Minus} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.addButtonContainer} marginLeft={-1} />
+              </View>
+            ) : (
+              <View />
+            )}
           </View>
           <View marginTop={10}>
             <Text style={styles.innerSectionText}>Fervura:</Text>
@@ -351,13 +1189,28 @@ class NewRecipeScreen extends React.Component {
                     underlineColorAndroid="transparent"
                     width={50}
                   />
-                  <TextInput
-                    style={styles.bodyInputMask}
-                    placeholder="Und"
-                    underlineColorAndroid="transparent"
-                    width={50}
-                    marginLeft={10}
-                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.unit}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({unit: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                    <View style={styles.signContainer}>
+                      <Image source={UpDown} style={{height: 10, width: 10}} />
+                    </View>
+                  </View>
                   <TextInput
                     style={styles.bodyInputMask}
                     placeholder="Nome"
@@ -387,12 +1240,357 @@ class NewRecipeScreen extends React.Component {
                 marginLeft={20}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => {
-                    alert('you clicked me');
-                  }}>
+                  onPress={() => this.handleAddBoilInput('0')}>
                   <Image source={Plus} />
                 </TouchableOpacity>
               </View>
+            </View>
+            <View>
+              {this.state.inputSecondBoilClicked ? (
+                <View
+                  style={styles.parametersRow}
+                  marginLeft={47}
+                  marginTop={-2}>
+                  <View>
+                    <View style={styles.parametersRow}>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Qte"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={50}
+                      />
+                      <View style={styles.onePickerContainer}>
+                        <Picker
+                          style={styles.onePicker}
+                          itemStyle={styles.onePickerItem}
+                          selectedValue={this.state.unit}
+                          onValueChange={(itemValue, itemIndex) =>
+                            this.setState({unit: itemValue})
+                          }>
+                          {this.state.units.map((item, value) => {
+                            return (
+                              <Picker.Item
+                                label={item.unit}
+                                value={item.unit}
+                                key={item.unit}
+                              />
+                            );
+                          })}
+                        </Picker>
+                        <View style={styles.signContainer}>
+                          <Image
+                            source={UpDown}
+                            style={{height: 10, width: 10}}
+                          />
+                        </View>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Nome"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={150}
+                        marginLeft={10}
+                      />
+                    </View>
+                    <View style={styles.parametersSecondRow}>
+                      <View style={styles.addButtonContainer}>
+                        <Text style={styles.smallBodyText}> por </Text>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Tempo (min)"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={90}
+                        marginLeft={10}
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={20}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddBoilInput('1')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveBoilInput('0')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputThirdBoilClicked ? (
+                <View
+                  style={styles.parametersRow}
+                  marginLeft={47}
+                  marginTop={-2}>
+                  <View>
+                    <View style={styles.parametersRow}>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Qte"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={50}
+                      />
+                      <View style={styles.onePickerContainer}>
+                        <Picker
+                          style={styles.onePicker}
+                          itemStyle={styles.onePickerItem}
+                          selectedValue={this.state.unit}
+                          onValueChange={(itemValue, itemIndex) =>
+                            this.setState({unit: itemValue})
+                          }>
+                          {this.state.units.map((item, value) => {
+                            return (
+                              <Picker.Item
+                                label={item.unit}
+                                value={item.unit}
+                                key={item.unit}
+                              />
+                            );
+                          })}
+                        </Picker>
+                        <View style={styles.signContainer}>
+                          <Image
+                            source={UpDown}
+                            style={{height: 10, width: 10}}
+                          />
+                        </View>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Nome"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={150}
+                        marginLeft={10}
+                      />
+                    </View>
+                    <View style={styles.parametersSecondRow}>
+                      <View style={styles.addButtonContainer}>
+                        <Text style={styles.smallBodyText}> por </Text>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Tempo (min)"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={90}
+                        marginLeft={10}
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={20}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddBoilInput('2')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveBoilInput('1')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputFourthBoilClicked ? (
+                <View
+                  style={styles.parametersRow}
+                  marginLeft={47}
+                  marginTop={-2}>
+                  <View>
+                    <View style={styles.parametersRow}>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Qte"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={50}
+                      />
+                      <View style={styles.onePickerContainer}>
+                        <Picker
+                          style={styles.onePicker}
+                          itemStyle={styles.onePickerItem}
+                          selectedValue={this.state.unit}
+                          onValueChange={(itemValue, itemIndex) =>
+                            this.setState({unit: itemValue})
+                          }>
+                          {this.state.units.map((item, value) => {
+                            return (
+                              <Picker.Item
+                                label={item.unit}
+                                value={item.unit}
+                                key={item.unit}
+                              />
+                            );
+                          })}
+                        </Picker>
+                        <View style={styles.signContainer}>
+                          <Image
+                            source={UpDown}
+                            style={{height: 10, width: 10}}
+                          />
+                        </View>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Nome"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={150}
+                        marginLeft={10}
+                      />
+                    </View>
+                    <View style={styles.parametersSecondRow}>
+                      <View style={styles.addButtonContainer}>
+                        <Text style={styles.smallBodyText}> por </Text>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Tempo (min)"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={90}
+                        marginLeft={10}
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={20}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddBoilInput('3')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveBoilInput('2')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputFifthBoilClicked ? (
+                <View
+                  style={styles.parametersRow}
+                  marginLeft={49}
+                  marginTop={-2}>
+                  <View>
+                    <View style={styles.parametersRow}>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Qte"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={50}
+                      />
+                      <View style={styles.onePickerContainer}>
+                        <Picker
+                          style={styles.onePicker}
+                          itemStyle={styles.onePickerItem}
+                          selectedValue={this.state.unit}
+                          onValueChange={(itemValue, itemIndex) =>
+                            this.setState({unit: itemValue})
+                          }>
+                          {this.state.units.map((item, value) => {
+                            return (
+                              <Picker.Item
+                                label={item.unit}
+                                value={item.unit}
+                                key={item.unit}
+                              />
+                            );
+                          })}
+                        </Picker>
+                        <View style={styles.signContainer}>
+                          <Image
+                            source={UpDown}
+                            style={{height: 10, width: 10}}
+                          />
+                        </View>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Nome"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={150}
+                        marginLeft={10}
+                      />
+                    </View>
+                    <View style={styles.parametersSecondRow}>
+                      <View style={styles.addButtonContainer}>
+                        <Text style={styles.smallBodyText}> por </Text>
+                      </View>
+                      <TextInput
+                        style={styles.bodyInputMask}
+                        placeholder="Tempo (min)"
+                        keyboardType="numeric"
+                        underlineColorAndroid="transparent"
+                        width={90}
+                        marginLeft={10}
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={20}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveBoilInput('3')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={styles.addButtonContainer}
+                    height={80}
+                    marginLeft={-1}
+                  />
+                </View>
+              ) : (
+                <View />
+              )}
             </View>
           </View>
           <View marginTop={5}>
@@ -419,12 +1617,85 @@ class NewRecipeScreen extends React.Component {
               <View style={styles.addButtonContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => {
-                    alert('you clicked me');
-                  }}>
+                  onPress={() => this.handleAddFermentationInput('0')}>
                   <Image source={Plus} />
                 </TouchableOpacity>
               </View>
+              <View style={styles.addButtonContainer} marginLeft={-1} />
+            </View>
+            <View>
+              {this.state.inputSecondFermentationClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Temp. (ºC)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={80}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <Text style={styles.smallBodyText}> por </Text>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Tempo (dias)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddFermentationInput('1')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveFermentationInput('0')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputThirdFermentationClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Temp. (ºC)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={80}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <Text style={styles.smallBodyText}> por </Text>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Tempo (dias)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveFermentationInput('1')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1} />
+                </View>
+              ) : (
+                <View />
+              )}
             </View>
           </View>
           <View marginTop={5}>
@@ -451,12 +1722,85 @@ class NewRecipeScreen extends React.Component {
               <View style={styles.addButtonContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => {
-                    alert('you clicked me');
-                  }}>
+                  onPress={() => this.handleAddAgeingInput('0')}>
                   <Image source={Plus} />
                 </TouchableOpacity>
               </View>
+              <View style={styles.addButtonContainer} marginLeft={-1} />
+            </View>
+            <View>
+              {this.state.inputSecondAgeingClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Temp. (ºC)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={80}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <Text style={styles.smallBodyText}> por </Text>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Tempo (dias)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleAddAgeingInput('1')}>
+                      <Image source={Plus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveAgeingInput('0')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
+            <View>
+              {this.state.inputThirdAgeingClicked ? (
+                <View style={styles.parametersRow} marginTop={-5}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Temp. (ºC)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={80}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <Text style={styles.smallBodyText}> por </Text>
+                  </View>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    placeholder="Tempo (dias)"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                  <View style={styles.addButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => this.handleRemoveAgeingInput('1')}>
+                      <Image source={Minus} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.addButtonContainer} marginLeft={-1} />
+                </View>
+              ) : (
+                <View />
+              )}
             </View>
           </View>
           <View marginTop={5}>
@@ -472,6 +1816,23 @@ class NewRecipeScreen extends React.Component {
             </View>
           </View>
           <View marginTop={10}>
+            <View backgroundColor={'#000000'} height={1} marginBottom={5} />
+          </View>
+          <View marginTop={5}>
+            <Text style={styles.sectionText}>* Observações</Text>
+            <TextInput
+              onChangeText={(annotation) => this.setState({annotation})}
+              value={this.state.annotation}
+              style={styles.styleInputMask}
+              width={350}
+              height={90}
+              marginTop={10}
+              multiline={true}
+              fontSize={12}
+              underlineColorAndroid="transparent"
+            />
+          </View>
+          <View marginTop={5}>
             <View backgroundColor={'#000000'} height={1} marginBottom={5} />
           </View>
           <View marginTop={10} marginBottom={10}>
@@ -541,7 +1902,7 @@ const styles = StyleSheet.create({
   addButtonContainer: {
     marginLeft: 5,
     width: 30,
-    height: 30,
+    height: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -570,7 +1931,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   bodyInputMask: {
-    height: 30,
+    height: 34,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
@@ -594,8 +1955,8 @@ const styles = StyleSheet.create({
   parametersSecondRow: {
     display: 'flex',
     flexDirection: 'row',
-    marginLeft: 0,
-    marginTop: -5,
+    marginLeft: 10,
+    marginTop: -2,
   },
   onePickerContainer: {
     backgroundColor: '#fff',
@@ -603,24 +1964,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     width: 55,
-    height: 30,
+    height: 34,
     marginLeft: 5,
     display: 'flex',
     flexDirection: 'row',
   },
   onePicker: {
     width: 35,
-    height: 30,
+    height: 40,
   },
   onePickerItem: {
-    height: 30,
+    height: 40,
     color: 'black',
-    fontSize: 10,
-    textAlign: 'left',
+    fontSize: 12,
+    textAlign: 'center',
     marginLeft: 10,
+    marginTop: -4,
   },
   signContainer: {
-    height: 30,
+    height: 34,
     width: 20,
     justifyContent: 'center',
     alignItems: 'center',

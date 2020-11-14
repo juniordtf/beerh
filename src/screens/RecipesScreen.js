@@ -45,6 +45,12 @@ class RecipesScreen extends React.Component {
     }
   };
 
+  goToDetailView = (currentRecipe) => {
+    this.props.navigation.navigate('Detalhe de Receita', {
+      recipe: currentRecipe,
+    });
+  };
+
   renderCupImage(color) {
     var imgSource;
 
@@ -72,7 +78,7 @@ class RecipesScreen extends React.Component {
       createdAt.getFullYear();
     return (
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.goToDetailView(item)}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
               {this.renderCupImage(item.color)}
