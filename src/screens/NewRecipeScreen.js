@@ -34,18 +34,7 @@ class NewRecipeScreen extends React.Component {
       ibu: '',
       abv: '',
       color: '',
-      ingredient: '',
-      ingredients: [],
-      ramp: '',
-      ramps: [],
-      boilIem: '',
-      boil: [],
-      fermentationItem: '',
-      fermentation: [],
-      ageingItem: '',
-      ageing: [],
       carbonation: '',
-      unit: '',
       annotation: '',
       recipes: [],
       units: Units,
@@ -70,6 +59,78 @@ class NewRecipeScreen extends React.Component {
       inputThirdFermentationClicked: false,
       inputSecondAgeingClicked: false,
       inputThirdAgeingClicked: false,
+      QteIng01: '',
+      QteIng02: '',
+      QteIng03: '',
+      QteIng04: '',
+      QteIng05: '',
+      QteIng06: '',
+      QteIng07: '',
+      QteIng08: '',
+      QteIng09: '',
+      QteIng10: '',
+      UntIng01: '',
+      UntIng02: '',
+      UntIng03: '',
+      UntIng04: '',
+      UntIng05: '',
+      UntIng06: '',
+      UntIng07: '',
+      UntIng08: '',
+      UntIng09: '',
+      UntIng10: '',
+      NameIng01: '',
+      NameIng02: '',
+      NameIng03: '',
+      NameIng04: '',
+      NameIng05: '',
+      NameIng06: '',
+      NameIng07: '',
+      NameIng08: '',
+      NameIng09: '',
+      NameIng10: '',
+      TempRamp01: '',
+      TempRamp02: '',
+      TempRamp03: '',
+      TempRamp04: '',
+      TempRamp05: '',
+      TimeRamp01: '',
+      TimeRamp02: '',
+      TimeRamp03: '',
+      TimeRamp04: '',
+      TimeRamp05: '',
+      QteBoil01: '',
+      QteBoil02: '',
+      QteBoil03: '',
+      QteBoil04: '',
+      QteBoil05: '',
+      UntBoil01: '',
+      UntBoil02: '',
+      UntBoil03: '',
+      UntBoil04: '',
+      UntBoil05: '',
+      NameBoil01: '',
+      NameBoil02: '',
+      NameBoil03: '',
+      NameBoil04: '',
+      NameBoil05: '',
+      TimeBoil01: '',
+      TimeBoil02: '',
+      TimeBoil03: '',
+      TimeBoil04: '',
+      TimeBoil05: '',
+      TempFermentation01: '',
+      TempFermentation02: '',
+      TempFermentation03: '',
+      TimeFermentation01: '',
+      TimeFermentation02: '',
+      TimeFermentation03: '',
+      TempAgeing01: '',
+      TempAgeing02: '',
+      TempAgeing03: '',
+      TimeAgeing01: '',
+      TimeAgeing02: '',
+      TimeAgeing03: '',
     };
   }
 
@@ -297,7 +358,277 @@ class NewRecipeScreen extends React.Component {
     }
   };
 
+  setIngridients = () => {
+    const ingridient01 = {
+      quantity: this.state.QteIng01,
+      unit: this.state.UntIng01,
+      name: this.state.NameIng01,
+    };
+
+    const ingridient02 = {
+      quantity: this.state.QteIng02,
+      unit: this.state.UntIng02,
+      name: this.state.NameIng02,
+    };
+
+    const ingridient03 = {
+      quantity: this.state.QteIng03,
+      unit: this.state.UntIng03,
+      name: this.state.NameIng03,
+    };
+
+    const ingridient04 = {
+      quantity: this.state.QteIng04,
+      unit: this.state.UntIng04,
+      name: this.state.NameIng04,
+    };
+
+    const ingridient05 = {
+      quantity: this.state.QteIng05,
+      unit: this.state.UntIng05,
+      name: this.state.NameIng05,
+    };
+
+    const ingridient06 = {
+      quantity: this.state.QteIng06,
+      unit: this.state.UntIng06,
+      name: this.state.NameIng06,
+    };
+
+    const ingridient07 = {
+      quantity: this.state.QteIng07,
+      unit: this.state.UntIng07,
+      name: this.state.NameIng07,
+    };
+
+    const ingridient08 = {
+      quantity: this.state.QteIng08,
+      unit: this.state.UntIng08,
+      name: this.state.NameIng08,
+    };
+
+    const ingridient09 = {
+      quantity: this.state.QteIng09,
+      unit: this.state.UntIng09,
+      name: this.state.NameIng09,
+    };
+
+    const ingridient10 = {
+      quantity: this.state.QteIng10,
+      unit: this.state.UntIng10,
+      name: this.state.NameIng10,
+    };
+
+    let allIngridients = [ingridient01];
+
+    if (this.state.inputSecondIngridientClicked) {
+      allIngridients.push(ingridient02);
+    }
+
+    if (this.state.inputThirdIngridientClicked) {
+      allIngridients.push(ingridient03);
+    }
+
+    if (this.state.inputFourthIngridientClicked) {
+      allIngridients.push(ingridient04);
+    }
+
+    if (this.state.inputFifthIngridientClicked) {
+      allIngridients.push(ingridient05);
+    }
+
+    if (this.state.inputSixthIngridientClicked) {
+      allIngridients.push(ingridient06);
+    }
+
+    if (this.state.inputSeventhIngridientClicked) {
+      allIngridients.push(ingridient07);
+    }
+
+    if (this.state.inputEightIngridientClicked) {
+      allIngridients.push(ingridient08);
+    }
+
+    if (this.state.inputNinthIngridientClicked) {
+      allIngridients.push(ingridient09);
+    }
+
+    if (this.state.inputTenthIngridientClicked) {
+      allIngridients.push(ingridient10);
+    }
+
+    return allIngridients;
+  };
+
+  setRamps = () => {
+    const ramp01 = {
+      temperature: this.state.TempRamp01,
+      time: this.state.TimeRamp01,
+    };
+
+    const ramp02 = {
+      temperature: this.state.TempRamp02,
+      time: this.state.TimeRamp02,
+    };
+
+    const ramp03 = {
+      temperature: this.state.TempRamp03,
+      time: this.state.TimeRamp03,
+    };
+
+    const ramp04 = {
+      temperature: this.state.TempRamp04,
+      time: this.state.TimeRamp04,
+    };
+
+    const ramp05 = {
+      temperature: this.state.TempRamp05,
+      time: this.state.TimeRamp05,
+    };
+
+    let allRamps = [ramp01];
+
+    if (this.state.inputSecondRampClicked) {
+      allRamps.push(ramp02);
+    }
+
+    if (this.state.inputThirdRampClicked) {
+      allRamps.push(ramp03);
+    }
+
+    if (this.state.inputFourthRampClicked) {
+      allRamps.push(ramp04);
+    }
+
+    if (this.state.inputFifthRampClicked) {
+      allRamps.push(ramp05);
+    }
+
+    return allRamps;
+  };
+
+  setBoil = () => {
+    const boil01 = {
+      quantity: this.state.QteBoil01,
+      unit: this.state.UntBoil01,
+      name: this.state.NameBoil01,
+      time: this.state.TimeBoil01,
+    };
+
+    const boil02 = {
+      quantity: this.state.QteBoil02,
+      unit: this.state.UntBoil02,
+      name: this.state.NameBoil02,
+      time: this.state.TimeBoil02,
+    };
+
+    const boil03 = {
+      quantity: this.state.QteBoil03,
+      unit: this.state.UntBoil03,
+      name: this.state.NameBoil03,
+      time: this.state.TimeBoil03,
+    };
+
+    const boil04 = {
+      quantity: this.state.QteBoil04,
+      unit: this.state.UntBoil04,
+      name: this.state.NameBoil04,
+      time: this.state.TimeBoil04,
+    };
+
+    const boil05 = {
+      quantity: this.state.QteBoil05,
+      unit: this.state.UntBoil05,
+      name: this.state.NameBoil05,
+      time: this.state.TimeBoil05,
+    };
+
+    let allBoils = [boil01];
+
+    if (this.state.inputSecondBoilClicked) {
+      allBoils.push(boil02);
+    }
+
+    if (this.state.inputThirdBoilClicked) {
+      allBoils.push(boil03);
+    }
+
+    if (this.state.inputFourthBoilClicked) {
+      allBoils.push(boil04);
+    }
+
+    if (this.state.inputFifthBoilClicked) {
+      allBoils.push(boil05);
+    }
+
+    return allBoils;
+  };
+
+  setFermentation = () => {
+    const fermentation01 = {
+      temperature: this.state.TempFermentation01,
+      time: this.state.TimeFermentation01,
+    };
+
+    const fermentation02 = {
+      temperature: this.state.TempFermentation02,
+      time: this.state.TimeFermentation02,
+    };
+
+    const fermentation03 = {
+      temperature: this.state.TempFermentation03,
+      time: this.state.TimeFermentation03,
+    };
+
+    let allFermentationStages = [fermentation01];
+
+    if (this.state.inputSecondFermentationClicked) {
+      allFermentationStages.push(fermentation02);
+    }
+
+    if (this.state.inputSecondFermentationClicked) {
+      allFermentationStages.push(fermentation03);
+    }
+
+    return allFermentationStages;
+  };
+
+  setAgeing = () => {
+    const ageing01 = {
+      temperature: this.state.TempAgeing01,
+      time: this.state.TimeAgeing01,
+    };
+
+    const ageing02 = {
+      temperature: this.state.TempAgeing02,
+      time: this.state.TimeAgeing02,
+    };
+
+    const ageing03 = {
+      temperature: this.state.TempAgeing03,
+      time: this.state.TimeAgeing03,
+    };
+
+    let allAgeingStages = [ageing01];
+
+    if (this.state.inputSecondAgeingClicked) {
+      allAgeingStages.push(ageing02);
+    }
+
+    if (this.state.inputThirdAgeingClicked) {
+      allAgeingStages.push(ageing03);
+    }
+
+    return allAgeingStages;
+  };
+
   addRecipe = () => {
+    const ingredients = this.setIngridients();
+    const ramps = this.setRamps();
+    const boil = this.setBoil();
+    const fermentation = this.setFermentation();
+    const ageing = this.setAgeing();
+
     const recipe = {
       id: Date.now() + this.state.title,
       title: this.state.title,
@@ -308,11 +639,11 @@ class NewRecipeScreen extends React.Component {
       ibu: this.state.ibu,
       abv: this.state.abv,
       color: this.state.color,
-      ingredients: this.state.ingredients,
-      ramps: this.state.ramps,
-      boil: this.state.boil,
-      fermentation: this.state.fermentation,
-      ageing: this.state.ageing,
+      ingredients: ingredients,
+      ramps: ramps,
+      boil: boil,
+      fermentation: fermentation,
+      ageing: ageing,
       carbonation: this.state.carbonation,
       annotation: this.state.annotation,
       createdAt: new Date(),
@@ -438,6 +769,8 @@ class NewRecipeScreen extends React.Component {
             <View style={styles.parametersRow}>
               <TextInput
                 style={styles.bodyInputMask}
+                onChangeText={(QteIng01) => this.setState({QteIng01})}
+                value={this.state.QteIng01}
                 placeholder="Qte"
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
@@ -447,9 +780,9 @@ class NewRecipeScreen extends React.Component {
                 <Picker
                   style={styles.onePicker}
                   itemStyle={styles.onePickerItem}
-                  selectedValue={this.state.unit}
+                  selectedValue={this.state.UntIng01}
                   onValueChange={(itemValue, itemIndex) =>
-                    this.setState({unit: itemValue})
+                    this.setState({UntIng01: itemValue})
                   }>
                   {this.state.units.map((item, value) => {
                     return (
@@ -467,6 +800,8 @@ class NewRecipeScreen extends React.Component {
               </View>
               <TextInput
                 style={styles.bodyInputMask}
+                onChangeText={(NameIng01) => this.setState({NameIng01})}
+                value={this.state.NameIng01}
                 placeholder="Nome"
                 underlineColorAndroid="transparent"
                 width={200}
@@ -486,6 +821,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng02) => this.setState({QteIng02})}
+                    value={this.state.QteIng02}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -494,9 +831,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng02}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng02: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -514,6 +851,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng02) => this.setState({NameIng02})}
+                    value={this.state.NameIng02}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -543,6 +882,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng03) => this.setState({QteIng03})}
+                    value={this.state.QteIng03}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -551,9 +892,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng03}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng03: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -571,6 +912,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng03) => this.setState({NameIng03})}
+                    value={this.state.NameIng03}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -600,6 +943,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng04) => this.setState({QteIng04})}
+                    value={this.state.QteIng04}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -608,9 +953,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng04}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng04: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -628,6 +973,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng04) => this.setState({NameIng04})}
+                    value={this.state.NameIng04}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -657,6 +1004,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng05) => this.setState({QteIng05})}
+                    value={this.state.QteIng05}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -665,9 +1014,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng05}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng05: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -685,6 +1034,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng05) => this.setState({NameIng05})}
+                    value={this.state.NameIng05}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -714,6 +1065,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng06) => this.setState({QteIng06})}
+                    value={this.state.QteIng06}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -722,9 +1075,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng06}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng06: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -742,6 +1095,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng06) => this.setState({NameIng06})}
+                    value={this.state.NameIng06}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -771,6 +1126,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng07) => this.setState({QteIng07})}
+                    value={this.state.QteIng07}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -779,9 +1136,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng07}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng07: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -799,6 +1156,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng07) => this.setState({NameIng07})}
+                    value={this.state.NameIng07}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -828,6 +1187,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng08) => this.setState({QteIng08})}
+                    value={this.state.QteIng08}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -836,9 +1197,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng08}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng08: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -856,6 +1217,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng08) => this.setState({NameIng08})}
+                    value={this.state.NameIng08}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -885,6 +1248,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng09) => this.setState({QteIng09})}
+                    value={this.state.QteIng09}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -893,9 +1258,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng09}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng09: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -913,6 +1278,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng09) => this.setState({NameIng09})}
+                    value={this.state.NameIng09}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -942,6 +1309,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteIng10) => this.setState({QteIng10})}
+                    value={this.state.QteIng10}
                     placeholder="Qte"
                     underlineColorAndroid="transparent"
                     width={50}
@@ -950,9 +1319,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntIng10}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntIng10: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -970,6 +1339,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameIng10) => this.setState({NameIng10})}
+                    value={this.state.NameIng10}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
                     width={200}
@@ -998,6 +1369,8 @@ class NewRecipeScreen extends React.Component {
           <View style={styles.parametersRow}>
             <TextInput
               style={styles.bodyInputMask}
+              onChangeText={(TempRamp01) => this.setState({TempRamp01})}
+              value={this.state.TempRamp01}
               placeholder="Temp. (ºC)"
               keyboardType="numeric"
               underlineColorAndroid="transparent"
@@ -1008,6 +1381,8 @@ class NewRecipeScreen extends React.Component {
             </View>
             <TextInput
               style={styles.bodyInputMask}
+              onChangeText={(TimeRamp01) => this.setState({TimeRamp01})}
+              value={this.state.TimeRamp01}
               placeholder="Tempo (min)"
               keyboardType="numeric"
               underlineColorAndroid="transparent"
@@ -1028,6 +1403,8 @@ class NewRecipeScreen extends React.Component {
               <View style={styles.parametersRow} marginTop={-5}>
                 <TextInput
                   style={styles.bodyInputMask}
+                  onChangeText={(TempRamp02) => this.setState({TempRamp02})}
+                  value={this.state.TempRamp02}
                   placeholder="Temp. (ºC)"
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
@@ -1038,6 +1415,8 @@ class NewRecipeScreen extends React.Component {
                 </View>
                 <TextInput
                   style={styles.bodyInputMask}
+                  onChangeText={(TimeRamp02) => this.setState({TimeRamp02})}
+                  value={this.state.TimeRamp02}
                   placeholder="Tempo (min)"
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
@@ -1068,6 +1447,8 @@ class NewRecipeScreen extends React.Component {
               <View style={styles.parametersRow} marginTop={-5}>
                 <TextInput
                   style={styles.bodyInputMask}
+                  onChangeText={(TempRamp03) => this.setState({TempRamp03})}
+                  value={this.state.TempRamp03}
                   placeholder="Temp. (ºC)"
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
@@ -1078,6 +1459,8 @@ class NewRecipeScreen extends React.Component {
                 </View>
                 <TextInput
                   style={styles.bodyInputMask}
+                  onChangeText={(TimeRamp03) => this.setState({TimeRamp03})}
+                  value={this.state.TimeRamp03}
                   placeholder="Tempo (min)"
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
@@ -1109,6 +1492,8 @@ class NewRecipeScreen extends React.Component {
                 <TextInput
                   style={styles.bodyInputMask}
                   placeholder="Temp. (ºC)"
+                  onChangeText={(TempRamp04) => this.setState({TempRamp04})}
+                  value={this.state.TempRamp04}
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
                   width={80}
@@ -1118,6 +1503,8 @@ class NewRecipeScreen extends React.Component {
                 </View>
                 <TextInput
                   style={styles.bodyInputMask}
+                  onChangeText={(TimeRamp04) => this.setState({TimeRamp04})}
+                  value={this.state.TimeRamp04}
                   placeholder="Tempo (min)"
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
@@ -1148,6 +1535,8 @@ class NewRecipeScreen extends React.Component {
               <View style={styles.parametersRow} marginTop={-5}>
                 <TextInput
                   style={styles.bodyInputMask}
+                  onChangeText={(TempRamp05) => this.setState({TempRamp05})}
+                  value={this.state.TempRamp05}
                   placeholder="Temp. (ºC)"
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
@@ -1158,6 +1547,8 @@ class NewRecipeScreen extends React.Component {
                 </View>
                 <TextInput
                   style={styles.bodyInputMask}
+                  onChangeText={(TimeRamp05) => this.setState({TimeRamp05})}
+                  value={this.state.TimeRamp05}
                   placeholder="Tempo (min)"
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
@@ -1184,6 +1575,8 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(QteBoil01) => this.setState({QteBoil01})}
+                    value={this.state.QteBoil01}
                     placeholder="Qte"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1193,9 +1586,9 @@ class NewRecipeScreen extends React.Component {
                     <Picker
                       style={styles.onePicker}
                       itemStyle={styles.onePickerItem}
-                      selectedValue={this.state.unit}
+                      selectedValue={this.state.UntBoil01}
                       onValueChange={(itemValue, itemIndex) =>
-                        this.setState({unit: itemValue})
+                        this.setState({UntBoil01: itemValue})
                       }>
                       {this.state.units.map((item, value) => {
                         return (
@@ -1213,6 +1606,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(NameBoil01) => this.setState({NameBoil01})}
+                    value={this.state.NameBoil01}
                     placeholder="Nome"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1226,6 +1621,8 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TimeBoil01) => this.setState({TimeBoil01})}
+                    value={this.state.TimeBoil01}
                     placeholder="Tempo (min)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1255,6 +1652,8 @@ class NewRecipeScreen extends React.Component {
                     <View style={styles.parametersRow}>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(QteBoil02) => this.setState({QteBoil02})}
+                        value={this.state.QteBoil02}
                         placeholder="Qte"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1264,9 +1663,9 @@ class NewRecipeScreen extends React.Component {
                         <Picker
                           style={styles.onePicker}
                           itemStyle={styles.onePickerItem}
-                          selectedValue={this.state.unit}
+                          selectedValue={this.state.UntBoil02}
                           onValueChange={(itemValue, itemIndex) =>
-                            this.setState({unit: itemValue})
+                            this.setState({UntBoil02: itemValue})
                           }>
                           {this.state.units.map((item, value) => {
                             return (
@@ -1287,6 +1686,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(NameBoil02) =>
+                          this.setState({NameBoil02})
+                        }
+                        value={this.state.NameBoil02}
                         placeholder="Nome"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1300,6 +1703,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(TimeBoil02) =>
+                          this.setState({TimeBoil02})
+                        }
+                        value={this.state.TimeBoil02}
                         placeholder="Tempo (min)"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1343,6 +1750,8 @@ class NewRecipeScreen extends React.Component {
                     <View style={styles.parametersRow}>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(QteBoil03) => this.setState({QteBoil03})}
+                        value={this.state.QteBoil03}
                         placeholder="Qte"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1352,9 +1761,9 @@ class NewRecipeScreen extends React.Component {
                         <Picker
                           style={styles.onePicker}
                           itemStyle={styles.onePickerItem}
-                          selectedValue={this.state.unit}
+                          selectedValue={this.state.UntBoil03}
                           onValueChange={(itemValue, itemIndex) =>
-                            this.setState({unit: itemValue})
+                            this.setState({UntBoil03: itemValue})
                           }>
                           {this.state.units.map((item, value) => {
                             return (
@@ -1375,6 +1784,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(NameBoil03) =>
+                          this.setState({NameBoil03})
+                        }
+                        value={this.state.NameBoil03}
                         placeholder="Nome"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1388,6 +1801,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(TimeBoil03) =>
+                          this.setState({TimeBoil03})
+                        }
+                        value={this.state.TimeBoil03}
                         placeholder="Tempo (min)"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1431,6 +1848,8 @@ class NewRecipeScreen extends React.Component {
                     <View style={styles.parametersRow}>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(QteBoil04) => this.setState({QteBoil04})}
+                        value={this.state.QteBoil04}
                         placeholder="Qte"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1440,9 +1859,9 @@ class NewRecipeScreen extends React.Component {
                         <Picker
                           style={styles.onePicker}
                           itemStyle={styles.onePickerItem}
-                          selectedValue={this.state.unit}
+                          selectedValue={this.state.UntBoil04}
                           onValueChange={(itemValue, itemIndex) =>
-                            this.setState({unit: itemValue})
+                            this.setState({UntBoil04: itemValue})
                           }>
                           {this.state.units.map((item, value) => {
                             return (
@@ -1463,6 +1882,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(NameBoil04) =>
+                          this.setState({NameBoil04})
+                        }
+                        value={this.state.NameBoil04}
                         placeholder="Nome"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1476,6 +1899,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(TimeBoil04) =>
+                          this.setState({TimeBoil04})
+                        }
+                        value={this.state.TimeBoil04}
                         placeholder="Tempo (min)"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1519,6 +1946,8 @@ class NewRecipeScreen extends React.Component {
                     <View style={styles.parametersRow}>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(QteBoil05) => this.setState({QteBoil05})}
+                        value={this.state.QteBoil05}
                         placeholder="Qte"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1528,9 +1957,9 @@ class NewRecipeScreen extends React.Component {
                         <Picker
                           style={styles.onePicker}
                           itemStyle={styles.onePickerItem}
-                          selectedValue={this.state.unit}
+                          selectedValue={this.state.UntBoil05}
                           onValueChange={(itemValue, itemIndex) =>
-                            this.setState({unit: itemValue})
+                            this.setState({UntBoil05: itemValue})
                           }>
                           {this.state.units.map((item, value) => {
                             return (
@@ -1551,6 +1980,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(NameBoil05) =>
+                          this.setState({NameBoil05})
+                        }
+                        value={this.state.NameBoil05}
                         placeholder="Nome"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1564,6 +1997,10 @@ class NewRecipeScreen extends React.Component {
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
+                        onChangeText={(TimeBoil05) =>
+                          this.setState({TimeBoil05})
+                        }
+                        value={this.state.TimeBoil05}
                         placeholder="Tempo (min)"
                         keyboardType="numeric"
                         underlineColorAndroid="transparent"
@@ -1598,6 +2035,10 @@ class NewRecipeScreen extends React.Component {
             <View style={styles.parametersRow}>
               <TextInput
                 style={styles.bodyInputMask}
+                onChangeText={(TempFermentation01) =>
+                  this.setState({TempFermentation01})
+                }
+                value={this.state.TempFermentation01}
                 placeholder="Temp. (ºC)"
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
@@ -1608,6 +2049,10 @@ class NewRecipeScreen extends React.Component {
               </View>
               <TextInput
                 style={styles.bodyInputMask}
+                onChangeText={(TimeFermentation01) =>
+                  this.setState({TimeFermentation01})
+                }
+                value={this.state.TimeFermentation01}
                 placeholder="Tempo (dias)"
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
@@ -1628,6 +2073,10 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TempFermentation02) =>
+                      this.setState({TempFermentation02})
+                    }
+                    value={this.state.TempFermentation02}
                     placeholder="Temp. (ºC)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1638,6 +2087,10 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TimeFermentation02) =>
+                      this.setState({TimeFermentation02})
+                    }
+                    value={this.state.TimeFermentation02}
                     placeholder="Tempo (dias)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1668,6 +2121,10 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TempFermentation03) =>
+                      this.setState({TempFermentation03})
+                    }
+                    value={this.state.TempFermentation03}
                     placeholder="Temp. (ºC)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1678,6 +2135,10 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TimeFermentation03) =>
+                      this.setState({TimeFermentation03})
+                    }
+                    value={this.state.TimeFermentation03}
                     placeholder="Tempo (dias)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1703,6 +2164,8 @@ class NewRecipeScreen extends React.Component {
             <View style={styles.parametersRow}>
               <TextInput
                 style={styles.bodyInputMask}
+                onChangeText={(TempAgeing01) => this.setState({TempAgeing01})}
+                value={this.state.TempAgeing01}
                 placeholder="Temp. (ºC)"
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
@@ -1713,6 +2176,8 @@ class NewRecipeScreen extends React.Component {
               </View>
               <TextInput
                 style={styles.bodyInputMask}
+                onChangeText={(TimeAgeing01) => this.setState({TimeAgeing01})}
+                value={this.state.TimeAgeing01}
                 placeholder="Tempo (dias)"
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
@@ -1733,6 +2198,10 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TempAgeing02) =>
+                      this.setState({TempAgeing02})
+                    }
+                    value={this.state.TempAgeing02}
                     placeholder="Temp. (ºC)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1743,6 +2212,10 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TimeAgeing02) =>
+                      this.setState({TimeAgeing02})
+                    }
+                    value={this.state.TimeAgeing02}
                     placeholder="Tempo (dias)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1773,6 +2246,10 @@ class NewRecipeScreen extends React.Component {
                 <View style={styles.parametersRow} marginTop={-5}>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TempAgeing03) =>
+                      this.setState({TempAgeing03})
+                    }
+                    value={this.state.TempAgeing03}
                     placeholder="Temp. (ºC)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
@@ -1783,6 +2260,10 @@ class NewRecipeScreen extends React.Component {
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
+                    onChangeText={(TimeAgeing03) =>
+                      this.setState({TimeAgeing03})
+                    }
+                    value={this.state.TimeAgeing03}
                     placeholder="Tempo (dias)"
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"

@@ -5,15 +5,16 @@ import {
   StatusBar,
   StyleSheet,
   Image,
+  FlatList,
   Modal,
   Button,
   Alert,
   TouchableHighlight,
   ScrollView,
 } from 'react-native';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-community/async-storage';
+import Bullet from '../../assets/bullet.png';
 import {RECIPES_KEY} from '../statics/Statics';
 
 class RecipeDetailScreen extends React.Component {
@@ -29,20 +30,16 @@ class RecipeDetailScreen extends React.Component {
       ibu: '',
       abv: '',
       color: '',
-      ingredient: '',
       ingredients: [],
-      ramp: '',
       ramps: [],
-      boilIem: '',
       boil: [],
-      fermentationItem: '',
       fermentation: [],
-      ageingItem: '',
       ageing: [],
       carbonation: '',
-      unit: '',
+      annotation: '',
       modalVisible: false,
       recipes: [],
+      currentRecipe: '',
     };
   }
 
@@ -53,7 +50,24 @@ class RecipeDetailScreen extends React.Component {
 
   getCurrentRecipe = () => {
     let recipe = this.props.route.params?.recipe;
-    this.setState({title: recipe.title, volume: recipe.volume});
+    this.setState({
+      currentRecipe: recipe,
+      title: recipe.title,
+      style: recipe.style,
+      volume: recipe.volume,
+      og: recipe.og,
+      fg: recipe.fg,
+      ibu: recipe.ibu,
+      abv: recipe.abv,
+      color: recipe.color,
+      ingredients: recipe.ingredients,
+      ramps: recipe.ramps,
+      boil: recipe.boil,
+      fermentation: recipe.fermentation,
+      ageing: recipe.ageing,
+      carbonation: recipe.carbonation,
+      annotation: recipe.annotation,
+    });
   };
 
   getRecipes = async () => {
@@ -111,6 +125,103 @@ class RecipeDetailScreen extends React.Component {
     });
   };
 
+  renderIngredient = ({item}) => {
+    return (
+      <View>
+        <View style={styles.rowContainer}>
+          <View style={styles.boxContainerLeft}>
+            <Image source={Bullet} />
+          </View>
+          <View style={styles.boxContainerRight}>
+            <View style={styles.rowContainer}>
+              <Text>{item.quantity} </Text>
+              <Text>{item.unit} de </Text>
+              <Text>{item.name};</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  renderRamp = ({item}) => {
+    return (
+      <View>
+        <View style={styles.rowContainer}>
+          <View style={styles.boxContainerLeft}>
+            <Image source={Bullet} />
+          </View>
+          <View style={styles.boxContainerRight}>
+            <View style={styles.rowContainer}>
+              <Text>{item.temperature} °C </Text>
+              <Text>por </Text>
+              <Text>{item.time} minutos;</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  renderBoil = ({item}) => {
+    return (
+      <View>
+        <View style={styles.rowContainer}>
+          <View style={styles.boxContainerLeft}>
+            <Image source={Bullet} />
+          </View>
+          <View style={styles.boxContainerRight}>
+            <View style={styles.rowContainer}>
+              <Text>{item.quantity} </Text>
+              <Text>{item.unit} </Text>
+              <Text>{item.name} </Text>
+              <Text>por </Text>
+              <Text>{item.time} minutos;</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  renderFermentation = ({item}) => {
+    return (
+      <View>
+        <View style={styles.rowContainer}>
+          <View style={styles.boxContainerLeft}>
+            <Image source={Bullet} />
+          </View>
+          <View style={styles.boxContainerRight}>
+            <View style={styles.rowContainer}>
+              <Text>{item.temperature} °C </Text>
+              <Text>por </Text>
+              <Text>{item.time} dias;</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  renderAgeing = ({item}) => {
+    return (
+      <View>
+        <View style={styles.rowContainer}>
+          <View style={styles.boxContainerLeft}>
+            <Image source={Bullet} />
+          </View>
+          <View style={styles.boxContainerRight}>
+            <View style={styles.rowContainer}>
+              <Text>{item.temperature} °C </Text>
+              <Text>por </Text>
+              <Text>{item.time} dias;</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   render() {
     return (
       <SafeAreaView>
@@ -122,8 +233,110 @@ class RecipeDetailScreen extends React.Component {
                 {this.state.title} ({this.state.volume} L)
               </Text>
             </View>
+            <View>
+              <View>
+                <View style={styles.bodyContainer}>
+                  <Text style={styles.bodyText}>Parâmetros</Text>
+                </View>
+                <View style={styles.listContainer}>
+                  <View style={styles.centeredRowContainer}>
+                    <Text>OG: </Text>
+                    <Text>{this.state.og}</Text>
+                    <Text> {'  '}</Text>
+                    <Text>FG: </Text>
+                    <Text>{this.state.fg}</Text>
+                    <Text> {'  '}</Text>
+                    <Text>IBU: </Text>
+                    <Text>{this.state.ibu}</Text>
+                  </View>
+                  <View style={styles.centeredRowContainer}>
+                    <Text>ABV: </Text>
+                    <Text>{this.state.abv} %</Text>
+                    <Text> {'  '}</Text>
+                    <Text>Cor: </Text>
+                    <Text>{this.state.color} EBC</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={styles.bodyContainer}>
+              <View>
+                <Text style={styles.bodyText}>Ingredientes</Text>
+                <View style={styles.listContainer}>
+                  <FlatList
+                    data={this.state.ingredients}
+                    renderItem={this.renderIngredient}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              backgroundColor={'#000000'}
+              height={1}
+              marginBottom={5}
+              marginTop={5}
+            />
+            <View style={styles.bodyContainer}>
+              <View>
+                <Text style={styles.bodyText}>Brassagem</Text>
+                <Text style={styles.bodyText2}>Rampas</Text>
+                <View style={styles.listContainer}>
+                  <FlatList
+                    data={this.state.ramps}
+                    renderItem={this.renderRamp}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
+                <Text style={styles.bodyText2}>Fervura</Text>
+                <View style={styles.listContainer}>
+                  <FlatList
+                    data={this.state.boil}
+                    renderItem={this.renderBoil}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
+              </View>
+            </View>
+            <View style={styles.bodyContainer}>
+              <View>
+                <Text style={styles.bodyText}>Fermentação</Text>
+                <View style={styles.listContainer}>
+                  <FlatList
+                    data={this.state.fermentation}
+                    renderItem={this.renderFermentation}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
+              </View>
+            </View>
+            <View style={styles.bodyContainer}>
+              <View>
+                <Text style={styles.bodyText}>Maturação</Text>
+                <View style={styles.listContainer}>
+                  <FlatList
+                    data={this.state.ageing}
+                    renderItem={this.renderAgeing}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
+              </View>
+            </View>
+            <View style={styles.bodyContainer}>
+              <View>
+                <Text style={styles.bodyText}>Carbonatação</Text>
+                <View style={styles.listContainer}>
+                  <Text>Pressão: </Text>
+                  <Text>{this.state.carbonation}</Text>
+                </View>
+                <Text style={styles.bodyText}>Observações:</Text>
+                <View style={styles.listContainer}>
+                  <Text>{this.state.annotation}</Text>
+                </View>
+              </View>
+            </View>
           </View>
-          <View style={styles.rowContainer} marginTop={10}>
+          <View style={styles.centeredRowContainer} marginTop={10}>
             <View style={styles.rowContainer}>
               <View marginTop={10} marginBottom={10}>
                 <TouchableHighlight>
@@ -172,9 +385,7 @@ class RecipeDetailScreen extends React.Component {
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={styles.confirmButton}
-                  onPress={() =>
-                    this.deleteRecipe(this.state.currentProduction)
-                  }>
+                  onPress={() => this.deleteRecipe(this.state.currentRecipe)}>
                   <Text style={styles.textStyle}>Confirmar</Text>
                 </TouchableHighlight>
               </View>
@@ -345,9 +556,19 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  bodyText2: {
+    fontSize: 15,
+    color: 'black',
+    marginLeft: 10,
+    marginTop: 15,
   },
   rowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  centeredRowContainer: {
     display: 'flex',
     flexDirection: 'row',
     marginRight: 'auto',
@@ -365,21 +586,21 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: marginHorizontal,
     marginRight: marginHorizontal,
-    width: 180,
-    height: 40,
+    width: 25,
+    height: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     borderRadius: 5,
   },
   boxContainerRight: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
-    marginLeft: marginHorizontal,
+    marginLeft: 10,
     marginRight: marginHorizontal,
-    width: 180,
-    height: 40,
+    width: 300,
+    height: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     borderRadius: 5,
   },
   sectionContainerLeft: {
@@ -451,49 +672,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  listContainer: {
+    marginRight: 5,
+    marginLeft: 10,
+    marginTop: 5,
+    flex: 1,
+    flexGrow: 0,
+  },
 });
-
-LocaleConfig.locales['pt-br'] = {
-  monthNames: [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro',
-  ],
-  monthNamesShort: [
-    'Jan.',
-    'Fev.',
-    'Mar',
-    'Abr',
-    'Mai',
-    'Jun',
-    'Jul.',
-    'Ago',
-    'Set.',
-    'Out.',
-    'Nov.',
-    'Dez.',
-  ],
-  dayNames: [
-    'Domingo',
-    'Segunda',
-    'Terça-feira',
-    'Quarta-feira',
-    'Quinta-feira',
-    'Sexta-feira',
-    'Sábado',
-  ],
-  dayNamesShort: ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sáb.'],
-  today: 'Hoje',
-};
-LocaleConfig.defaultLocale = 'pt-br';
 
 export default RecipeDetailScreen;
