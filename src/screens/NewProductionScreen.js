@@ -58,9 +58,6 @@ class NewProductionScreen extends React.Component {
       modalCarbonationCalendarVisible: false,
       modalAgeingCalendarVisible: false,
       modalFillingCalendarVisible: false,
-      og: '',
-      fg: '',
-      estimatedTime: '',
       status: 'not started',
       recipes: [],
       productions: [],
@@ -120,7 +117,11 @@ class NewProductionScreen extends React.Component {
       dateString.slice(5, 7) +
       '/' +
       dateString.slice(0, 4);
-    this.setState({brewDate: newbrewDate, selectedBrewDate: dateString});
+    this.setState({
+      brewDate: newbrewDate,
+      selectedBrewDate: dateString,
+      selectedFermentationDate: dateString,
+    });
   }
 
   openModalFermentationCalendar = () => {
@@ -146,6 +147,7 @@ class NewProductionScreen extends React.Component {
     this.setState({
       fermentationDate: newFermentationDate,
       selectedFermentationDate: dateString,
+      selectedAgeingDate: dateString,
     });
   }
 
@@ -172,6 +174,7 @@ class NewProductionScreen extends React.Component {
     this.setState({
       carbonationDate: newCarbonationDate,
       selectedCarbonationDate: dateString,
+      selectedFillingDate: dateString,
     });
   }
 
@@ -198,6 +201,7 @@ class NewProductionScreen extends React.Component {
     this.setState({
       ageingDate: newAgeingDate,
       selectedAgeingDate: dateString,
+      selectedCarbonationDate: dateString,
     });
   }
 
@@ -238,10 +242,10 @@ class NewProductionScreen extends React.Component {
       id: Date.now() + this.state.selectedRecipe,
       name: this.state.selectedRecipe,
       volume: currentRecipe.volume,
-      og: this.state.og,
-      fg: this.state.fg,
+      og: currentRecipe.og,
+      fg: currentRecipe.fg,
       style: currentRecipe.style,
-      estimatedTime: this.state.estimatedTime,
+      estimatedTime: currentRecipe.estimatedTime + 360,
       status: this.state.status,
       brewDate: this.state.brewDate,
       fermentationDate: this.state.fermentationDate,
@@ -317,26 +321,6 @@ class NewProductionScreen extends React.Component {
               </Picker>
               <View style={styles.signContainer}>
                 <Image source={UpDown} />
-              </View>
-            </View>
-          </View>
-          <View marginTop={5}>
-            <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>
-                Tempo estimado de brassagem (hrs):
-              </Text>
-            </View>
-            <View style={styles.onePickerContainer}>
-              <View style={styles.dateContainer}>
-                <TextInput
-                  style={styles.dateStyle}
-                  value={this.state.estimatedTime}
-                  onChangeText={(estimatedTime) =>
-                    this.setState({estimatedTime})
-                  }
-                  keyboardType="numeric"
-                  underlineColorAndroid="transparent"
-                />
               </View>
             </View>
           </View>

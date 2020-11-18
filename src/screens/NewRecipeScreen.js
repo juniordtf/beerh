@@ -696,6 +696,13 @@ class NewRecipeScreen extends React.Component {
       carbonationMethod: this.state.carbonationMethod,
       carbonationValue: this.state.carbonationValue,
       carbonationUnit: this.state.carbonationUnit,
+      estimatedTime:
+        parseInt(this.state.TimeRamp01, 10) +
+        parseInt(this.state.TimeRamp02, 10) +
+        parseInt(this.state.TimeRamp03, 10) +
+        parseInt(this.state.TimeRamp04, 10) +
+        parseInt(this.state.TimeRamp05, 10) +
+        parseInt(this.state.TimeBoil01, 10),
       annotation: this.state.annotation,
       createdAt: this.state.todaysDatePt,
       lastUpdateDate: this.state.todaysDatePt,
@@ -1750,8 +1757,11 @@ class NewRecipeScreen extends React.Component {
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
-                      <View style={styles.addButtonContainer}>
-                        <Text style={styles.smallBodyText}> por </Text>
+                      <View style={styles.centeredBodyTextContainer}>
+                        <Text style={styles.smallBodyText}>
+                          {' '}
+                          durante os últimos{' '}
+                        </Text>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
@@ -1848,8 +1858,11 @@ class NewRecipeScreen extends React.Component {
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
-                      <View style={styles.addButtonContainer}>
-                        <Text style={styles.smallBodyText}> por </Text>
+                      <View style={styles.centeredBodyTextContainer}>
+                        <Text style={styles.smallBodyText}>
+                          {' '}
+                          durante os últimos{' '}
+                        </Text>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
@@ -1946,8 +1959,11 @@ class NewRecipeScreen extends React.Component {
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
-                      <View style={styles.addButtonContainer}>
-                        <Text style={styles.smallBodyText}> por </Text>
+                      <View style={styles.centeredBodyTextContainer}>
+                        <Text style={styles.smallBodyText}>
+                          {' '}
+                          durante os últimos{' '}
+                        </Text>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
@@ -2044,8 +2060,11 @@ class NewRecipeScreen extends React.Component {
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
-                      <View style={styles.addButtonContainer}>
-                        <Text style={styles.smallBodyText}> por </Text>
+                      <View style={styles.centeredBodyTextContainer}>
+                        <Text style={styles.smallBodyText}>
+                          {' '}
+                          durante os últimos{' '}
+                        </Text>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}

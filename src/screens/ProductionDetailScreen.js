@@ -86,7 +86,7 @@ class ProductionDetailScreen extends React.Component {
       volume: production.volume,
       og: production.og,
       fg: production.fg,
-      estimatedTime: production.estimatedTime,
+      estimatedTime: parseInt(production.estimatedTime, 10) / 60,
       spentTime: production.spentTime,
       status: production.state,
       initialCalendarDate: production.initialCalendarDate,
@@ -265,14 +265,14 @@ class ProductionDetailScreen extends React.Component {
           <View marginTop={5}>
             <View style={styles.bodyContainer}>
               <Text style={styles.bodyText}>
-                OG (real / estimada): / {this.state.og} hrs
+                OG (real / estimada): / {this.state.og}
               </Text>
             </View>
           </View>
           <View marginTop={5}>
             <View style={styles.bodyContainer}>
               <Text style={styles.bodyText}>
-                FG (real / estimada): / {this.state.fg} hrs
+                FG (real / estimada): / {this.state.fg}
               </Text>
             </View>
           </View>
