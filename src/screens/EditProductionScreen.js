@@ -251,6 +251,8 @@ class EditProductionScreen extends React.Component {
   }
 
   editProduction = () => {
+    let initialDate = this.state.selectedBrewDate;
+
     const currentProduction = {
       id: this.state.id,
       name: this.state.name,
@@ -265,6 +267,12 @@ class EditProductionScreen extends React.Component {
       carbonationDate: this.state.carbonationDate,
       ageingDate: this.state.ageingDate,
       fillingDate: this.state.fillingDate,
+      initialCalendarDate:
+        initialDate.slice(0, 4) +
+        '-' +
+        initialDate.slice(5, 7) +
+        '-' +
+        initialDate.slice(8, 10),
       duration: '',
       createdAt: this.state.createdAt,
     };

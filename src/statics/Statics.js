@@ -6,3 +6,7 @@ export const Units = [
   {unit: 'mL', name: 'miliLitro'},
   {unit: 'L', name: 'Litro'},
 ];
+export const CarbonationMethods = [
+  {unit: 'kpa', method: 'Forçada'},
+  {unit: 'g/L', method: 'Primming'},
+];

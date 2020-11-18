@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   Image,
-  FlatList,
   Modal,
   Button,
   Alert,
@@ -35,7 +34,9 @@ class RecipeDetailScreen extends React.Component {
       boil: [],
       fermentation: [],
       ageing: [],
-      carbonation: '',
+      carbonationMethod: '',
+      carbonationValue: '',
+      carbonationUnit: '',
       annotation: '',
       modalVisible: false,
       recipes: [],
@@ -65,7 +66,9 @@ class RecipeDetailScreen extends React.Component {
       boil: recipe.boil,
       fermentation: recipe.fermentation,
       ageing: recipe.ageing,
-      carbonation: recipe.carbonation,
+      carbonationMethod: recipe.carbonationMethod,
+      carbonationValue: recipe.carbonationValue,
+      carbonationUnit: recipe.carbonationUnit,
       annotation: recipe.annotation,
     });
   };
@@ -309,9 +312,12 @@ class RecipeDetailScreen extends React.Component {
             <View style={styles.bodyContainer}>
               <View>
                 <Text style={styles.bodyText}>Carbonatação</Text>
-                <View style={styles.listContainer}>
-                  <Text>Pressão: </Text>
-                  <Text>{this.state.carbonation}</Text>
+                <View style={styles.listContainer} marginBottom={10}>
+                  <View style={styles.rowContainer}>
+                    <Text>{this.state.carbonationMethod}, </Text>
+                    <Text>{this.state.carbonationValue} </Text>
+                    <Text>{this.state.carbonationUnit}. </Text>
+                  </View>
                 </View>
                 <Text style={styles.bodyText}>Observações:</Text>
                 <View style={styles.listContainer}>

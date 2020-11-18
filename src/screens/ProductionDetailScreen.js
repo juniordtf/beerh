@@ -27,6 +27,7 @@ class ProductionDetailScreen extends React.Component {
       carbonationDate: '',
       ageingDate: '',
       fillingDate: '',
+      initialCalendarDate: '',
       volume: '',
       og: '',
       fg: '',
@@ -88,6 +89,7 @@ class ProductionDetailScreen extends React.Component {
       estimatedTime: production.estimatedTime,
       spentTime: production.spentTime,
       status: production.state,
+      initialCalendarDate: production.initialCalendarDate,
     });
   };
 
@@ -170,7 +172,7 @@ class ProductionDetailScreen extends React.Component {
               markingType="simple"
               minDate={this.state.brewDate}
               maxDate={this.state.fillingDate}
-              current={this.state.brewDate}
+              current={this.state.initialCalendarDate}
               markedDates={{
                 [this.state.brewDate]: {
                   selected: true,

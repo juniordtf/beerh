@@ -20,6 +20,7 @@ import UpDown from '../../assets/up-and-down.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY} from '../statics/Statics';
 import {Units} from '../statics/Statics';
+import {CarbonationMethods} from '../statics/Statics';
 
 class NewRecipeScreen extends React.Component {
   constructor(props) {
@@ -42,10 +43,13 @@ class NewRecipeScreen extends React.Component {
       ibu: '',
       abv: '',
       color: '',
-      carbonation: '',
+      carbonationValue: '',
       annotation: '',
       recipes: [],
       units: Units,
+      carbonationUnit: CarbonationMethods[0].unit,
+      carbonationMethod: CarbonationMethods[0].method,
+      carbonationMethods: CarbonationMethods,
       inputSecondIngridientClicked: false,
       inputThirdIngridientClicked: false,
       inputFourthIngridientClicked: false,
@@ -77,16 +81,16 @@ class NewRecipeScreen extends React.Component {
       QteIng08: '',
       QteIng09: '',
       QteIng10: '',
-      UntIng01: '',
-      UntIng02: '',
-      UntIng03: '',
-      UntIng04: '',
-      UntIng05: '',
-      UntIng06: '',
-      UntIng07: '',
-      UntIng08: '',
-      UntIng09: '',
-      UntIng10: '',
+      UntIng01: Units[0].unit,
+      UntIng02: Units[0].unit,
+      UntIng03: Units[0].unit,
+      UntIng04: Units[0].unit,
+      UntIng05: Units[0].unit,
+      UntIng06: Units[0].unit,
+      UntIng07: Units[0].unit,
+      UntIng08: Units[0].unit,
+      UntIng09: Units[0].unit,
+      UntIng10: Units[0].unit,
       NameIng01: '',
       NameIng02: '',
       NameIng03: '',
@@ -112,11 +116,11 @@ class NewRecipeScreen extends React.Component {
       QteBoil03: '',
       QteBoil04: '',
       QteBoil05: '',
-      UntBoil01: '',
-      UntBoil02: '',
-      UntBoil03: '',
-      UntBoil04: '',
-      UntBoil05: '',
+      UntBoil01: Units[0].unit,
+      UntBoil02: Units[0].unit,
+      UntBoil03: Units[0].unit,
+      UntBoil04: Units[0].unit,
+      UntBoil05: Units[0].unit,
       NameBoil01: '',
       NameBoil02: '',
       NameBoil03: '',
@@ -617,7 +621,7 @@ class NewRecipeScreen extends React.Component {
       allFermentationStages.push(fermentation02);
     }
 
-    if (this.state.inputSecondFermentationClicked) {
+    if (this.state.inputThirdFermentationClicked) {
       allFermentationStages.push(fermentation03);
     }
 
@@ -656,6 +660,17 @@ class NewRecipeScreen extends React.Component {
     return allAgeingStages;
   };
 
+  setCarbonation(SelectedcarbonationMethod) {
+    const selectedMethod = this.state.carbonationMethods.find(
+      (x) => x.method === SelectedcarbonationMethod,
+    );
+
+    this.setState({
+      carbonationMethod: selectedMethod.method,
+      carbonationUnit: selectedMethod.unit,
+    });
+  }
+
   addRecipe = () => {
     const ingredients = this.setIngridients();
     const ramps = this.setRamps();
@@ -678,9 +693,12 @@ class NewRecipeScreen extends React.Component {
       boil: boil,
       fermentation: fermentation,
       ageing: ageing,
-      carbonation: this.state.carbonation,
+      carbonationMethod: this.state.carbonationMethod,
+      carbonationValue: this.state.carbonationValue,
+      carbonationUnit: this.state.carbonationUnit,
       annotation: this.state.annotation,
       createdAt: this.state.todaysDatePt,
+      lastUpdateDate: this.state.todaysDatePt,
     };
 
     const recipes = this.state.recipes;
@@ -2321,13 +2339,47 @@ class NewRecipeScreen extends React.Component {
           <View marginTop={5}>
             <Text style={styles.sectionText}>* Carbonatação</Text>
             <View style={styles.parametersRow}>
+              <View style={styles.centeredBodyTextContainer}>
+                <Text style={styles.smallBodyText}>Método: </Text>
+              </View>
+              <View style={styles.onePickerContainerLarge}>
+                <Picker
+                  style={styles.onePickerLarge}
+                  itemStyle={styles.onePickerItem}
+                  selectedValue={this.state.carbonationMethod}
+                  onValueChange={(itemValue) => this.setCarbonation(itemValue)}>
+                  {this.state.carbonationMethods.map((item, value) => {
+                    return (
+                      <Picker.Item
+                        label={item.method}
+                        value={item.method}
+                        key={item.method}
+                        itemIndex={item.unit}
+                      />
+                    );
+                  })}
+                </Picker>
+                <View style={styles.signContainer}>
+                  <Image source={UpDown} style={{height: 10, width: 10}} />
+                </View>
+              </View>
               <TextInput
                 style={styles.bodyInputMask}
-                placeholder="Pressão (kpa)"
+                onChangeText={(carbonationValue) =>
+                  this.setState({carbonationValue})
+                }
+                value={this.state.carbonationValue}
+                placeholder="Valor"
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
-                width={120}
+                width={70}
+                marginLeft={8}
               />
+              <View style={styles.centeredBodyTextContainer}>
+                <Text style={styles.smallBodyText}>
+                  {this.state.carbonationUnit}
+                </Text>
+              </View>
             </View>
           </View>
           <View marginTop={10}>
@@ -2496,9 +2548,29 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: -4,
   },
+  onePickerContainerLarge: {
+    backgroundColor: '#fff',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 110,
+    height: 34,
+    marginLeft: 5,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  onePickerLarge: {
+    width: 90,
+    height: 40,
+  },
   signContainer: {
     height: 34,
     width: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centeredBodyTextContainer: {
+    height: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },

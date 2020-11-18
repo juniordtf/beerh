@@ -166,12 +166,10 @@ const styles = StyleSheet.create({
   listItemContainer: {
     marginTop: 5,
     marginBottom: 5,
-    marginLeft: 5,
   },
   listContainer: {
     marginTop: 5,
     marginRight: 5,
-    marginLeft: 5,
   },
   listItemTitle: {
     fontSize: 18,
@@ -220,6 +218,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     marginTop: 2,
+    marginLeft: 4,
   },
   rowContainer: {
     display: 'flex',
@@ -235,9 +234,9 @@ const styles = StyleSheet.create({
   boxContainerLeft: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
-    marginLeft: marginHorizontal,
+    marginLeft: 5,
     marginRight: marginHorizontal,
-    width: 50,
+    width: 60,
     height: 60,
     justifyContent: 'center',
     alignItems: 'center',
@@ -245,12 +244,12 @@ const styles = StyleSheet.create({
   boxContainerRight: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
-    marginLeft: 30,
+    marginLeft: 5,
     marginRight: marginHorizontal,
-    width: 180,
+    width: 330,
     height: 60,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
 });
 

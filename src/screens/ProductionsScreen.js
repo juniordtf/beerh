@@ -98,7 +98,7 @@ class ProductionScreen extends React.Component {
             <View style={styles.boxContainerRight}>
               <View style={styles.listItemContainer}>
                 <View style={styles.rowContainer}>
-                  <Text style={styles.listItemTitle}>{item.name}</Text>
+                  <Text style={styles.listItemTitle}>{item.name} - </Text>
                   <Text style={styles.listItemTitle2}>{item.style}</Text>
                   <Text style={styles.listItemTitle2}> ({item.volume} L)</Text>
                 </View>
@@ -243,21 +243,23 @@ const styles = StyleSheet.create({
   },
   boxContainerLeft: {
     marginTop: marginVertical,
+    marginBottom: marginVertical,
     marginLeft: 5,
     marginRight: marginHorizontal,
-    width: 50,
+    width: 60,
     height: 60,
     justifyContent: 'center',
     alignItems: 'center',
   },
   boxContainerRight: {
     marginTop: marginVertical,
-    marginLeft: 30,
+    marginBottom: marginVertical,
+    marginLeft: 5,
     marginRight: marginHorizontal,
-    width: 150,
+    width: 330,
     height: 60,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
 });
 

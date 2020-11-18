@@ -232,6 +232,8 @@ class NewProductionScreen extends React.Component {
       (x) => x.title === this.state.selectedRecipe,
     );
 
+    let initialDate = this.state.selectedBrewDate;
+
     const production = {
       id: Date.now() + this.state.selectedRecipe,
       name: this.state.selectedRecipe,
@@ -246,8 +248,15 @@ class NewProductionScreen extends React.Component {
       carbonationDate: this.state.carbonationDate,
       ageingDate: this.state.ageingDate,
       fillingDate: this.state.fillingDate,
+      initialCalendarDate:
+        initialDate.slice(0, 4) +
+        '-' +
+        initialDate.slice(5, 7) +
+        '-' +
+        initialDate.slice(8, 10),
       duration: '',
       createdAt: this.state.todaysDatePt,
+      lastUpdateDate: this.state.todaysDatePt,
     };
 
     const productions = this.state.productions;
