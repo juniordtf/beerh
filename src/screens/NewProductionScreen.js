@@ -40,6 +40,7 @@ class NewProductionScreen extends React.Component {
       new Date().getFullYear();
 
     this.state = {
+      todaysDatePt: todayPt,
       selectedRecipe: '',
       selectedBrewDate: today,
       selectedFermentationDate: today,
@@ -87,7 +88,11 @@ class NewProductionScreen extends React.Component {
     try {
       const value = await AsyncStorage.getItem(RECIPES_KEY);
       if (value !== null) {
-        this.setState({recipes: JSON.parse(value)});
+        const retrievedRecipes = JSON.parse(value);
+        this.setState({
+          recipes: retrievedRecipes,
+          selectedRecipe: retrievedRecipes[0].title,
+        });
         console.log(JSON.parse(value));
       }
     } catch (error) {
@@ -108,8 +113,13 @@ class NewProductionScreen extends React.Component {
   };
 
   setBrewDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newbrewDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newbrewDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({brewDate: newbrewDate, selectedBrewDate: dateString});
   }
 
@@ -126,8 +136,13 @@ class NewProductionScreen extends React.Component {
   };
 
   setFermentationDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newFermentationDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newFermentationDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       fermentationDate: newFermentationDate,
       selectedFermentationDate: dateString,
@@ -147,8 +162,13 @@ class NewProductionScreen extends React.Component {
   };
 
   setCarbonationDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newCarbonationDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newCarbonationDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       carbonationDate: newCarbonationDate,
       selectedCarbonationDate: dateString,
@@ -168,8 +188,13 @@ class NewProductionScreen extends React.Component {
   };
 
   setAgeingDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newAgeingDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newAgeingDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       ageingDate: newAgeingDate,
       selectedAgeingDate: dateString,
@@ -189,8 +214,13 @@ class NewProductionScreen extends React.Component {
   };
 
   setFillingDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newFillingDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newFillingDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       fillingDate: newFillingDate,
       selectedFillingDate: dateString,
@@ -217,7 +247,7 @@ class NewProductionScreen extends React.Component {
       ageingDate: this.state.ageingDate,
       fillingDate: this.state.fillingDate,
       duration: '',
-      createdAt: new Date(),
+      createdAt: this.state.todaysDatePt,
     };
 
     const productions = this.state.productions;
@@ -549,7 +579,7 @@ class NewProductionScreen extends React.Component {
                 <View style={styles.calendarContainer}>
                   <Calendar
                     markingType="simple"
-                    minDate={this.state.selectedAgeingDate}
+                    minDate={this.state.selectedCarbonationDate}
                     markedDates={{
                       [this.state.selectedFillingDate]: {
                         selected: true,

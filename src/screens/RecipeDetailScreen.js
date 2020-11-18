@@ -125,102 +125,112 @@ class RecipeDetailScreen extends React.Component {
     });
   };
 
-  renderIngredient = ({item}) => {
-    return (
-      <View>
-        <View style={styles.rowContainer}>
-          <View style={styles.boxContainerLeft}>
-            <Image source={Bullet} />
-          </View>
-          <View style={styles.boxContainerRight}>
-            <View style={styles.rowContainer}>
-              <Text>{item.quantity} </Text>
-              <Text>{item.unit} de </Text>
-              <Text>{item.name};</Text>
+  renderIngredients() {
+    return this.state.ingredients.map((item) => {
+      return (
+        <View key={item.id}>
+          <View style={styles.rowContainer}>
+            <View style={styles.boxContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.boxContainerRight}>
+              <View style={styles.rowContainer}>
+                <Text>{item.quantity} </Text>
+                <Text>{item.unit} de </Text>
+                <Text>{item.name};</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    );
-  };
+      );
+    });
+  }
 
-  renderRamp = ({item}) => {
-    return (
-      <View>
-        <View style={styles.rowContainer}>
-          <View style={styles.boxContainerLeft}>
-            <Image source={Bullet} />
-          </View>
-          <View style={styles.boxContainerRight}>
-            <View style={styles.rowContainer}>
-              <Text>{item.temperature} °C </Text>
-              <Text>por </Text>
-              <Text>{item.time} minutos;</Text>
+  renderRamps() {
+    return this.state.ramps.map((item) => {
+      return (
+        <View key={item.id}>
+          <View style={styles.rowContainer}>
+            <View style={styles.boxContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.boxContainerRight}>
+              <View style={styles.rowContainer}>
+                <Text>{item.temperature} °C </Text>
+                <Text>por </Text>
+                <Text>{item.time} minutos;</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    );
-  };
+      );
+    });
+  }
 
-  renderBoil = ({item}) => {
-    return (
-      <View>
-        <View style={styles.rowContainer}>
-          <View style={styles.boxContainerLeft}>
-            <Image source={Bullet} />
-          </View>
-          <View style={styles.boxContainerRight}>
-            <View style={styles.rowContainer}>
-              <Text>{item.quantity} </Text>
-              <Text>{item.unit} </Text>
-              <Text>{item.name} </Text>
-              <Text>por </Text>
-              <Text>{item.time} minutos;</Text>
+  renderBoil() {
+    return this.state.boil.map((item) => {
+      return (
+        <View key={item.id}>
+          <View style={styles.rowContainer}>
+            <View style={styles.boxContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.boxContainerRight}>
+              <View style={styles.rowContainer}>
+                <Text>{item.quantity} </Text>
+                <Text>{item.unit} de </Text>
+                <Text>{item.name} </Text>
+                <Text>por </Text>
+                <Text>{item.time} minutos;</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    );
-  };
+      );
+    });
+  }
 
-  renderFermentation = ({item}) => {
-    return (
-      <View>
-        <View style={styles.rowContainer}>
-          <View style={styles.boxContainerLeft}>
-            <Image source={Bullet} />
-          </View>
-          <View style={styles.boxContainerRight}>
-            <View style={styles.rowContainer}>
-              <Text>{item.temperature} °C </Text>
-              <Text>por </Text>
-              <Text>{item.time} dias;</Text>
+  renderFermentation() {
+    return this.state.fermentation.map((item) => {
+      return (
+        <View key={item.id}>
+          <View style={styles.rowContainer}>
+            <View style={styles.boxContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.boxContainerRight}>
+              <View style={styles.rowContainer}>
+                <Text>{item.temperature} °C </Text>
+                <Text>por </Text>
+                <Text>{item.time} dias;</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    );
-  };
+      );
+    });
+  }
 
-  renderAgeing = ({item}) => {
-    return (
-      <View>
-        <View style={styles.rowContainer}>
-          <View style={styles.boxContainerLeft}>
-            <Image source={Bullet} />
-          </View>
-          <View style={styles.boxContainerRight}>
-            <View style={styles.rowContainer}>
-              <Text>{item.temperature} °C </Text>
-              <Text>por </Text>
-              <Text>{item.time} dias;</Text>
+  renderAgeing() {
+    return this.state.ageing.map((item) => {
+      return (
+        <View key={item.id}>
+          <View style={styles.rowContainer}>
+            <View style={styles.boxContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.boxContainerRight}>
+              <View style={styles.rowContainer}>
+                <Text>{item.temperature} °C </Text>
+                <Text>por </Text>
+                <Text>{item.time} dias;</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    );
-  };
+      );
+    });
+  }
 
   render() {
     return (
@@ -263,11 +273,7 @@ class RecipeDetailScreen extends React.Component {
               <View>
                 <Text style={styles.bodyText}>Ingredientes</Text>
                 <View style={styles.listContainer}>
-                  <FlatList
-                    data={this.state.ingredients}
-                    renderItem={this.renderIngredient}
-                    keyExtractor={(item) => item.id}
-                  />
+                  {this.renderIngredients()}
                 </View>
               </View>
             </View>
@@ -275,51 +281,29 @@ class RecipeDetailScreen extends React.Component {
               backgroundColor={'#000000'}
               height={1}
               marginBottom={5}
-              marginTop={5}
+              marginTop={10}
             />
             <View style={styles.bodyContainer}>
               <View>
                 <Text style={styles.bodyText}>Brassagem</Text>
                 <Text style={styles.bodyText2}>Rampas</Text>
-                <View style={styles.listContainer}>
-                  <FlatList
-                    data={this.state.ramps}
-                    renderItem={this.renderRamp}
-                    keyExtractor={(item) => item.id}
-                  />
-                </View>
+                <View style={styles.listContainer}>{this.renderRamps()}</View>
                 <Text style={styles.bodyText2}>Fervura</Text>
-                <View style={styles.listContainer}>
-                  <FlatList
-                    data={this.state.boil}
-                    renderItem={this.renderBoil}
-                    keyExtractor={(item) => item.id}
-                  />
-                </View>
+                <View style={styles.listContainer}>{this.renderBoil()}</View>
               </View>
             </View>
             <View style={styles.bodyContainer}>
               <View>
                 <Text style={styles.bodyText}>Fermentação</Text>
                 <View style={styles.listContainer}>
-                  <FlatList
-                    data={this.state.fermentation}
-                    renderItem={this.renderFermentation}
-                    keyExtractor={(item) => item.id}
-                  />
+                  {this.renderFermentation()}
                 </View>
               </View>
             </View>
             <View style={styles.bodyContainer}>
               <View>
                 <Text style={styles.bodyText}>Maturação</Text>
-                <View style={styles.listContainer}>
-                  <FlatList
-                    data={this.state.ageing}
-                    renderItem={this.renderAgeing}
-                    keyExtractor={(item) => item.id}
-                  />
-                </View>
+                <View style={styles.listContainer}>{this.renderAgeing()}</View>
               </View>
             </View>
             <View style={styles.bodyContainer}>

@@ -136,8 +136,13 @@ class EditProductionScreen extends React.Component {
   };
 
   setBrewDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newbrewDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newbrewDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({brewDate: newbrewDate, selectedBrewDate: dateString});
   }
 
@@ -154,8 +159,13 @@ class EditProductionScreen extends React.Component {
   };
 
   setFermentationDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newFermentationDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newFermentationDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       fermentationDate: newFermentationDate,
       selectedFermentationDate: dateString,
@@ -175,8 +185,13 @@ class EditProductionScreen extends React.Component {
   };
 
   setCarbonationDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newCarbonationDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newCarbonationDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       carbonationDate: newCarbonationDate,
       selectedCarbonationDate: dateString,
@@ -196,8 +211,13 @@ class EditProductionScreen extends React.Component {
   };
 
   setAgeingDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newAgeingDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newAgeingDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       ageingDate: newAgeingDate,
       selectedAgeingDate: dateString,
@@ -217,8 +237,13 @@ class EditProductionScreen extends React.Component {
   };
 
   setFillingDay(dayObj) {
-    const {dateString, day, month, year} = dayObj;
-    const newFillingDate = day + '/' + month + '/' + year;
+    const {dateString} = dayObj;
+    const newFillingDate =
+      dateString.slice(8, 10) +
+      '/' +
+      dateString.slice(5, 7) +
+      '/' +
+      dateString.slice(0, 4);
     this.setState({
       fillingDate: newFillingDate,
       selectedFillingDate: dateString,
@@ -241,7 +266,7 @@ class EditProductionScreen extends React.Component {
       ageingDate: this.state.ageingDate,
       fillingDate: this.state.fillingDate,
       duration: '',
-      createdAt: new Date(),
+      createdAt: this.state.createdAt,
     };
 
     let allProductions = this.state.productions;
@@ -262,7 +287,7 @@ class EditProductionScreen extends React.Component {
           console.log('an error occured');
           throw err;
         }
-        console.log('Success. Production removed');
+        console.log('Success. Production updated');
       },
     ).catch((err) => {
       console.log('error is: ' + err);
@@ -532,7 +557,7 @@ class EditProductionScreen extends React.Component {
                 <View style={styles.calendarContainer}>
                   <Calendar
                     markingType="simple"
-                    minDate={this.state.selectedAgeingDate}
+                    minDate={this.state.selectedCarbonationDate}
                     markedDates={{
                       [this.state.selectedFillingDate]: {
                         selected: true,

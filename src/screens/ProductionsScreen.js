@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Text,
+  Alert,
   View,
   StatusBar,
   StyleSheet,
@@ -17,6 +18,7 @@ import GoldCircle from '../../assets/goldCircle.png';
 import GreenCircle from '../../assets/greenCircle.png';
 import GreyCircle from '../../assets/greyCircle.png';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {RECIPES_KEY} from '../statics/Statics';
 
 class ProductionScreen extends React.Component {
   constructor(props) {
@@ -24,11 +26,13 @@ class ProductionScreen extends React.Component {
     window.productionsScreen = this;
     this.state = {
       productions: [],
+      recipes: [],
     };
   }
 
   componentDidMount() {
     this.getProductions();
+    this.getRecipes();
   }
 
   getProductions = async () => {
@@ -37,6 +41,19 @@ class ProductionScreen extends React.Component {
       if (value !== null) {
         this.setState({productions: JSON.parse(value)});
         console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getRecipes = async () => {
+    try {
+      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      if (value !== null) {
+        this.setState({
+          recipes: JSON.parse(value),
+        });
       }
     } catch (error) {
       console.log(error);
@@ -60,6 +77,14 @@ class ProductionScreen extends React.Component {
     this.props.navigation.navigate('Detalhe de Produção', {
       production: currentProduction,
     });
+  };
+
+  goToCreationView = () => {
+    if (this.state.recipes != null && this.state.recipes.length > 0) {
+      this.props.navigation.navigate('Nova Produção');
+    } else {
+      Alert.alert('É preciso primeiro cadastrar uma receita!');
+    }
   };
 
   renderItem = ({item}) => {
@@ -128,7 +153,7 @@ class ProductionScreen extends React.Component {
               <Button
                 title="Começar uma produção"
                 color="#000000"
-                onPress={() => this.props.navigation.navigate('Nova Produção')}
+                onPress={() => this.goToCreationView()}
               />
             </View>
           </TouchableHighlight>

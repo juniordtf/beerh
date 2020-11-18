@@ -25,7 +25,15 @@ class NewRecipeScreen extends React.Component {
   constructor(props) {
     super(props);
 
+    const todayPt =
+      new Date().getDate() +
+      '/' +
+      (new Date().getMonth() + 1) +
+      '/' +
+      new Date().getFullYear();
+
     this.state = {
+      todaysDatePt: todayPt,
       title: '',
       style: '',
       volume: '',
@@ -360,60 +368,70 @@ class NewRecipeScreen extends React.Component {
 
   setIngridients = () => {
     const ingridient01 = {
+      id: '01',
       quantity: this.state.QteIng01,
       unit: this.state.UntIng01,
       name: this.state.NameIng01,
     };
 
     const ingridient02 = {
+      id: '02',
       quantity: this.state.QteIng02,
       unit: this.state.UntIng02,
       name: this.state.NameIng02,
     };
 
     const ingridient03 = {
+      id: '03',
       quantity: this.state.QteIng03,
       unit: this.state.UntIng03,
       name: this.state.NameIng03,
     };
 
     const ingridient04 = {
+      id: '04',
       quantity: this.state.QteIng04,
       unit: this.state.UntIng04,
       name: this.state.NameIng04,
     };
 
     const ingridient05 = {
+      id: '05',
       quantity: this.state.QteIng05,
       unit: this.state.UntIng05,
       name: this.state.NameIng05,
     };
 
     const ingridient06 = {
+      id: '06',
       quantity: this.state.QteIng06,
       unit: this.state.UntIng06,
       name: this.state.NameIng06,
     };
 
     const ingridient07 = {
+      id: '07',
       quantity: this.state.QteIng07,
       unit: this.state.UntIng07,
       name: this.state.NameIng07,
     };
 
     const ingridient08 = {
+      id: '08',
       quantity: this.state.QteIng08,
       unit: this.state.UntIng08,
       name: this.state.NameIng08,
     };
 
     const ingridient09 = {
+      id: '09',
       quantity: this.state.QteIng09,
       unit: this.state.UntIng09,
       name: this.state.NameIng09,
     };
 
     const ingridient10 = {
+      id: '10',
       quantity: this.state.QteIng10,
       unit: this.state.UntIng10,
       name: this.state.NameIng10,
@@ -462,26 +480,31 @@ class NewRecipeScreen extends React.Component {
 
   setRamps = () => {
     const ramp01 = {
+      id: '01',
       temperature: this.state.TempRamp01,
       time: this.state.TimeRamp01,
     };
 
     const ramp02 = {
+      id: '02',
       temperature: this.state.TempRamp02,
       time: this.state.TimeRamp02,
     };
 
     const ramp03 = {
+      id: '03',
       temperature: this.state.TempRamp03,
       time: this.state.TimeRamp03,
     };
 
     const ramp04 = {
+      id: '04',
       temperature: this.state.TempRamp04,
       time: this.state.TimeRamp04,
     };
 
     const ramp05 = {
+      id: '05',
       temperature: this.state.TempRamp05,
       time: this.state.TimeRamp05,
     };
@@ -509,6 +532,7 @@ class NewRecipeScreen extends React.Component {
 
   setBoil = () => {
     const boil01 = {
+      id: '01',
       quantity: this.state.QteBoil01,
       unit: this.state.UntBoil01,
       name: this.state.NameBoil01,
@@ -516,6 +540,7 @@ class NewRecipeScreen extends React.Component {
     };
 
     const boil02 = {
+      id: '02',
       quantity: this.state.QteBoil02,
       unit: this.state.UntBoil02,
       name: this.state.NameBoil02,
@@ -523,6 +548,7 @@ class NewRecipeScreen extends React.Component {
     };
 
     const boil03 = {
+      id: '03',
       quantity: this.state.QteBoil03,
       unit: this.state.UntBoil03,
       name: this.state.NameBoil03,
@@ -530,6 +556,7 @@ class NewRecipeScreen extends React.Component {
     };
 
     const boil04 = {
+      id: '04',
       quantity: this.state.QteBoil04,
       unit: this.state.UntBoil04,
       name: this.state.NameBoil04,
@@ -537,6 +564,7 @@ class NewRecipeScreen extends React.Component {
     };
 
     const boil05 = {
+      id: '05',
       quantity: this.state.QteBoil05,
       unit: this.state.UntBoil05,
       name: this.state.NameBoil05,
@@ -566,16 +594,19 @@ class NewRecipeScreen extends React.Component {
 
   setFermentation = () => {
     const fermentation01 = {
+      id: '01',
       temperature: this.state.TempFermentation01,
       time: this.state.TimeFermentation01,
     };
 
     const fermentation02 = {
+      id: '02',
       temperature: this.state.TempFermentation02,
       time: this.state.TimeFermentation02,
     };
 
     const fermentation03 = {
+      id: '03',
       temperature: this.state.TempFermentation03,
       time: this.state.TimeFermentation03,
     };
@@ -595,16 +626,19 @@ class NewRecipeScreen extends React.Component {
 
   setAgeing = () => {
     const ageing01 = {
+      id: '01',
       temperature: this.state.TempAgeing01,
       time: this.state.TimeAgeing01,
     };
 
     const ageing02 = {
+      id: '02',
       temperature: this.state.TempAgeing02,
       time: this.state.TimeAgeing02,
     };
 
     const ageing03 = {
+      id: '03',
       temperature: this.state.TempAgeing03,
       time: this.state.TimeAgeing03,
     };
@@ -646,7 +680,7 @@ class NewRecipeScreen extends React.Component {
       ageing: ageing,
       carbonation: this.state.carbonation,
       annotation: this.state.annotation,
-      createdAt: new Date(),
+      createdAt: this.state.todaysDatePt,
     };
 
     const recipes = this.state.recipes;

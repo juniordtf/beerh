@@ -216,7 +216,7 @@ class ProductionDetailScreen extends React.Component {
               <View style={styles.boxContainerRight}>
                 <View style={styles.rowContainer}>
                   <View style={styles.sectionContainerLeft}>
-                    <View style={styles.greenCircle} />
+                    <View style={styles.redCircle} />
                   </View>
                   <View style={styles.sectionContainerRight}>
                     <Text style={styles.bodyText}>Fermentação</Text>
@@ -231,17 +231,17 @@ class ProductionDetailScreen extends React.Component {
                     <View style={styles.greyCircle} />
                   </View>
                   <View style={styles.sectionContainerRight}>
-                    <Text style={styles.bodyText}>Carbonatação</Text>
+                    <Text style={styles.bodyText}>Maturação</Text>
                   </View>
                 </View>
               </View>
               <View style={styles.boxContainerRight}>
                 <View style={styles.rowContainer}>
                   <View style={styles.sectionContainerLeft}>
-                    <View style={styles.redCircle} />
+                    <View style={styles.greenCircle} />
                   </View>
                   <View style={styles.sectionContainerRight}>
-                    <Text style={styles.bodyText}>Maturação</Text>
+                    <Text style={styles.bodyText}>Carbonatação</Text>
                   </View>
                 </View>
               </View>

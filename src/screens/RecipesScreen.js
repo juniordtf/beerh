@@ -69,13 +69,6 @@ class RecipesScreen extends React.Component {
   }
 
   renderItem = ({item}) => {
-    const createdAt = new Date(item.createdAt);
-    const createdAtFormatted =
-      createdAt.getDate() +
-      '/' +
-      (createdAt.getMonth() + 1) +
-      '/' +
-      createdAt.getFullYear();
     return (
       <View>
         <TouchableOpacity onPress={() => this.goToDetailView(item)}>
@@ -105,7 +98,7 @@ class RecipesScreen extends React.Component {
                   <Text style={styles.listItemBodyField}>
                     Data de criação:{' '}
                   </Text>
-                  <Text style={styles.listItemBody}>{createdAtFormatted}</Text>
+                  <Text style={styles.listItemBody}>{item.createdAt}</Text>
                 </View>
               </View>
             </View>
