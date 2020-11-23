@@ -407,6 +407,42 @@ class EditProductionScreen extends React.Component {
               </View>
             </View>
           </View>
+          <View marginTop={5}>
+            <View style={styles.rowContainer}>
+              <View width={150} marginLeft={10}>
+                <View style={styles.centeredTitleContainer}>
+                  <Text style={styles.titleText}>OG Real:</Text>
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    onChangeText={(realOg) => this.setState({realOg})}
+                    value={this.state.realOg}
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                </View>
+              </View>
+              <View>
+                <View style={styles.centeredTitleContainer}>
+                  <Text style={styles.titleText}>FG Real:</Text>
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    onChangeText={(realFg) => this.setState({realFg})}
+                    value={this.state.realFg}
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
           <View marginTop={20} marginBottom={10}>
             <TouchableHighlight>
               <View style={styles.buttonContainer}>
@@ -723,6 +759,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     marginTop: 10,
+  },
+  rowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  inputContainer: {
+    backgroundColor: '#F6F0F0',
+    borderColor: 'black',
+    width: 110,
+    height: 44,
+    borderWidth: 1,
+    marginLeft: 15,
+    marginBottom: 3,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  centeredTitleContainer: {
+    marginTop: 10,
+    marginBottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

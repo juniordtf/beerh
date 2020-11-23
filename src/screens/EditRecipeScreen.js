@@ -35,6 +35,7 @@ class EditRecipeScreen extends React.Component {
 
     this.state = {
       todaysDatePt: todayPt,
+      id: '',
       title: '',
       style: '',
       volume: '',
@@ -166,6 +167,7 @@ class EditRecipeScreen extends React.Component {
   getCurrentRecipe = () => {
     let recipe = this.props.route.params?.recipe;
     this.setState({
+      id: recipe.id,
       title: recipe.title,
       style: recipe.style,
       volume: recipe.volume,
@@ -178,99 +180,139 @@ class EditRecipeScreen extends React.Component {
       annotation: recipe.annotation,
       carbonationUnit: recipe.carbonationUnit,
       carbonationMethod: recipe.carbonationMethod,
-      inputSecondIngridientClicked: false,
-      inputThirdIngridientClicked: false,
-      inputFourthIngridientClicked: false,
-      inputFifthIngridientClicked: false,
-      inputSixthIngridientClicked: false,
-      inputSeventhIngridientClicked: false,
-      inputEightIngridientClicked: false,
-      inputNinthIngridientClicked: false,
-      inputTenthIngridientClicked: false,
-      inputSecondRampClicked: false,
-      inputThirdRampClicked: false,
-      inputFourthRampClicked: false,
-      inputFifthRampClicked: false,
-      inputSecondBoilClicked: false,
-      inputThirdBoilClicked: false,
-      inputFourthBoilClicked: false,
-      inputFifthBoilClicked: false,
-      inputSecondFermentationClicked: false,
-      inputThirdFermentationClicked: false,
-      inputSecondAgeingClicked: false,
-      inputThirdAgeingClicked: false,
-      QteIng01: recipe.QteIng01,
-      QteIng02: recipe.QteIng02,
-      QteIng03: recipe.QteIng03,
-      QteIng04: recipe.QteIng04,
-      QteIng05: recipe.QteIng05,
-      QteIng06: recipe.QteIng06,
-      QteIng07: recipe.QteIng07,
-      QteIng08: recipe.QteIng08,
-      QteIng09: recipe.QteIng09,
-      QteIng10: recipe.QteIng10,
-      UntIng01: recipe.UntIng01,
-      UntIng02: recipe.UntIng02,
-      UntIng03: recipe.UntIng03,
-      UntIng04: recipe.UntIng04,
-      UntIng05: recipe.UntIng05,
-      UntIng06: recipe.UntIng06,
-      UntIng07: recipe.UntIng07,
-      UntIng08: recipe.UntIng08,
-      UntIng09: recipe.UntIng09,
-      UntIng10: recipe.UntIng10,
-      NameIng01: recipe.NameIng01,
-      NameIng02: recipe.NameIng02,
-      NameIng03: recipe.NameIng03,
-      NameIng04: recipe.NameIng04,
-      NameIng05: recipe.NameIng05,
-      NameIng06: recipe.NameIng06,
-      NameIng07: recipe.NameIng07,
-      NameIng08: recipe.NameIng08,
-      NameIng09: recipe.NameIng09,
-      NameIng10: recipe.NameIng10,
-      TempRamp01: recipe.TempRamp01,
-      TempRamp02: recipe.TempRamp02,
-      TempRamp03: recipe.TempRamp03,
-      TempRamp04: recipe.TempRamp04,
-      TempRamp05: recipe.TempRamp05,
-      TimeRamp01: recipe.TimeRamp01,
-      TimeRamp02: recipe.TimeRamp02,
-      TimeRamp03: recipe.TimeRamp03,
-      TimeRamp04: recipe.TimeRamp04,
-      TimeRamp05: recipe.TimeRamp05,
-      QteBoil01: recipe.QteBoil01,
-      QteBoil02: recipe.QteBoil02,
-      QteBoil03: recipe.QteBoil03,
-      QteBoil04: recipe.QteBoil04,
-      QteBoil05: recipe.QteBoil05,
-      UntBoil01: recipe.UntBoil01,
-      UntBoil02: recipe.UntBoil02,
-      UntBoil03: recipe.UntBoil03,
-      UntBoil04: recipe.UntBoil04,
-      UntBoil05: recipe.UntBoil05,
-      NameBoil01: recipe.NameBoil01,
-      NameBoil02: recipe.NameBoil02,
-      NameBoil03: recipe.NameBoil03,
-      NameBoil04: recipe.NameBoil04,
-      NameBoil05: recipe.NameBoil05,
-      TimeBoil01: recipe.TimeBoil01,
-      TimeBoil02: recipe.TimeBoil02,
-      TimeBoil03: recipe.TimeBoil03,
-      TimeBoil04: recipe.TimeBoil04,
-      TimeBoil05: recipe.TimeBoil05,
-      TempFermentation01: recipe.TempFermentation01,
-      TempFermentation02: recipe.TempFermentation02,
-      TempFermentation03: recipe.TempFermentation03,
-      TimeFermentation01: recipe.TimeFermentation01,
-      TimeFermentation02: recipe.TimeFermentation02,
-      TimeFermentation03: recipe.TimeFermentation03,
-      TempAgeing01: recipe.TempAgeing01,
-      TempAgeing02: recipe.TempAgeing02,
-      TempAgeing03: recipe.TempAgeing03,
-      TimeAgeing01: recipe.TimeAgeing01,
-      TimeAgeing02: recipe.TimeAgeing02,
-      TimeAgeing03: recipe.TimeAgeing03,
+      inputSecondIngridientClicked:
+        recipe.ingredients[1] != null ? true : false,
+      inputThirdIngridientClicked: recipe.ingredients[2] != null ? true : false,
+      inputFourthIngridientClicked:
+        recipe.ingredients[3] != null ? true : false,
+      inputFifthIngridientClicked: recipe.ingredients[4] != null ? true : false,
+      inputSixthIngridientClicked: recipe.ingredients[5] != null ? true : false,
+      inputSeventhIngridientClicked:
+        recipe.ingredients[6] != null ? true : false,
+      inputEightIngridientClicked: recipe.ingredients[7] != null ? true : false,
+      inputNinthIngridientClicked: recipe.ingredients[8] != null ? true : false,
+      inputTenthIngridientClicked: recipe.ingredients[9] != null ? true : false,
+      inputSecondRampClicked: recipe.ramps[1] != null ? true : false,
+      inputThirdRampClicked: recipe.ramps[2] != null ? true : false,
+      inputFourthRampClicked: recipe.ramps[3] != null ? true : false,
+      inputFifthRampClicked: recipe.ramps[4] != null ? true : false,
+      inputSecondBoilClicked: recipe.boil[1] != null ? true : false,
+      inputThirdBoilClicked: recipe.boil[2] != null ? true : false,
+      inputFourthBoilClicked: recipe.boil[3] != null ? true : false,
+      inputFifthBoilClicked: recipe.boil[4] != null ? true : false,
+      inputSecondFermentationClicked:
+        recipe.fermentation[1] != null ? true : false,
+      inputThirdFermentationClicked:
+        recipe.fermentation[2] != null ? true : false,
+      inputSecondAgeingClicked: recipe.ageing[1] != null ? true : false,
+      inputThirdAgeingClicked: recipe.ageing[2] != null ? true : false,
+      QteIng01:
+        recipe.ingredients[0] != null ? recipe.ingredients[0].quantity : '',
+      QteIng02:
+        recipe.ingredients[1] != null ? recipe.ingredients[1].quantity : '',
+      QteIng03:
+        recipe.ingredients[2] != null ? recipe.ingredients[2].quantity : '',
+      QteIng04:
+        recipe.ingredients[3] != null ? recipe.ingredients[3].quantity : '',
+      QteIng05:
+        recipe.ingredients[4] != null ? recipe.ingredients[4].quantity : '',
+      QteIng06:
+        recipe.ingredients[5] != null ? recipe.ingredients[5].quantity : '',
+      QteIng07:
+        recipe.ingredients[6] != null ? recipe.ingredients[6].quantity : '',
+      QteIng08:
+        recipe.ingredients[7] != null ? recipe.ingredients[7].quantity : '',
+      QteIng09:
+        recipe.ingredients[8] != null ? recipe.ingredients[8].quantity : '',
+      QteIng10:
+        recipe.ingredients[9] != null ? recipe.ingredients[9].quantity : '',
+      UntIng01: recipe.ingredients[0] != null ? recipe.ingredients[0].unit : '',
+      UntIng02: recipe.ingredients[1] != null ? recipe.ingredients[1].unit : '',
+      UntIng03: recipe.ingredients[2] != null ? recipe.ingredients[2].unit : '',
+      UntIng04: recipe.ingredients[3] != null ? recipe.ingredients[3].unit : '',
+      UntIng05: recipe.ingredients[4] != null ? recipe.ingredients[4].unit : '',
+      UntIng06: recipe.ingredients[5] != null ? recipe.ingredients[5].unit : '',
+      UntIng07: recipe.ingredients[6] != null ? recipe.ingredients[6].unit : '',
+      UntIng08: recipe.ingredients[7] != null ? recipe.ingredients[7].unit : '',
+      UntIng09: recipe.ingredients[8] != null ? recipe.ingredients[8].unit : '',
+      UntIng10: recipe.ingredients[9] != null ? recipe.ingredients[9].unit : '',
+      NameIng01:
+        recipe.ingredients[0] != null ? recipe.ingredients[0].name : '',
+      NameIng02:
+        recipe.ingredients[1] != null ? recipe.ingredients[1].name : '',
+      NameIng03:
+        recipe.ingredients[2] != null ? recipe.ingredients[2].name : '',
+      NameIng04:
+        recipe.ingredients[3] != null ? recipe.ingredients[3].name : '',
+      NameIng05:
+        recipe.ingredients[4] != null ? recipe.ingredients[4].name : '',
+      NameIng06:
+        recipe.ingredients[5] != null ? recipe.ingredients[5].name : '',
+      NameIng07:
+        recipe.ingredients[6] != null ? recipe.ingredients[6].name : '',
+      NameIng08:
+        recipe.ingredients[7] != null ? recipe.ingredients[7].name : '',
+      NameIng09:
+        recipe.ingredients[8] != null ? recipe.ingredients[8].name : '',
+      NameIng10:
+        recipe.ingredients[9] != null ? recipe.ingredients[9].name : '',
+      TempRamp01: recipe.ramps[0] != null ? recipe.ramps[0].temperature : '',
+      TempRamp02: recipe.ramps[1] != null ? recipe.ramps[1].temperature : '',
+      TempRamp03: recipe.ramps[2] != null ? recipe.ramps[2].temperature : '',
+      TempRamp04: recipe.ramps[3] != null ? recipe.ramps[3].temperature : '',
+      TempRamp05: recipe.ramps[4] != null ? recipe.ramps[4].temperature : '',
+      TimeRamp01: recipe.ramps[0] != null ? recipe.ramps[0].time : '',
+      TimeRamp02: recipe.ramps[1] != null ? recipe.ramps[1].time : '',
+      TimeRamp03: recipe.ramps[2] != null ? recipe.ramps[2].time : '',
+      TimeRamp04: recipe.ramps[3] != null ? recipe.ramps[3].time : '',
+      TimeRamp05: recipe.ramps[4] != null ? recipe.ramps[4].time : '',
+      QteBoil01: recipe.boil[0] != null ? recipe.boil[0].quantity : '',
+      QteBoil02: recipe.boil[1] != null ? recipe.boil[1].quantity : '',
+      QteBoil03: recipe.boil[2] != null ? recipe.boil[2].quantity : '',
+      QteBoil04: recipe.boil[3] != null ? recipe.boil[3].quantity : '',
+      QteBoil05: recipe.boil[4] != null ? recipe.boil[4].quantity : '',
+      UntBoil01: recipe.boil[0] != null ? recipe.boil[0].unit : '',
+      UntBoil02: recipe.boil[1] != null ? recipe.boil[1].unit : '',
+      UntBoil03: recipe.boil[2] != null ? recipe.boil[2].unit : '',
+      UntBoil04: recipe.boil[3] != null ? recipe.boil[3].unit : '',
+      UntBoil05: recipe.boil[4] != null ? recipe.boil[4].unit : '',
+      NameBoil01: recipe.boil[0] != null ? recipe.boil[0].name : '',
+      NameBoil02: recipe.boil[1] != null ? recipe.boil[1].name : '',
+      NameBoil03: recipe.boil[2] != null ? recipe.boil[2].name : '',
+      NameBoil04: recipe.boil[3] != null ? recipe.boil[3].name : '',
+      NameBoil05: recipe.boil[4] != null ? recipe.boil[4].name : '',
+      TimeBoil01: recipe.boil[0] != null ? recipe.boil[0].time : '',
+      TimeBoil02: recipe.boil[1] != null ? recipe.boil[1].time : '',
+      TimeBoil03: recipe.boil[2] != null ? recipe.boil[2].time : '',
+      TimeBoil04: recipe.boil[3] != null ? recipe.boil[3].time : '',
+      TimeBoil05: recipe.boil[4] != null ? recipe.boil[4].time : '',
+      TempFermentation01:
+        recipe.fermentation[0] != null
+          ? recipe.fermentation[0].temperature
+          : '',
+      TempFermentation02:
+        recipe.fermentation[1] != null
+          ? recipe.fermentation[1].temperature
+          : '',
+      TempFermentation03:
+        recipe.fermentation[2] != null
+          ? recipe.fermentation[2].temperature
+          : '',
+      TimeFermentation01:
+        recipe.fermentation[0] != null ? recipe.fermentation[0].time : '',
+      TimeFermentation02:
+        recipe.fermentation[1] != null ? recipe.fermentation[1].time : '',
+      TimeFermentation03:
+        recipe.fermentation[2] != null ? recipe.fermentation[2].time : '',
+      TempAgeing01:
+        recipe.ageing[0] != null ? recipe.ageing[0].temperature : '',
+      TempAgeing02:
+        recipe.ageing[1] != null ? recipe.ageing[1].temperature : '',
+      TempAgeing03:
+        recipe.ageing[2] != null ? recipe.ageing[2].temperature : '',
+      TimeAgeing01: recipe.ageing[0] != null ? recipe.ageing[0].time : '',
+      TimeAgeing02: recipe.ageing[1] != null ? recipe.ageing[1].time : '',
+      TimeAgeing03: recipe.ageing[2] != null ? recipe.ageing[2].time : '',
     });
   };
 
@@ -783,15 +825,15 @@ class EditRecipeScreen extends React.Component {
     });
   }
 
-  addRecipe = () => {
+  editRecipe = () => {
     const ingredients = this.setIngridients();
     const ramps = this.setRamps();
     const boil = this.setBoil();
     const fermentation = this.setFermentation();
     const ageing = this.setAgeing();
 
-    const recipe = {
-      id: Date.now() + this.state.title,
+    const currentRecipe = {
+      id: this.state.id,
       title: this.state.title,
       volume: this.state.volume,
       style: this.state.style,
@@ -820,15 +862,12 @@ class EditRecipeScreen extends React.Component {
       lastUpdateDate: this.state.todaysDatePt,
     };
 
-    const recipes = this.state.recipes;
-    let allRecipes = [this.state.recipes, recipe];
+    let allRecipes = this.state.recipes;
+    const recipe = allRecipes.find((x) => x.id === currentRecipe.id);
+    const index = allRecipes.indexOf(recipe);
 
-    if (recipes != null) {
-      if (recipes.length === 0) {
-        allRecipes = [recipe];
-      } else {
-        allRecipes = recipes.concat(recipe);
-      }
+    if (index !== -1) {
+      allRecipes[index] = currentRecipe;
     }
 
     AsyncStorage.setItem(RECIPES_KEY, JSON.stringify(allRecipes), (err) => {
@@ -836,13 +875,13 @@ class EditRecipeScreen extends React.Component {
         console.log('an error occured');
         throw err;
       }
-      console.log('Success. Recipe added');
+      console.log('Success. Recipe updated');
     }).catch((err) => {
       console.log('error is: ' + err);
     });
 
-    Alert.alert('Receita salva com sucesso!');
     this.props.navigation.navigate('Receitas', {recipes: allRecipes});
+    Alert.alert('Receita alterada com sucesso!');
   };
 
   render() {
@@ -2539,7 +2578,7 @@ class EditRecipeScreen extends React.Component {
                 <Button
                   title="Salvar"
                   color="#000000"
-                  onPress={() => this.addRecipe()}
+                  onPress={() => this.editRecipe()}
                 />
               </View>
             </TouchableHighlight>
