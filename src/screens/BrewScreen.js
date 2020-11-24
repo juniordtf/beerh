@@ -53,6 +53,7 @@ class BrewScreen extends React.Component {
       productions.find((x) => x.brewDate === todayPt)
     ) {
       const todaysProduction = productions.find((x) => x.brewDate === todayPt);
+      const duration = parseInt(todaysProduction.estimatedTime, 10) / 60;
       return (
         <SafeAreaView>
           <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
@@ -81,9 +82,7 @@ class BrewScreen extends React.Component {
               </View>
               <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
                 <Text style={styles.bodyText}>Tempo estimado: </Text>
-                <Text style={styles.bodyText}>
-                  {todaysProduction.estimatedTime} hrs
-                </Text>
+                <Text style={styles.bodyText}>{duration} hrs</Text>
               </View>
             </View>
             <TouchableHighlight>

@@ -18,8 +18,12 @@ class SetupChecklistScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showCheckImg: false,
       todaysProduction: [],
+      checklistItemOneDone: false,
+      checklistItemTwoDone: false,
+      checklistItemThreeDone: false,
+      checklistItemFourDone: false,
+      checklistItemFiveDone: false,
     };
   }
 
@@ -34,8 +38,38 @@ class SetupChecklistScreen extends Component {
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  renderCheckImage = () => {
-    var imgSource = this.state.showCheckImg ? CircleChecked : CircleUnchecked;
+  renderCheckImage01 = () => {
+    var imgSource = this.state.checklistItemOneDone
+      ? CircleChecked
+      : CircleUnchecked;
+    return <Image source={imgSource} />;
+  };
+
+  renderCheckImage02 = () => {
+    var imgSource = this.state.checklistItemTwoDone
+      ? CircleChecked
+      : CircleUnchecked;
+    return <Image source={imgSource} />;
+  };
+
+  renderCheckImage03 = () => {
+    var imgSource = this.state.checklistItemThreeDone
+      ? CircleChecked
+      : CircleUnchecked;
+    return <Image source={imgSource} />;
+  };
+
+  renderCheckImage04 = () => {
+    var imgSource = this.state.checklistItemFourDone
+      ? CircleChecked
+      : CircleUnchecked;
+    return <Image source={imgSource} />;
+  };
+
+  renderCheckImage05 = () => {
+    var imgSource = this.state.checklistItemFiveDone
+      ? CircleChecked
+      : CircleUnchecked;
     return <Image source={imgSource} />;
   };
 
@@ -100,36 +134,55 @@ class SetupChecklistScreen extends Component {
         <View style={styles.cardContainer}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              <Text>Lavar a área</Text>
+              <Text>Colocar cortina</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
                 onPress={() =>
-                  this.setState({showCheckImg: !this.state.showCheckImg})
+                  this.setState({
+                    checklistItemOneDone: !this.state.checklistItemOneDone,
+                  })
                 }>
-                {this.renderCheckImage()}
+                {this.renderCheckImage01()}
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text>Lavar as panelas</Text>
+              <Text>Montar fogões e gás</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
                 onPress={() =>
-                  this.setState({showCheckImg: !this.state.showCheckImg})
+                  this.setState({
+                    checklistItemTwoDone: !this.state.checklistItemTwoDone,
+                  })
                 }>
-                {this.renderCheckImage()}
+                {this.renderCheckImage02()}
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text>B5</Text>
+              <Text>Montar kit de recirculação</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
                 onPress={() =>
-                  this.setState({showCheckImg: !this.state.showCheckImg})
+                  this.setState({
+                    checklistItemThreeDone: !this.state.checklistItemThreeDone,
+                  })
                 }>
-                {this.renderCheckImage()}
+                {this.renderCheckImage03()}
+              </TouchableHighlight>
+            </View>
+            <View style={styles.boxContainerLeft}>
+              <Text>Montar controlador de temperatura</Text>
+            </View>
+            <View style={styles.boxContainerRight}>
+              <TouchableHighlight
+                onPress={() =>
+                  this.setState({
+                    checklistItemFourDone: !this.state.checklistItemFourDone,
+                  })
+                }>
+                {this.renderCheckImage04()}
               </TouchableHighlight>
             </View>
           </View>

@@ -12,17 +12,33 @@ import BrewingMill from '../../assets/brewingMill.png';
 import HotWater from '../../assets/hotWater.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
+import AsyncStorage from '@react-native-community/async-storage';
+import {PRODUCTIONS_KEY, RECIPES_KEY} from '../statics/Statics';
 
 class BrewPartAScreen extends Component {
   constructor(props) {
     super(props);
+
+    const todayPt =
+      new Date().getDate() +
+      '/' +
+      (new Date().getMonth() + 1) +
+      '/' +
+      new Date().getFullYear();
+
     this.state = {
       todaysProduction: [],
+      todaysDatePt: todayPt,
+      productions: [],
+      recipes: [],
     };
   }
 
   componentDidMount() {
     this.keepStopwatchGoing();
+    this.getProductions();
+    this.getCurrentProduction();
+    this.getRecipes();
   }
 
   keepStopwatchGoing = () => {
@@ -32,31 +48,111 @@ class BrewPartAScreen extends Component {
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  goToNextView = (currentProduction) => {
+  getProductions = async () => {
+    try {
+      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      if (value !== null) {
+        this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getCurrentProduction = () => {
+    let currentProduction = this.props.route.params?.production;
+    this.setState({todaysProduction: currentProduction});
+  };
+
+  getRecipes = async () => {
+    try {
+      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      if (value !== null) {
+        this.setState({recipes: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getInitialTemperature() {
+    const currentRecipe = this.state.recipes.find(
+      (x) => x.title === this.state.todaysProduction.name,
+    );
+
+    if (currentRecipe != null) {
+      return (parseFloat(currentRecipe.ramps[0].temperature, 10) + 9).toFixed(
+        1,
+      );
+    }
+
+    return '75.0';
+  }
+
+  goToNextView = () => {
     window.stopwatchComponent.stopStopwatch();
 
     const productionUpdated = {
-      id: currentProduction.id,
-      name: currentProduction.name,
-      volume: currentProduction.volume,
-      og: currentProduction.og,
-      fg: currentProduction.fg,
-      style: currentProduction.style,
-      estimatedTime: currentProduction.estimatedTime,
-      status: currentProduction.status,
-      brewDate: currentProduction.brewDate,
-      fermentationDate: currentProduction.fermentationDate,
-      carbonationDate: currentProduction.carbonationDate,
-      ageingDate: currentProduction.ageingDate,
-      fillingDate: currentProduction.fillingDate,
+      id: this.state.todaysProduction.id,
+      name: this.state.todaysProduction.name,
+      volume: this.state.todaysProduction.volume,
+      og: this.state.todaysProduction.og,
+      realOg: this.state.todaysProduction.realOg,
+      fg: this.state.todaysProduction.fg,
+      realFg: this.state.todaysProduction.realFg,
+      style: this.state.todaysProduction.style,
+      estimatedTime: this.state.todaysProduction.estimatedTime,
+      status: this.state.todaysProduction.status,
+      brewDate: this.state.todaysProduction.brewDate,
+      fermentationDate: this.state.todaysProduction.fermentationDate,
+      carbonationDate: this.state.todaysProduction.carbonationDate,
+      ageingDate: this.state.todaysProduction.ageingDate,
+      fillingDate: this.state.todaysProduction.fillingDate,
+      initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
       duration: window.stopwatchComponent.showDisplay(),
-      createdAt: currentProduction.createdAt,
+      createdAt: this.state.todaysProduction.createdAt,
+      lastUpdateDate: this.state.todaysDatePt,
     };
+
+    this.updateProduction(productionUpdated);
+
+    const currentRecipe = this.state.recipes.find(
+      (x) => x.title === this.state.todaysProduction.name,
+    );
 
     this.props.navigation.navigate('Brassagem Parte B', {
       production: productionUpdated,
+      recipe: currentRecipe,
     });
     window.stopwatchComponent.clearStopwatch();
+  };
+
+  updateProduction = (currentProduction) => {
+    let allProductions = this.state.productions;
+    const production = allProductions.find(
+      (x) => x.id === currentProduction.id,
+    );
+    const index = allProductions.indexOf(production);
+
+    if (index !== -1) {
+      allProductions[index] = currentProduction;
+    }
+
+    AsyncStorage.setItem(
+      PRODUCTIONS_KEY,
+      JSON.stringify(allProductions),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Production updated');
+      },
+    ).catch((err) => {
+      console.log('error is: ' + err);
+    });
   };
 
   render() {
@@ -121,7 +217,8 @@ class BrewPartAScreen extends Component {
             </View>
             <View style={styles.boxContainerLeft} alignItems={'flex-start'}>
               <Text style={styles.bodyText}>
-                Alterar temperatura do controlador para: 72 °C
+                Alterar temperatura do controlador para:{' '}
+                {this.getInitialTemperature()} °C
               </Text>
             </View>
           </View>
@@ -131,7 +228,7 @@ class BrewPartAScreen extends Component {
             <Button
               title="Avançar"
               color="#000000"
-              onPress={() => this.goToNextView(this.state.todaysProduction)}
+              onPress={() => this.goToNextView()}
             />
           </View>
         </TouchableHighlight>

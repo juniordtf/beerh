@@ -13,17 +13,33 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
 import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
+import AsyncStorage from '@react-native-community/async-storage';
+import {PRODUCTIONS_KEY, RECIPES_KEY} from '../statics/Statics';
 
 class BrewPartBScreen extends Component {
   constructor(props) {
     super(props);
+    const todayPt =
+      new Date().getDate() +
+      '/' +
+      (new Date().getMonth() + 1) +
+      '/' +
+      new Date().getFullYear();
+
     this.state = {
       todaysProduction: [],
+      todaysDatePt: todayPt,
+      productions: [],
+      recipes: [],
+      currentRecipe: [],
     };
   }
 
   componentDidMount() {
     this.keepStopwatchGoing();
+    this.getRecipes();
+    this.getProductions();
+    this.startTimer();
   }
 
   keepStopwatchGoing = () => {
@@ -31,9 +47,56 @@ class BrewPartBScreen extends Component {
     this.setState({todaysProduction: currentProduction});
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
-    //window.timerComponent.setTimer(90);
-    //window.timerComponent.startTimer();
   };
+
+  getProductions = async () => {
+    try {
+      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      if (value !== null) {
+        this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getRecipes = async () => {
+    try {
+      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      if (value !== null) {
+        this.setState({recipes: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  startTimer() {
+    const currentRecipe = this.props.route.params?.recipe;
+    this.setState({currentRecipe: currentRecipe});
+
+    let rampDuration = 59;
+    if (currentRecipe != null) {
+      console.log(currentRecipe.ramps[0].time);
+      rampDuration = parseInt(currentRecipe.ramps[0].time, 10) - 1;
+    }
+
+    window.timerComponent.setTimer(rampDuration);
+  }
+
+  getInitialTemperature() {
+    const currentRecipe = this.state.recipes.find(
+      (x) => x.title === this.state.todaysProduction.name,
+    );
+
+    if (currentRecipe != null) {
+      return parseFloat(currentRecipe.ramps[0].temperature, 10).toFixed(1);
+    }
+
+    return '65.0';
+  }
 
   render() {
     return (
@@ -80,7 +143,8 @@ class BrewPartBScreen extends Component {
             </View>
             <View style={styles.listContainerRight}>
               <Text style={styles.bodyText}>
-                Alterar temperatura de controle para 68 °C;
+                Alterar temperatura de controle para{' '}
+                {this.getInitialTemperature()} °C;
               </Text>
             </View>
           </View>
@@ -103,7 +167,9 @@ class BrewPartBScreen extends Component {
             <View style={styles.boxContainerRight}>
               <View>
                 <View style={styles.blackBoxContainer} marginBottom={15}>
-                  <Text style={styles.redText}>69 °C</Text>
+                  <Text style={styles.redText}>
+                    {this.getInitialTemperature()} °C
+                  </Text>
                 </View>
                 <Timer />
               </View>
@@ -151,7 +217,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     marginTop: 10,
-    marginLeft: 40,
+    marginLeft: 30,
     alignItems: 'flex-start',
   },
   title: {
@@ -273,7 +339,7 @@ const styles = StyleSheet.create({
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 300,
+    width: 320,
     height: 20,
     justifyContent: 'center',
     alignItems: 'flex-start',

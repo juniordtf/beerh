@@ -14,7 +14,7 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-community/async-storage';
 import Bullet from '../../assets/bullet.png';
-import {RECIPES_KEY} from '../statics/Statics';
+import {RECIPES_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
 
 class RecipeDetailScreen extends React.Component {
   constructor(props) {
@@ -41,12 +41,14 @@ class RecipeDetailScreen extends React.Component {
       modalVisible: false,
       recipes: [],
       currentRecipe: '',
+      productions: [],
     };
   }
 
   componentDidMount() {
     this.getCurrentRecipe();
     this.getRecipes();
+    this.getProductions();
   }
 
   getCurrentRecipe = () => {
@@ -85,6 +87,18 @@ class RecipeDetailScreen extends React.Component {
     }
   };
 
+  getProductions = async () => {
+    try {
+      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      if (value !== null) {
+        this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   openModal = () => {
     this.setState({
       modalVisible: true,
@@ -98,28 +112,39 @@ class RecipeDetailScreen extends React.Component {
   };
 
   deleteRecipe = (currentRecipe) => {
-    let allRecipes = this.state.recipes;
-    const recipe = allRecipes.find((x) => x.id === currentRecipe.id);
-    const index = allRecipes.indexOf(recipe);
+    var production = this.state.productions.find(
+      (x) => x.name === currentRecipe.title,
+    );
+    if (production != null) {
+      Alert.alert(
+        'Atenção',
+        'Esta receita não pode ser removida, pois ela está sendo utilizada em uma produção!',
+        [{text: 'OK', onPress: () => this.closeModal()}],
+      );
+    } else {
+      let allRecipes = this.state.recipes;
+      const recipe = allRecipes.find((x) => x.id === currentRecipe.id);
+      const index = allRecipes.indexOf(recipe);
 
-    if (index > -1) {
-      allRecipes.splice(index, 1);
-    }
-
-    AsyncStorage.setItem(RECIPES_KEY, JSON.stringify(allRecipes), (err) => {
-      if (err) {
-        console.log('an error occured');
-        throw err;
+      if (index > -1) {
+        allRecipes.splice(index, 1);
       }
-      console.log('Success. Production removed');
-    }).catch((err) => {
-      console.log('error is: ' + err);
-    });
 
-    this.closeModal();
+      AsyncStorage.setItem(RECIPES_KEY, JSON.stringify(allRecipes), (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Recipe removed');
+      }).catch((err) => {
+        console.log('error is: ' + err);
+      });
 
-    this.props.navigation.navigate('Receitas', {productions: allRecipes});
-    Alert.alert('Receita removida com sucesso!');
+      this.closeModal();
+
+      this.props.navigation.navigate('Receitas', {productions: allRecipes});
+      Alert.alert('Receita removida com sucesso!');
+    }
   };
 
   goToEditView = (currentRecipe) => {
