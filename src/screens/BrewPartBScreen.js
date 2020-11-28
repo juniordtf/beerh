@@ -13,8 +13,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
 import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
-import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY, RECIPES_KEY} from '../statics/Statics';
 
 class BrewPartBScreen extends Component {
   constructor(props) {
@@ -29,57 +27,28 @@ class BrewPartBScreen extends Component {
     this.state = {
       todaysProduction: [],
       todaysDatePt: todayPt,
-      productions: [],
-      recipes: [],
-      currentRecipe: [],
+      todaysRecipe: [],
     };
   }
 
   componentDidMount() {
     this.keepStopwatchGoing();
-    this.getRecipes();
-    this.getProductions();
     this.startTimer();
   }
 
   keepStopwatchGoing = () => {
-    let currentProduction = this.props.route.params?.production;
+    let currentProduction = this.props.route.params?.currentProduction;
     this.setState({todaysProduction: currentProduction});
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  getProductions = async () => {
-    try {
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
-      if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  getRecipes = async () => {
-    try {
-      const value = await AsyncStorage.getItem(RECIPES_KEY);
-      if (value !== null) {
-        this.setState({recipes: JSON.parse(value)});
-        console.log(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   startTimer() {
-    const currentRecipe = this.props.route.params?.recipe;
-    this.setState({currentRecipe: currentRecipe});
+    const currentRecipe = this.props.route.params?.currentRecipe;
+    this.setState({todaysRecipe: currentRecipe});
 
     let rampDuration = 59;
     if (currentRecipe != null) {
-      console.log(currentRecipe.ramps[0].time);
       rampDuration = parseInt(currentRecipe.ramps[0].time, 10) - 1;
     }
 
@@ -87,9 +56,7 @@ class BrewPartBScreen extends Component {
   }
 
   getInitialTemperature() {
-    const currentRecipe = this.state.recipes.find(
-      (x) => x.title === this.state.todaysProduction.name,
-    );
+    let currentRecipe = this.props.route.params?.currentRecipe;
 
     if (currentRecipe != null) {
       return parseFloat(currentRecipe.ramps[0].temperature, 10).toFixed(1);
@@ -97,6 +64,52 @@ class BrewPartBScreen extends Component {
 
     return '65.0';
   }
+
+  getStepsTotal() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.ramps.length + 1;
+  }
+
+  goToNextView = () => {
+    window.stopwatchComponent.stopStopwatch();
+
+    const productionUpdated = {
+      id: this.state.todaysProduction.id,
+      name: this.state.todaysProduction.name,
+      volume: this.state.todaysProduction.volume,
+      og: this.state.todaysProduction.og,
+      realOg: this.state.todaysProduction.realOg,
+      fg: this.state.todaysProduction.fg,
+      realFg: this.state.todaysProduction.realFg,
+      style: this.state.todaysProduction.style,
+      estimatedTime: this.state.todaysProduction.estimatedTime,
+      status: this.state.todaysProduction.status,
+      brewDate: this.state.todaysProduction.brewDate,
+      fermentationDate: this.state.todaysProduction.fermentationDate,
+      carbonationDate: this.state.todaysProduction.carbonationDate,
+      ageingDate: this.state.todaysProduction.ageingDate,
+      fillingDate: this.state.todaysProduction.fillingDate,
+      initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
+      duration: window.stopwatchComponent.showDisplay(),
+      createdAt: this.state.todaysProduction.createdAt,
+      lastUpdateDate: this.state.todaysDatePt,
+    };
+
+    if (this.state.todaysRecipe.ramps[1] != null) {
+      this.props.navigation.navigate('Brassagem Parte C', {
+        currentProduction: productionUpdated,
+        currentRecipe: this.state.todaysRecipe,
+      });
+    } else {
+      this.props.navigation.navigate('Lavagem', {
+        currentProduction: productionUpdated,
+        currentRecipe: this.state.todaysRecipe,
+      });
+    }
+
+    window.stopwatchComponent.clearStopwatch();
+  };
 
   render() {
     return (
@@ -119,7 +132,9 @@ class BrewPartBScreen extends Component {
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Brassagem (2/4)</Text>
+              <Text style={styles.bodyText}>
+                1ª Rampa - Brassagem (2/{this.getStepsTotal()})
+              </Text>
             </View>
           </View>
         </View>
@@ -180,7 +195,7 @@ class BrewPartBScreen extends Component {
           <Text style={styles.bodyTextLeft}>
             Etapas a serem feitas em paralelo:
           </Text>
-          <View style={styles.rowContainer}>
+          <View style={styles.rowContainer} marginTop={5}>
             <View style={styles.listContainerLeft}>
               <Image source={Bullet} />
             </View>
@@ -194,7 +209,7 @@ class BrewPartBScreen extends Component {
             <Button
               title="Avançar"
               color="#000000"
-              onPress={() => this.props.navigation.navigate('Receitas')}
+              onPress={() => this.goToNextView()}
             />
           </View>
         </TouchableHighlight>
@@ -237,7 +252,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 130,
+    height: 90,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -320,7 +335,7 @@ const styles = StyleSheet.create({
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 150,
+    width: 250,
     height: 50,
     justifyContent: 'center',
     alignItems: 'flex-start',

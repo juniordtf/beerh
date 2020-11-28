@@ -14,7 +14,7 @@ import Stopwatch from '../Utils/Stopwatch';
 import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
 
-class BrewPartCScreen extends Component {
+class SpargeScreen extends Component {
   constructor(props) {
     super(props);
     const todayPt =
@@ -49,26 +49,24 @@ class BrewPartCScreen extends Component {
 
     let rampDuration = 59;
     if (currentRecipe != null) {
-      rampDuration = parseInt(currentRecipe.ramps[1].time, 10) - 1;
+      console.log(currentRecipe.ramps[0].time);
+      rampDuration = parseInt(currentRecipe.ramps[0].time, 10) - 1;
     }
 
     window.timerComponent.setTimer(rampDuration);
   }
 
-  getInitialTemperature() {
+  getMashoutTemperature() {
     let currentRecipe = this.props.route.params?.currentRecipe;
 
     if (currentRecipe != null) {
-      return parseFloat(currentRecipe.ramps[1].temperature, 10).toFixed(1);
+      return parseFloat(
+        currentRecipe.ramps[currentRecipe.ramps.length - 1].temperature,
+        10,
+      ).toFixed(1);
     }
 
     return '76.0';
-  }
-
-  getStepsTotal() {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-
-    return currentRecipe.ramps.length + 1;
   }
 
   goToNextView = () => {
@@ -96,17 +94,10 @@ class BrewPartCScreen extends Component {
       lastUpdateDate: this.state.todaysDatePt,
     };
 
-    if (this.state.todaysRecipe.ramps[2] != null) {
-      this.props.navigation.navigate('Brassagem Parte D', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    } else {
-      this.props.navigation.navigate('Lavagem', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    }
+    this.props.navigation.navigate('Fervura Parte A', {
+      currentProduction: productionUpdated,
+      currentRecipe: this.state.todaysRecipe,
+    });
 
     window.stopwatchComponent.clearStopwatch();
   };
@@ -128,13 +119,11 @@ class BrewPartCScreen extends Component {
           <View style={styles.rowContainer}>
             <View style={styles.sectionContainerLeft}>
               <View style={styles.circle}>
-                <Text style={styles.bodyText}>3</Text>
+                <Text style={styles.bodyText}>4</Text>
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>
-                2ª Rampa - Brassagem (3/{this.getStepsTotal()})
-              </Text>
+              <Text style={styles.bodyText}>Lavagem dos grãos</Text>
             </View>
           </View>
         </View>
@@ -150,8 +139,41 @@ class BrewPartCScreen extends Component {
             </View>
             <View style={styles.listContainerRight}>
               <Text style={styles.bodyText}>
-                Alterar temperatura de controle para{' '}
-                {this.getInitialTemperature()} °C;
+                Manter a temperatura de controle em{' '}
+                {this.getMashoutTemperature()} °C;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight} height={40}>
+              <Text style={styles.bodyText}>
+                Lavar grãos com 1/3 da água quente, recircular o mosto e fazer
+                1ª trasfega;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight} height={40}>
+              <Text style={styles.bodyText}>
+                Lavar grãos com metade da água quente restante, recircular o
+                mosto e fazer 2ª trasfega;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight} height={40}>
+              <Text style={styles.bodyText}>
+                Lavar grãos o restante da água quente, recircular o mosto e
+                fazer 3ª trasfega;
               </Text>
             </View>
           </View>
@@ -165,10 +187,9 @@ class BrewPartCScreen extends Component {
               <View>
                 <View style={styles.blackBoxContainer} marginBottom={15}>
                   <Text style={styles.redText}>
-                    {this.getInitialTemperature()} °C
+                    {this.getMashoutTemperature()} °C
                   </Text>
                 </View>
-                <Timer />
               </View>
             </View>
           </View>
@@ -182,7 +203,9 @@ class BrewPartCScreen extends Component {
               <Image source={Bullet} />
             </View>
             <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>Esquentar a água de lavagem;</Text>
+              <Text style={styles.bodyText}>
+                Medição de desidade a cada trasfega;
+              </Text>
             </View>
           </View>
           <View style={styles.rowContainer}>
@@ -190,9 +213,7 @@ class BrewPartCScreen extends Component {
               <Image source={Bullet} />
             </View>
             <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Lavar e sanitizar baldes fermentadores;
-              </Text>
+              <Text style={styles.bodyText}>Teste do iodo;</Text>
             </View>
           </View>
         </View>
@@ -255,7 +276,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   bodyTextLeft: {
     fontSize: 15,
@@ -372,4 +393,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BrewPartCScreen;
+export default SpargeScreen;

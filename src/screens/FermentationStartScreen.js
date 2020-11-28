@@ -7,14 +7,14 @@ import {
   Image,
   TouchableHighlight,
   Button,
+  TextInput,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
-import Timer from '../Utils/Timer';
-import BrewBoiler from '../../assets/brewBoiler.png';
+import Brewery from '../../assets/brewery.png';
 
-class BrewPartCScreen extends Component {
+class FermentationStartScreen extends Component {
   constructor(props) {
     super(props);
     const todayPt =
@@ -33,7 +33,6 @@ class BrewPartCScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
-    this.startTimer();
   }
 
   keepStopwatchGoing = () => {
@@ -43,32 +42,16 @@ class BrewPartCScreen extends Component {
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  startTimer() {
-    const currentRecipe = this.props.route.params?.currentRecipe;
-    this.setState({todaysRecipe: currentRecipe});
-
-    let rampDuration = 59;
-    if (currentRecipe != null) {
-      rampDuration = parseInt(currentRecipe.ramps[1].time, 10) - 1;
-    }
-
-    window.timerComponent.setTimer(rampDuration);
-  }
-
   getInitialTemperature() {
     let currentRecipe = this.props.route.params?.currentRecipe;
 
-    if (currentRecipe != null) {
-      return parseFloat(currentRecipe.ramps[1].temperature, 10).toFixed(1);
+    if (currentRecipe != null && currentRecipe.fermentation != null) {
+      return parseFloat(currentRecipe.fermentation[0].temperature, 10).toFixed(
+        1,
+      );
     }
 
-    return '76.0';
-  }
-
-  getStepsTotal() {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-
-    return currentRecipe.ramps.length + 1;
+    return '18.0';
   }
 
   goToNextView = () => {
@@ -96,17 +79,10 @@ class BrewPartCScreen extends Component {
       lastUpdateDate: this.state.todaysDatePt,
     };
 
-    if (this.state.todaysRecipe.ramps[2] != null) {
-      this.props.navigation.navigate('Brassagem Parte D', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    } else {
-      this.props.navigation.navigate('Lavagem', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    }
+    this.props.navigation.navigate('Checklist Final de Limpeza', {
+      currentProduction: productionUpdated,
+      currentRecipe: this.state.todaysRecipe,
+    });
 
     window.stopwatchComponent.clearStopwatch();
   };
@@ -128,13 +104,11 @@ class BrewPartCScreen extends Component {
           <View style={styles.rowContainer}>
             <View style={styles.sectionContainerLeft}>
               <View style={styles.circle}>
-                <Text style={styles.bodyText}>3</Text>
+                <Text style={styles.bodyText}>8</Text>
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>
-                2ª Rampa - Brassagem (3/{this.getStepsTotal()})
-              </Text>
+              <Text style={styles.bodyText}>Início da fermentação</Text>
             </View>
           </View>
         </View>
@@ -150,16 +124,56 @@ class BrewPartCScreen extends Component {
             </View>
             <View style={styles.listContainerRight}>
               <Text style={styles.bodyText}>
-                Alterar temperatura de controle para{' '}
+                Medir a densidade inicial (OG);
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.doubleListContainerRight}>
+              <Text style={styles.bodyText}>
+                Alterar temperatura de controle do freezer para{' '}
                 {this.getInitialTemperature()} °C;
               </Text>
             </View>
           </View>
+          <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
+              <Text style={styles.bodyText}>
+                Fazer solução de água + álcool para blow-offs;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.doubleListContainerRight}>
+              <Text style={styles.bodyText}>
+                Colocar o mosto nos baldes, acrescentar a levedura e tampá-los;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
+              <Text style={styles.bodyText}>
+                Colocar baldes fermentadores no freezer;
+              </Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.bodyContainer} marginTop={30}>
+        <View style={styles.bodyContainer} marginTop={40}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              <Image source={BrewBoiler} />
+              <Image source={Brewery} />
             </View>
             <View style={styles.boxContainerRight}>
               <View>
@@ -168,31 +182,20 @@ class BrewPartCScreen extends Component {
                     {this.getInitialTemperature()} °C
                   </Text>
                 </View>
-                <Timer />
+                <View style={styles.centeredTitleContainer}>
+                  <Text style={styles.bodyTextLeft}>OG medida: </Text>
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    onChangeText={(realOg) => this.setState({realOg})}
+                    value={this.state.realOg}
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                  />
+                </View>
               </View>
-            </View>
-          </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <Text style={styles.bodyTextLeft}>
-            Etapas a serem feitas em paralelo:
-          </Text>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>Esquentar a água de lavagem;</Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Lavar e sanitizar baldes fermentadores;
-              </Text>
             </View>
           </View>
         </View>
@@ -227,6 +230,11 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     alignItems: 'flex-start',
   },
+  centeredBodyContainer: {
+    marginTop: 10,
+    marginLeft: 30,
+    alignItems: 'center',
+  },
   title: {
     marginRight: 'auto',
     marginLeft: 'auto',
@@ -244,7 +252,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 100,
+    height: 210,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -255,7 +263,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   bodyTextLeft: {
     fontSize: 15,
@@ -264,6 +272,12 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 5,
     marginTop: 5,
+  },
+  checklistText: {
+    marginLeft: 15,
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'left',
   },
   circle: {
     width: 25,
@@ -276,7 +290,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    marginTop: 25,
+    marginTop: 160,
     marginLeft: 200,
     width: 170,
     paddingTop: 5,
@@ -351,6 +365,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
+  doubleListContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginRight: marginHorizontal,
+    width: 320,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  cardListContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginRight: marginHorizontal,
+    width: 250,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
   blackBoxContainer: {
     marginTop: 15,
     marginRight: 'auto',
@@ -370,6 +402,43 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
   },
+  inputContainer: {
+    backgroundColor: '#F6F0F0',
+    borderColor: 'black',
+    width: 110,
+    height: 44,
+    borderWidth: 1,
+    marginLeft: 15,
+    marginBottom: 3,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  inputContainerLeft: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: 20,
+    marginRight: marginHorizontal,
+    width: 150,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  inputContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 100,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  centeredTitleContainer: {
+    marginTop: 10,
+    marginBottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
-export default BrewPartCScreen;
+export default FermentationStartScreen;

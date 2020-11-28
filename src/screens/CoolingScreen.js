@@ -13,8 +13,9 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
 import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
+import Thermometer from '../../assets/thermometer.png';
 
-class BrewPartCScreen extends Component {
+class CoolingScreen extends Component {
   constructor(props) {
     super(props);
     const todayPt =
@@ -33,7 +34,7 @@ class BrewPartCScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
-    this.startTimer();
+    window.timerComponent.setTimer(39);
   }
 
   keepStopwatchGoing = () => {
@@ -43,32 +44,10 @@ class BrewPartCScreen extends Component {
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  startTimer() {
-    const currentRecipe = this.props.route.params?.currentRecipe;
-    this.setState({todaysRecipe: currentRecipe});
-
-    let rampDuration = 59;
-    if (currentRecipe != null) {
-      rampDuration = parseInt(currentRecipe.ramps[1].time, 10) - 1;
-    }
-
-    window.timerComponent.setTimer(rampDuration);
-  }
-
-  getInitialTemperature() {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-
-    if (currentRecipe != null) {
-      return parseFloat(currentRecipe.ramps[1].temperature, 10).toFixed(1);
-    }
-
-    return '76.0';
-  }
-
   getStepsTotal() {
     let currentRecipe = this.props.route.params?.currentRecipe;
 
-    return currentRecipe.ramps.length + 1;
+    return currentRecipe.boil.length + 1;
   }
 
   goToNextView = () => {
@@ -96,17 +75,10 @@ class BrewPartCScreen extends Component {
       lastUpdateDate: this.state.todaysDatePt,
     };
 
-    if (this.state.todaysRecipe.ramps[2] != null) {
-      this.props.navigation.navigate('Brassagem Parte D', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    } else {
-      this.props.navigation.navigate('Lavagem', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    }
+    this.props.navigation.navigate('Início da Fermentação', {
+      currentProduction: productionUpdated,
+      currentRecipe: this.state.todaysRecipe,
+    });
 
     window.stopwatchComponent.clearStopwatch();
   };
@@ -128,13 +100,11 @@ class BrewPartCScreen extends Component {
           <View style={styles.rowContainer}>
             <View style={styles.sectionContainerLeft}>
               <View style={styles.circle}>
-                <Text style={styles.bodyText}>3</Text>
+                <Text style={styles.bodyText}>7</Text>
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>
-                2ª Rampa - Brassagem (3/{this.getStepsTotal()})
-              </Text>
+              <Text style={styles.bodyText}>Resfriamento</Text>
             </View>
           </View>
         </View>
@@ -150,8 +120,8 @@ class BrewPartCScreen extends Component {
             </View>
             <View style={styles.listContainerRight}>
               <Text style={styles.bodyText}>
-                Alterar temperatura de controle para{' '}
-                {this.getInitialTemperature()} °C;
+                Abaixar a temperatura do mosto para pelo menos a temperatura
+                ambiente;
               </Text>
             </View>
           </View>
@@ -159,14 +129,15 @@ class BrewPartCScreen extends Component {
         <View style={styles.bodyContainer} marginTop={30}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              <Image source={BrewBoiler} />
+              <View style={styles.rowContainer}>
+                <Image source={BrewBoiler} />
+                <Image source={Thermometer} marginLeft={5} />
+              </View>
             </View>
             <View style={styles.boxContainerRight}>
               <View>
                 <View style={styles.blackBoxContainer} marginBottom={15}>
-                  <Text style={styles.redText}>
-                    {this.getInitialTemperature()} °C
-                  </Text>
+                  <Text style={styles.redText}>22.0 °C</Text>
                 </View>
                 <Timer />
               </View>
@@ -181,17 +152,9 @@ class BrewPartCScreen extends Component {
             <View style={styles.listContainerLeft}>
               <Image source={Bullet} />
             </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>Esquentar a água de lavagem;</Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Lavar e sanitizar baldes fermentadores;
+            <View style={styles.cardListContainerRight}>
+              <Text style={styles.checklistText}>
+                Lavar utensílios que foram utilizados em etapas anteriores;
               </Text>
             </View>
           </View>
@@ -255,7 +218,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   bodyTextLeft: {
     fontSize: 15,
@@ -264,6 +227,12 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 5,
     marginTop: 5,
+  },
+  checklistText: {
+    marginLeft: 15,
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'left',
   },
   circle: {
     width: 25,
@@ -347,7 +316,16 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
     width: 320,
-    height: 20,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  cardListContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginRight: marginHorizontal,
+    width: 250,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
@@ -372,4 +350,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BrewPartCScreen;
+export default CoolingScreen;

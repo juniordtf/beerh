@@ -16,7 +16,7 @@ import Stopwatch from '../Utils/Stopwatch';
 import AsyncStorage from '@react-native-community/async-storage';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
 
-class CleaningChecklistScreen extends Component {
+class FinalCleaningChecklistScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -134,7 +134,7 @@ class CleaningChecklistScreen extends Component {
 
     this.updateProduction(productionUpdated);
 
-    this.props.navigation.navigate('Checklist de Montagem', {
+    this.props.navigation.navigate('Checklist de Desmontagem', {
       currentProduction: productionUpdated,
       currentRecipe: this.state.todaysRecipe,
     });
@@ -185,7 +185,7 @@ class CleaningChecklistScreen extends Component {
           <View style={styles.rowContainer}>
             <View style={styles.sectionContainerLeft}>
               <View style={styles.circle}>
-                <Text style={styles.bodyText}>1</Text>
+                <Text style={styles.bodyText}>9</Text>
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
@@ -196,7 +196,7 @@ class CleaningChecklistScreen extends Component {
         <View style={styles.bodyContainer} marginTop={15}>
           <View style={styles.rowContainer}>
             <Image source={ChecklistIcon} marginLeft={5} />
-            <Text style={styles.bodyText}> Checklist de Limpeza</Text>
+            <Text style={styles.bodyText}> Checklist Final de Limpeza</Text>
           </View>
         </View>
         <View style={styles.cardContainer}>
@@ -410,4 +410,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CleaningChecklistScreen;
+export default FinalCleaningChecklistScreen;

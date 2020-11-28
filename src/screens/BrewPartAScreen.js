@@ -12,8 +12,6 @@ import BrewingMill from '../../assets/brewingMill.png';
 import HotWater from '../../assets/hotWater.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
-import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY, RECIPES_KEY} from '../statics/Statics';
 
 class BrewPartAScreen extends Component {
   constructor(props) {
@@ -29,58 +27,30 @@ class BrewPartAScreen extends Component {
     this.state = {
       todaysProduction: [],
       todaysDatePt: todayPt,
-      productions: [],
-      recipes: [],
+      todaysRecipe: [],
     };
   }
 
   componentDidMount() {
     this.keepStopwatchGoing();
-    this.getProductions();
-    this.getCurrentProduction();
-    this.getRecipes();
+    this.getCurrentRecipe();
   }
 
   keepStopwatchGoing = () => {
-    let currentProduction = this.props.route.params?.production;
+    let currentProduction = this.props.route.params?.currentProduction;
     this.setState({todaysProduction: currentProduction});
+
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  getProductions = async () => {
-    try {
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
-      if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  getCurrentProduction = () => {
-    let currentProduction = this.props.route.params?.production;
-    this.setState({todaysProduction: currentProduction});
-  };
-
-  getRecipes = async () => {
-    try {
-      const value = await AsyncStorage.getItem(RECIPES_KEY);
-      if (value !== null) {
-        this.setState({recipes: JSON.parse(value)});
-        console.log(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  getCurrentRecipe = () => {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+    this.setState({todaysRecipe: currentRecipe});
   };
 
   getInitialTemperature() {
-    const currentRecipe = this.state.recipes.find(
-      (x) => x.title === this.state.todaysProduction.name,
-    );
+    let currentRecipe = this.props.route.params?.currentRecipe;
 
     if (currentRecipe != null) {
       return (parseFloat(currentRecipe.ramps[0].temperature, 10) + 9).toFixed(
@@ -89,6 +59,12 @@ class BrewPartAScreen extends Component {
     }
 
     return '75.0';
+  }
+
+  getStepsTotal() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.ramps.length + 1;
   }
 
   goToNextView = () => {
@@ -116,43 +92,12 @@ class BrewPartAScreen extends Component {
       lastUpdateDate: this.state.todaysDatePt,
     };
 
-    this.updateProduction(productionUpdated);
-
-    const currentRecipe = this.state.recipes.find(
-      (x) => x.title === this.state.todaysProduction.name,
-    );
-
     this.props.navigation.navigate('Brassagem Parte B', {
-      production: productionUpdated,
-      recipe: currentRecipe,
+      currentProduction: productionUpdated,
+      currentRecipe: this.state.todaysRecipe,
     });
+
     window.stopwatchComponent.clearStopwatch();
-  };
-
-  updateProduction = (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
   };
 
   render() {
@@ -176,7 +121,9 @@ class BrewPartAScreen extends Component {
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Brassagem (1/4)</Text>
+              <Text style={styles.bodyText}>
+                Brassagem (1/{this.getStepsTotal()})
+              </Text>
             </View>
           </View>
         </View>

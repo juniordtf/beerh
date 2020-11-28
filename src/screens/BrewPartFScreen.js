@@ -14,7 +14,7 @@ import Stopwatch from '../Utils/Stopwatch';
 import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
 
-class BrewPartCScreen extends Component {
+class BrewPartFScreen extends Component {
   constructor(props) {
     super(props);
     const todayPt =
@@ -49,7 +49,8 @@ class BrewPartCScreen extends Component {
 
     let rampDuration = 59;
     if (currentRecipe != null) {
-      rampDuration = parseInt(currentRecipe.ramps[1].time, 10) - 1;
+      console.log(currentRecipe.ramps[0].time);
+      rampDuration = parseInt(currentRecipe.ramps[4].time, 10) - 1;
     }
 
     window.timerComponent.setTimer(rampDuration);
@@ -59,7 +60,7 @@ class BrewPartCScreen extends Component {
     let currentRecipe = this.props.route.params?.currentRecipe;
 
     if (currentRecipe != null) {
-      return parseFloat(currentRecipe.ramps[1].temperature, 10).toFixed(1);
+      return parseFloat(currentRecipe.ramps[4].temperature, 10).toFixed(1);
     }
 
     return '76.0';
@@ -96,17 +97,10 @@ class BrewPartCScreen extends Component {
       lastUpdateDate: this.state.todaysDatePt,
     };
 
-    if (this.state.todaysRecipe.ramps[2] != null) {
-      this.props.navigation.navigate('Brassagem Parte D', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    } else {
-      this.props.navigation.navigate('Lavagem', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    }
+    this.props.navigation.navigate('Lavagem', {
+      currentProduction: productionUpdated,
+      currentRecipe: this.state.todaysRecipe,
+    });
 
     window.stopwatchComponent.clearStopwatch();
   };
@@ -133,7 +127,7 @@ class BrewPartCScreen extends Component {
             </View>
             <View style={styles.sectionContainerRight}>
               <Text style={styles.bodyText}>
-                2ª Rampa - Brassagem (3/{this.getStepsTotal()})
+                5ª Rampa - Brassagem (6/{this.getStepsTotal()})
               </Text>
             </View>
           </View>
@@ -372,4 +366,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BrewPartCScreen;
+export default BrewPartFScreen;

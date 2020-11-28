@@ -19,6 +19,7 @@ class SetupChecklistScreen extends Component {
     super(props);
     this.state = {
       todaysProduction: [],
+      todaysRecipe: [],
       checklistItemOneDone: false,
       checklistItemTwoDone: false,
       checklistItemThreeDone: false,
@@ -29,13 +30,19 @@ class SetupChecklistScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
+    this.getCurrentRecipe();
   }
 
   keepStopwatchGoing = () => {
-    let currentProduction = this.props.route.params?.production;
+    let currentProduction = this.props.route.params?.currentProduction;
     this.setState({todaysProduction: currentProduction});
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
+  };
+
+  getCurrentRecipe = () => {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+    this.setState({todaysRecipe: currentRecipe});
   };
 
   renderCheckImage01 = () => {
@@ -95,8 +102,10 @@ class SetupChecklistScreen extends Component {
     };
 
     this.props.navigation.navigate('Brassagem Parte A', {
-      production: productionUpdated,
+      currentProduction: productionUpdated,
+      currentRecipe: this.state.todaysRecipe,
     });
+
     window.stopwatchComponent.clearStopwatch();
   };
 
@@ -134,7 +143,7 @@ class SetupChecklistScreen extends Component {
         <View style={styles.cardContainer}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              <Text>Colocar cortina</Text>
+              <Text style={styles.checklistText}>Colocar cortina</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -147,7 +156,7 @@ class SetupChecklistScreen extends Component {
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text>Montar fogões e gás</Text>
+              <Text style={styles.checklistText}>Montar fogões e gás</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -160,7 +169,9 @@ class SetupChecklistScreen extends Component {
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text>Montar kit de recirculação</Text>
+              <Text style={styles.checklistText}>
+                Montar kit de recirculação
+              </Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -173,7 +184,9 @@ class SetupChecklistScreen extends Component {
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text>Montar controlador de temperatura</Text>
+              <Text style={styles.checklistText}>
+                Montar controlador de temperatura
+              </Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -217,6 +230,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 40,
     alignItems: 'flex-start',
+  },
+  checklistText: {
+    marginLeft: 15,
+    fontSize: 14,
+    color: 'black',
+    textAlign: 'left',
   },
   title: {
     marginRight: 'auto',
@@ -284,7 +303,7 @@ const styles = StyleSheet.create({
     width: 210,
     height: 50,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     borderRadius: 5,
     backgroundColor: '#EDEDED',
   },
@@ -308,7 +327,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 50,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   sectionContainerRight: {
     marginTop: marginVertical,

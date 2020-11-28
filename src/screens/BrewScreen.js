@@ -11,19 +11,34 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import Beach from '../../assets/beach.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {
+  PRODUCTIONS_KEY,
+  RECIPES_KEY,
+  CURRENT_PRODUCTION_KEY,
+  CURRENT_RECIPE_KEY,
+} from '../statics/Statics';
 
 class BrewScreen extends React.Component {
   constructor(props) {
+    const todayPt =
+      new Date().getDate() +
+      '/' +
+      (new Date().getMonth() + 1) +
+      '/' +
+      new Date().getFullYear();
+
     super(props);
     window.brewScreen = this;
     this.state = {
+      todaysDatePt: todayPt,
       productions: [],
+      recipes: [],
     };
   }
 
   componentDidMount() {
     this.getProductions();
+    this.getRecipes();
   }
 
   getProductions = async () => {
@@ -38,21 +53,95 @@ class BrewScreen extends React.Component {
     }
   };
 
+  getRecipes = async () => {
+    try {
+      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      if (value !== null) {
+        this.setState({recipes: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  startBrewing = (todaysProduction) => {
+    const currentRecipe = this.state.recipes.find(
+      (x) => x.title === todaysProduction.name,
+    );
+
+    const currentProduction = {
+      id: todaysProduction.id,
+      name: todaysProduction.name,
+      volume: todaysProduction.volume,
+      og: todaysProduction.og,
+      realOg: todaysProduction.realOg,
+      fg: todaysProduction.fg,
+      realFg: todaysProduction.realFg,
+      style: todaysProduction.style,
+      estimatedTime: todaysProduction.estimatedTime,
+      status: todaysProduction.status,
+      brewDate: todaysProduction.brewDate,
+      fermentationDate: todaysProduction.fermentationDate,
+      carbonationDate: todaysProduction.carbonationDate,
+      ageingDate: todaysProduction.ageingDate,
+      fillingDate: todaysProduction.fillingDate,
+      initialCalendarDate: todaysProduction.initialCalendarDate,
+      duration: todaysProduction.duration,
+      createdAt: todaysProduction.createdAt,
+      lastUpdateDate: this.state.todaysDatePt,
+      viewToRestore: '',
+    };
+
+    AsyncStorage.setItem(
+      CURRENT_PRODUCTION_KEY,
+      JSON.stringify(currentProduction),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Current production saved');
+      },
+    )
+      .catch((err) => {
+        console.log('error is: ' + err);
+      })
+      .then(
+        AsyncStorage.setItem(
+          CURRENT_RECIPE_KEY,
+          JSON.stringify(currentRecipe),
+          (err) => {
+            if (err) {
+              console.log('an error occured');
+              throw err;
+            }
+            console.log('Success. Current recipe saved');
+          },
+        )
+          .catch((err) => {
+            console.log('error is: ' + err);
+          })
+          .then(
+            this.props.navigation.navigate('Checklist de Limpeza', {
+              currentProduction: todaysProduction,
+              currentRecipe: currentRecipe,
+            }),
+          ),
+      );
+  };
+
   render() {
     let productions = this.state.productions;
-    const todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
 
     if (
       productions != null &&
       productions.length > 0 &&
-      productions.find((x) => x.brewDate === todayPt)
+      productions.find((x) => x.brewDate === this.state.todaysDatePt)
     ) {
-      const todaysProduction = productions.find((x) => x.brewDate === todayPt);
+      const todaysProduction = productions.find(
+        (x) => x.brewDate === this.state.todaysDatePt,
+      );
       const duration = parseInt(todaysProduction.estimatedTime, 10) / 60;
       return (
         <SafeAreaView>
@@ -90,11 +179,7 @@ class BrewScreen extends React.Component {
                 <Button
                   title="Iniciar"
                   color="#000000"
-                  onPress={() =>
-                    this.props.navigation.navigate('Checklist de Limpeza', {
-                      production: todaysProduction,
-                    })
-                  }
+                  onPress={() => this.startBrewing(todaysProduction)}
                 />
               </View>
             </TouchableHighlight>

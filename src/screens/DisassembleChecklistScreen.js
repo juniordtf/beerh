@@ -13,24 +13,12 @@ import CircleChecked from '../../assets/CircleChecked.png';
 import CircleUnchecked from '../../assets/CircleUnchecked.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
-import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
 
-class CleaningChecklistScreen extends Component {
+class DisassembleChecklistScreen extends Component {
   constructor(props) {
     super(props);
-
-    const todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
-
     this.state = {
-      productions: [],
       todaysProduction: [],
-      todaysDatePt: todayPt,
       todaysRecipe: [],
       checklistItemOneDone: false,
       checklistItemTwoDone: false,
@@ -41,35 +29,20 @@ class CleaningChecklistScreen extends Component {
   }
 
   componentDidMount() {
-    window.stopwatchComponent.startStopwatch();
-    this.getProductions();
-    this.getCurrentProduction();
+    this.keepStopwatchGoing();
     this.getCurrentRecipe();
   }
 
-  getCurrentProduction = () => {
+  keepStopwatchGoing = () => {
     let currentProduction = this.props.route.params?.currentProduction;
     this.setState({todaysProduction: currentProduction});
+    window.stopwatchComponent.startStopwatch();
+    window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
   getCurrentRecipe = () => {
     let currentRecipe = this.props.route.params?.currentRecipe;
     this.setState({todaysRecipe: currentRecipe});
-  };
-
-  getProductions = async () => {
-    try {
-      let currentProduction = this.props.route.params?.production;
-      this.setState({todaysProduction: currentProduction});
-
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
-      if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   renderCheckImage01 = () => {
@@ -107,65 +80,33 @@ class CleaningChecklistScreen extends Component {
     return <Image source={imgSource} />;
   };
 
-  goToNextView = () => {
+  goToNextView = (currentProduction) => {
     window.stopwatchComponent.stopStopwatch();
 
     const productionUpdated = {
-      id: this.state.todaysProduction.id,
-      name: this.state.todaysProduction.name,
-      volume: this.state.todaysProduction.volume,
-      og: this.state.todaysProduction.og,
-      realOg: this.state.todaysProduction.realOg,
-      fg: this.state.todaysProduction.fg,
-      realFg: this.state.todaysProduction.realFg,
-      style: this.state.todaysProduction.style,
-      estimatedTime: this.state.todaysProduction.estimatedTime,
-      status: 'in progress',
-      brewDate: this.state.todaysProduction.brewDate,
-      fermentationDate: this.state.todaysProduction.fermentationDate,
-      carbonationDate: this.state.todaysProduction.carbonationDate,
-      ageingDate: this.state.todaysProduction.ageingDate,
-      fillingDate: this.state.todaysProduction.fillingDate,
-      initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
+      id: currentProduction.id,
+      name: currentProduction.name,
+      volume: currentProduction.volume,
+      og: currentProduction.og,
+      fg: currentProduction.fg,
+      style: currentProduction.style,
+      estimatedTime: currentProduction.estimatedTime,
+      status: currentProduction.status,
+      brewDate: currentProduction.brewDate,
+      fermentationDate: currentProduction.fermentationDate,
+      carbonationDate: currentProduction.carbonationDate,
+      ageingDate: currentProduction.ageingDate,
+      fillingDate: currentProduction.fillingDate,
       duration: window.stopwatchComponent.showDisplay(),
-      createdAt: this.state.todaysProduction.createdAt,
-      lastUpdateDate: this.state.todaysDatePt,
+      createdAt: currentProduction.createdAt,
     };
 
-    this.updateProduction(productionUpdated);
-
-    this.props.navigation.navigate('Checklist de Montagem', {
+    this.props.navigation.navigate('Brassagem', {
       currentProduction: productionUpdated,
       currentRecipe: this.state.todaysRecipe,
     });
 
     window.stopwatchComponent.clearStopwatch();
-  };
-
-  updateProduction = (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
   };
 
   render() {
@@ -185,24 +126,24 @@ class CleaningChecklistScreen extends Component {
           <View style={styles.rowContainer}>
             <View style={styles.sectionContainerLeft}>
               <View style={styles.circle}>
-                <Text style={styles.bodyText}>1</Text>
+                <Text style={styles.bodyText}>10</Text>
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Limpeza</Text>
+              <Text style={styles.bodyText}>Montagem</Text>
             </View>
           </View>
         </View>
         <View style={styles.bodyContainer} marginTop={15}>
           <View style={styles.rowContainer}>
             <Image source={ChecklistIcon} marginLeft={5} />
-            <Text style={styles.bodyText}> Checklist de Limpeza</Text>
+            <Text style={styles.bodyText}> Checklist de Desmontagem</Text>
           </View>
         </View>
         <View style={styles.cardContainer}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar a área</Text>
+              <Text style={styles.checklistText}>Colocar cortina</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -215,7 +156,7 @@ class CleaningChecklistScreen extends Component {
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar as panelas</Text>
+              <Text style={styles.checklistText}>Montar fogões e gás</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -228,7 +169,9 @@ class CleaningChecklistScreen extends Component {
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar fundos falsos</Text>
+              <Text style={styles.checklistText}>
+                Montar kit de recirculação
+              </Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -242,7 +185,7 @@ class CleaningChecklistScreen extends Component {
             </View>
             <View style={styles.boxContainerLeft}>
               <Text style={styles.checklistText}>
-                Lavar kit de recirculação
+                Montar controlador de temperatura
               </Text>
             </View>
             <View style={styles.boxContainerRight}>
@@ -255,19 +198,6 @@ class CleaningChecklistScreen extends Component {
                 {this.renderCheckImage04()}
               </TouchableHighlight>
             </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar as bombas</Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemFiveDone: !this.state.checklistItemFiveDone,
-                  })
-                }>
-                {this.renderCheckImage05()}
-              </TouchableHighlight>
-            </View>
           </View>
         </View>
         <TouchableHighlight>
@@ -275,7 +205,7 @@ class CleaningChecklistScreen extends Component {
             <Button
               title="Avançar"
               color="#000000"
-              onPress={() => this.goToNextView()}
+              onPress={() => this.goToNextView(this.state.todaysProduction)}
             />
           </View>
         </TouchableHighlight>
@@ -300,6 +230,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 40,
     alignItems: 'flex-start',
+  },
+  checklistText: {
+    marginLeft: 15,
+    fontSize: 14,
+    color: 'black',
+    textAlign: 'left',
   },
   title: {
     marginRight: 'auto',
@@ -329,13 +265,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'left',
-  },
-  checklistText: {
-    marginLeft: 15,
-    fontSize: 14,
-    color: 'black',
-    textAlign: 'left',
+    textAlign: 'center',
   },
   circle: {
     width: 25,
@@ -397,7 +327,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 50,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   sectionContainerRight: {
     marginTop: marginVertical,
@@ -410,4 +340,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CleaningChecklistScreen;
+export default DisassembleChecklistScreen;

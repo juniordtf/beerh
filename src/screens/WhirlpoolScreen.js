@@ -14,7 +14,7 @@ import Stopwatch from '../Utils/Stopwatch';
 import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
 
-class BrewPartCScreen extends Component {
+class WhirlpoolScreen extends Component {
   constructor(props) {
     super(props);
     const todayPt =
@@ -33,7 +33,7 @@ class BrewPartCScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
-    this.startTimer();
+    window.timerComponent.setTimer(1);
   }
 
   keepStopwatchGoing = () => {
@@ -43,32 +43,10 @@ class BrewPartCScreen extends Component {
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  startTimer() {
-    const currentRecipe = this.props.route.params?.currentRecipe;
-    this.setState({todaysRecipe: currentRecipe});
-
-    let rampDuration = 59;
-    if (currentRecipe != null) {
-      rampDuration = parseInt(currentRecipe.ramps[1].time, 10) - 1;
-    }
-
-    window.timerComponent.setTimer(rampDuration);
-  }
-
-  getInitialTemperature() {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-
-    if (currentRecipe != null) {
-      return parseFloat(currentRecipe.ramps[1].temperature, 10).toFixed(1);
-    }
-
-    return '76.0';
-  }
-
   getStepsTotal() {
     let currentRecipe = this.props.route.params?.currentRecipe;
 
-    return currentRecipe.ramps.length + 1;
+    return currentRecipe.boil.length;
   }
 
   goToNextView = () => {
@@ -96,17 +74,10 @@ class BrewPartCScreen extends Component {
       lastUpdateDate: this.state.todaysDatePt,
     };
 
-    if (this.state.todaysRecipe.ramps[2] != null) {
-      this.props.navigation.navigate('Brassagem Parte D', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    } else {
-      this.props.navigation.navigate('Lavagem', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      });
-    }
+    this.props.navigation.navigate('Resfriamento', {
+      currentProduction: productionUpdated,
+      currentRecipe: this.state.todaysRecipe,
+    });
 
     window.stopwatchComponent.clearStopwatch();
   };
@@ -128,13 +99,11 @@ class BrewPartCScreen extends Component {
           <View style={styles.rowContainer}>
             <View style={styles.sectionContainerLeft}>
               <View style={styles.circle}>
-                <Text style={styles.bodyText}>3</Text>
+                <Text style={styles.bodyText}>6</Text>
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>
-                2ª Rampa - Brassagem (3/{this.getStepsTotal()})
-              </Text>
+              <Text style={styles.bodyText}>Whirlpool</Text>
             </View>
           </View>
         </View>
@@ -149,9 +118,16 @@ class BrewPartCScreen extends Component {
               <Image source={Bullet} />
             </View>
             <View style={styles.listContainerRight}>
+              <Text style={styles.bodyText}>Desligar fogão de fervura;</Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
               <Text style={styles.bodyText}>
-                Alterar temperatura de controle para{' '}
-                {this.getInitialTemperature()} °C;
+                Colocar lúpulo, se necessário;
               </Text>
             </View>
           </View>
@@ -164,9 +140,7 @@ class BrewPartCScreen extends Component {
             <View style={styles.boxContainerRight}>
               <View>
                 <View style={styles.blackBoxContainer} marginBottom={15}>
-                  <Text style={styles.redText}>
-                    {this.getInitialTemperature()} °C
-                  </Text>
+                  <Text style={styles.redText}>97.2 °C</Text>
                 </View>
                 <Timer />
               </View>
@@ -181,8 +155,10 @@ class BrewPartCScreen extends Component {
             <View style={styles.listContainerLeft}>
               <Image source={Bullet} />
             </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>Esquentar a água de lavagem;</Text>
+            <View style={styles.cardListContainerRight}>
+              <Text style={styles.checklistText}>
+                Montar sistema de resfriamento do mosto;
+              </Text>
             </View>
           </View>
           <View style={styles.rowContainer}>
@@ -190,8 +166,36 @@ class BrewPartCScreen extends Component {
               <Image source={Bullet} />
             </View>
             <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Lavar e sanitizar baldes fermentadores;
+              <Text style={styles.checklistText}>Ensacar bagaço de malte;</Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
+              <Text style={styles.checklistText}>
+                Lavar panelas de brassagem;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.listContainerRight}>
+              <Text style={styles.checklistText}>
+                Remover fogões de brassagem;
+              </Text>
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.listContainerLeft}>
+              <Image source={Bullet} />
+            </View>
+            <View style={styles.cardListContainerRight}>
+              <Text style={styles.checklistText}>
+                Remover sistema de recirculação de mosto;
               </Text>
             </View>
           </View>
@@ -244,7 +248,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 100,
+    height: 210,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -264,6 +268,12 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 5,
     marginTop: 5,
+  },
+  checklistText: {
+    marginLeft: 15,
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'left',
   },
   circle: {
     width: 25,
@@ -351,6 +361,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
+  cardListContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginRight: marginHorizontal,
+    width: 250,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
   blackBoxContainer: {
     marginTop: 15,
     marginRight: 'auto',
@@ -372,4 +391,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BrewPartCScreen;
+export default WhirlpoolScreen;
