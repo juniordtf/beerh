@@ -101,7 +101,7 @@ class DisassembleChecklistScreen extends Component {
       createdAt: currentProduction.createdAt,
     };
 
-    this.props.navigation.navigate('Brassagem', {
+    this.props.navigation.navigate('Sucesso', {
       currentProduction: productionUpdated,
       currentRecipe: this.state.todaysRecipe,
     });
@@ -130,7 +130,7 @@ class DisassembleChecklistScreen extends Component {
               </View>
             </View>
             <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Montagem</Text>
+              <Text style={styles.bodyText}>Desmontagem</Text>
             </View>
           </View>
         </View>
@@ -143,7 +143,7 @@ class DisassembleChecklistScreen extends Component {
         <View style={styles.cardContainer}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Colocar cortina</Text>
+              <Text style={styles.checklistText}>Remover cortina</Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -156,7 +156,9 @@ class DisassembleChecklistScreen extends Component {
               </TouchableHighlight>
             </View>
             <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Montar fogões e gás</Text>
+              <Text style={styles.checklistText}>
+                Desmontar fogões e conexões com gás
+              </Text>
             </View>
             <View style={styles.boxContainerRight}>
               <TouchableHighlight
@@ -170,7 +172,7 @@ class DisassembleChecklistScreen extends Component {
             </View>
             <View style={styles.boxContainerLeft}>
               <Text style={styles.checklistText}>
-                Montar kit de recirculação
+                Desfazer conexões com o kit de recirculação
               </Text>
             </View>
             <View style={styles.boxContainerRight}>
@@ -185,7 +187,7 @@ class DisassembleChecklistScreen extends Component {
             </View>
             <View style={styles.boxContainerLeft}>
               <Text style={styles.checklistText}>
-                Montar controlador de temperatura
+                Retirar controlador de temperatura
               </Text>
             </View>
             <View style={styles.boxContainerRight}>
@@ -196,6 +198,21 @@ class DisassembleChecklistScreen extends Component {
                   })
                 }>
                 {this.renderCheckImage04()}
+              </TouchableHighlight>
+            </View>
+            <View style={styles.boxContainerLeft}>
+              <Text style={styles.checklistText}>
+                Desmontar sistema de resfriamento de mosto
+              </Text>
+            </View>
+            <View style={styles.boxContainerRight}>
+              <TouchableHighlight
+                onPress={() =>
+                  this.setState({
+                    checklistItemFiveDone: !this.state.checklistItemFiveDone,
+                  })
+                }>
+                {this.renderCheckImage05()}
               </TouchableHighlight>
             </View>
           </View>

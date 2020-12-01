@@ -49,7 +49,6 @@ class SpargeScreen extends Component {
 
     let rampDuration = 59;
     if (currentRecipe != null) {
-      console.log(currentRecipe.ramps[0].time);
       rampDuration = parseInt(currentRecipe.ramps[0].time, 10) - 1;
     }
 

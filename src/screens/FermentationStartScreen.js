@@ -28,6 +28,7 @@ class FermentationStartScreen extends Component {
       todaysProduction: [],
       todaysDatePt: todayPt,
       todaysRecipe: [],
+      realOg: '',
     };
   }
 
@@ -62,7 +63,7 @@ class FermentationStartScreen extends Component {
       name: this.state.todaysProduction.name,
       volume: this.state.todaysProduction.volume,
       og: this.state.todaysProduction.og,
-      realOg: this.state.todaysProduction.realOg,
+      realOg: this.state.realOg,
       fg: this.state.todaysProduction.fg,
       realFg: this.state.todaysProduction.realFg,
       style: this.state.todaysProduction.style,
@@ -171,7 +172,7 @@ class FermentationStartScreen extends Component {
           </View>
         </View>
         <View style={styles.bodyContainer} marginTop={40}>
-          <View style={styles.sectionContainer}>
+          <View style={styles.rowContainer}>
             <View style={styles.boxContainerLeft}>
               <Image source={Brewery} />
             </View>
@@ -187,7 +188,7 @@ class FermentationStartScreen extends Component {
                 </View>
                 <View style={styles.inputContainer}>
                   <TextInput
-                    style={styles.bodyInputMask}
+                    style={styles.inputText}
                     onChangeText={(realOg) => this.setState({realOg})}
                     value={this.state.realOg}
                     keyboardType="numeric"
@@ -265,6 +266,11 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'left',
   },
+  inputText: {
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'center',
+  },
   bodyTextLeft: {
     fontSize: 15,
     color: 'black',
@@ -290,7 +296,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    marginTop: 160,
+    marginTop: 70,
     marginLeft: 200,
     width: 170,
     paddingTop: 5,

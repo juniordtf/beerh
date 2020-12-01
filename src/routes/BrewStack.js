@@ -21,6 +21,7 @@ import CoolingScreen from '../screens/CoolingScreen';
 import FermentationStartScreen from '../screens/FermentationStartScreen';
 import FinalCleaningChecklistScreen from '../screens/FinalCleaningChecklistScreen';
 import DisassembleChecklistScreen from '../screens/DisassembleChecklistScreen';
+import SuccessfulScreen from '../screens/SuccessfulScreen';
 
 import Refresh from '../../assets/refreshButton.png';
 
@@ -63,6 +64,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -77,6 +79,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -91,6 +94,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -105,6 +109,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -119,6 +124,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -133,6 +139,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -147,6 +154,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -161,6 +169,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -175,6 +184,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -189,6 +199,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -203,6 +214,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -217,6 +229,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -231,6 +244,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -245,6 +259,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -259,6 +274,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -273,6 +289,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -287,6 +304,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -301,6 +319,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
         }}
       />
       <Stack.Screen
@@ -315,6 +334,22 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerLeft: null,
+        }}
+      />
+      <Stack.Screen
+        name="Sucesso"
+        component={SuccessfulScreen}
+        options={{
+          title: 'Brassagem',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerLeft: null,
         }}
       />
     </Stack.Navigator>

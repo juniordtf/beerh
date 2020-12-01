@@ -137,7 +137,10 @@ class BrewScreen extends React.Component {
     if (
       productions != null &&
       productions.length > 0 &&
-      productions.find((x) => x.brewDate === this.state.todaysDatePt)
+      productions.find(
+        (x) =>
+          x.brewDate === this.state.todaysDatePt /*&& x.status !== 'finished'*/,
+      )
     ) {
       const todaysProduction = productions.find(
         (x) => x.brewDate === this.state.todaysDatePt,

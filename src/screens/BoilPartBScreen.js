@@ -68,6 +68,24 @@ class BoilPartBScreen extends Component {
     return currentRecipe.boil.length;
   }
 
+  getHopName() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.boil[1].name;
+  }
+
+  getHopQuantity() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.boil[1].quantity;
+  }
+
+  getHopUnit() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.boil[1].unit;
+  }
+
   goToNextView = () => {
     window.stopwatchComponent.stopStopwatch();
 
@@ -147,7 +165,7 @@ class BoilPartBScreen extends Component {
             </View>
             <View style={styles.listContainerRight}>
               <Text style={styles.bodyText}>
-                Alterar temperatura de controle para 97.2 °C;
+                Manter temperatura de controle em 97.2 °C;
               </Text>
             </View>
           </View>
@@ -156,7 +174,10 @@ class BoilPartBScreen extends Component {
               <Image source={Bullet} />
             </View>
             <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>Colocar o lúpulo;</Text>
+              <Text style={styles.bodyText}>
+                Colocar {this.getHopQuantity()} {this.getHopUnit()} de{' '}
+                {this.getHopName()};
+              </Text>
             </View>
           </View>
         </View>

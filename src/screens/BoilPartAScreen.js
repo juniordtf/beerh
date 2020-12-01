@@ -68,6 +68,24 @@ class BoilPartAScreen extends Component {
     return currentRecipe.boil.length;
   }
 
+  getHopName() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.boil[0].name;
+  }
+
+  getHopQuantity() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.boil[0].quantity;
+  }
+
+  getHopUnit() {
+    let currentRecipe = this.props.route.params?.currentRecipe;
+
+    return currentRecipe.boil[0].unit;
+  }
+
   goToNextView = () => {
     window.stopwatchComponent.stopStopwatch();
 
@@ -156,7 +174,10 @@ class BoilPartAScreen extends Component {
               <Image source={Bullet} />
             </View>
             <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>Colocar o lúpulo;</Text>
+              <Text style={styles.bodyText}>
+                Colocar {this.getHopQuantity()} {this.getHopUnit()} de{' '}
+                {this.getHopName()};
+              </Text>
             </View>
           </View>
         </View>
