@@ -130,6 +130,7 @@ class CleaningChecklistScreen extends Component {
       duration: window.stopwatchComponent.showDisplay(),
       createdAt: this.state.todaysProduction.createdAt,
       lastUpdateDate: this.state.todaysDatePt,
+      viewToRestore: 'Checklist de Limpeza',
     };
 
     this.updateProduction(productionUpdated);

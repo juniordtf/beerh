@@ -442,7 +442,6 @@ class NewProductionScreen extends React.Component {
                 <View style={styles.calendarContainer}>
                   <Calendar
                     markingType="simple"
-                    minDate={this.state.today}
                     markedDates={{
                       [this.state.selectedBrewDate]: {
                         selected: true,

@@ -696,13 +696,14 @@ class NewRecipeScreen extends React.Component {
       carbonationMethod: this.state.carbonationMethod,
       carbonationValue: this.state.carbonationValue,
       carbonationUnit: this.state.carbonationUnit,
-      estimatedTime:
+      estimatedTime: (
         parseInt(this.state.TimeRamp01, 10) +
         parseInt(this.state.TimeRamp02, 10) +
         parseInt(this.state.TimeRamp03, 10) +
         parseInt(this.state.TimeRamp04, 10) +
         parseInt(this.state.TimeRamp05, 10) +
-        parseInt(this.state.TimeBoil01, 10),
+        parseInt(this.state.TimeBoil01, 10)
+      ).toFixed(2),
       annotation: this.state.annotation,
       createdAt: this.state.todaysDatePt,
       lastUpdateDate: this.state.todaysDatePt,

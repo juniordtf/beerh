@@ -79,6 +79,7 @@ class SuccessfulScreen extends Component {
       duration: this.state.todaysProduction.duration,
       createdAt: this.state.todaysProduction.createdAt,
       lastUpdateDate: this.state.todaysDatePt,
+      viewToRestore: 'Sucesso',
     };
 
     this.updateProduction(productionUpdated);
@@ -86,6 +87,32 @@ class SuccessfulScreen extends Component {
     this.props.navigation.navigate('Brassagem', {
       currentProduction: productionUpdated,
       currentRecipe: this.state.todaysRecipe,
+    });
+  };
+
+  updateProduction = (currentProduction) => {
+    let allProductions = this.state.productions;
+    const production = allProductions.find(
+      (x) => x.id === currentProduction.id,
+    );
+    const index = allProductions.indexOf(production);
+
+    if (index !== -1) {
+      allProductions[index] = currentProduction;
+    }
+
+    AsyncStorage.setItem(
+      PRODUCTIONS_KEY,
+      JSON.stringify(allProductions),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Production updated');
+      },
+    ).catch((err) => {
+      console.log('error is: ' + err);
     });
   };
 

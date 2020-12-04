@@ -13,11 +13,14 @@ import CircleChecked from '../../assets/CircleChecked.png';
 import CircleUnchecked from '../../assets/CircleUnchecked.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
+import AsyncStorage from '@react-native-community/async-storage';
+import {PRODUCTIONS_KEY} from '../statics/Statics';
 
 class DisassembleChecklistScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      productions: [],
       todaysProduction: [],
       todaysRecipe: [],
       checklistItemOneDone: false,
@@ -31,7 +34,23 @@ class DisassembleChecklistScreen extends Component {
   componentDidMount() {
     this.keepStopwatchGoing();
     this.getCurrentRecipe();
+    this.getProductions();
   }
+
+  getProductions = async () => {
+    try {
+      let currentProduction = this.props.route.params?.production;
+      this.setState({todaysProduction: currentProduction});
+
+      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      if (value !== null) {
+        this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   keepStopwatchGoing = () => {
     let currentProduction = this.props.route.params?.currentProduction;
@@ -99,7 +118,10 @@ class DisassembleChecklistScreen extends Component {
       fillingDate: currentProduction.fillingDate,
       duration: window.stopwatchComponent.showDisplay(),
       createdAt: currentProduction.createdAt,
+      viewToRestore: 'Checklist de Desmontagem',
     };
+
+    this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Sucesso', {
       currentProduction: productionUpdated,
@@ -107,6 +129,32 @@ class DisassembleChecklistScreen extends Component {
     });
 
     window.stopwatchComponent.clearStopwatch();
+  };
+
+  updateProduction = (currentProduction) => {
+    let allProductions = this.state.productions;
+    const production = allProductions.find(
+      (x) => x.id === currentProduction.id,
+    );
+    const index = allProductions.indexOf(production);
+
+    if (index !== -1) {
+      allProductions[index] = currentProduction;
+    }
+
+    AsyncStorage.setItem(
+      PRODUCTIONS_KEY,
+      JSON.stringify(allProductions),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Production updated');
+      },
+    ).catch((err) => {
+      console.log('error is: ' + err);
+    });
   };
 
   render() {

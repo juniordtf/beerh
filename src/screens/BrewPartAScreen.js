@@ -12,6 +12,8 @@ import BrewingMill from '../../assets/brewingMill.png';
 import HotWater from '../../assets/hotWater.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
+import AsyncStorage from '@react-native-community/async-storage';
+import {PRODUCTIONS_KEY} from '../statics/Statics';
 
 class BrewPartAScreen extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class BrewPartAScreen extends Component {
       new Date().getFullYear();
 
     this.state = {
+      productions: [],
       todaysProduction: [],
       todaysDatePt: todayPt,
       todaysRecipe: [],
@@ -34,7 +37,20 @@ class BrewPartAScreen extends Component {
   componentDidMount() {
     this.keepStopwatchGoing();
     this.getCurrentRecipe();
+    this.getProductions();
   }
+
+  getProductions = async () => {
+    try {
+      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      if (value !== null) {
+        this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   keepStopwatchGoing = () => {
     let currentProduction = this.props.route.params?.currentProduction;
@@ -90,7 +106,10 @@ class BrewPartAScreen extends Component {
       duration: window.stopwatchComponent.showDisplay(),
       createdAt: this.state.todaysProduction.createdAt,
       lastUpdateDate: this.state.todaysDatePt,
+      viewToRestore: 'Brassagem Parte A',
     };
+
+    this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Brassagem Parte B', {
       currentProduction: productionUpdated,
@@ -98,6 +117,32 @@ class BrewPartAScreen extends Component {
     });
 
     window.stopwatchComponent.clearStopwatch();
+  };
+
+  updateProduction = (currentProduction) => {
+    let allProductions = this.state.productions;
+    const production = allProductions.find(
+      (x) => x.id === currentProduction.id,
+    );
+    const index = allProductions.indexOf(production);
+
+    if (index !== -1) {
+      allProductions[index] = currentProduction;
+    }
+
+    AsyncStorage.setItem(
+      PRODUCTIONS_KEY,
+      JSON.stringify(allProductions),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Production updated');
+      },
+    ).catch((err) => {
+      console.log('error is: ' + err);
+    });
   };
 
   render() {

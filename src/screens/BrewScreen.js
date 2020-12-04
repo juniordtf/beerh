@@ -11,12 +11,7 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import Beach from '../../assets/beach.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {
-  PRODUCTIONS_KEY,
-  RECIPES_KEY,
-  CURRENT_PRODUCTION_KEY,
-  CURRENT_RECIPE_KEY,
-} from '../statics/Statics';
+import {PRODUCTIONS_KEY, RECIPES_KEY} from '../statics/Statics';
 
 class BrewScreen extends React.Component {
   constructor(props) {
@@ -80,7 +75,7 @@ class BrewScreen extends React.Component {
       realFg: todaysProduction.realFg,
       style: todaysProduction.style,
       estimatedTime: todaysProduction.estimatedTime,
-      status: todaysProduction.status,
+      status: 'in progress',
       brewDate: todaysProduction.brewDate,
       fermentationDate: todaysProduction.fermentationDate,
       carbonationDate: todaysProduction.carbonationDate,
@@ -93,102 +88,195 @@ class BrewScreen extends React.Component {
       viewToRestore: '',
     };
 
+    this.updateProduction(currentProduction);
+
+    this.props.navigation.navigate('Checklist de Limpeza', {
+      currentProduction: currentProduction,
+      currentRecipe: currentRecipe,
+    });
+  };
+
+  continueBrewing = (todaysProduction) => {
+    const currentRecipe = this.state.recipes.find(
+      (x) => x.title === todaysProduction.name,
+    );
+
+    const currentProduction = {
+      id: todaysProduction.id,
+      name: todaysProduction.name,
+      volume: todaysProduction.volume,
+      og: todaysProduction.og,
+      realOg: todaysProduction.realOg,
+      fg: todaysProduction.fg,
+      realFg: todaysProduction.realFg,
+      style: todaysProduction.style,
+      estimatedTime: todaysProduction.estimatedTime,
+      status: 'in progress',
+      brewDate: todaysProduction.brewDate,
+      fermentationDate: todaysProduction.fermentationDate,
+      carbonationDate: todaysProduction.carbonationDate,
+      ageingDate: todaysProduction.ageingDate,
+      fillingDate: todaysProduction.fillingDate,
+      initialCalendarDate: todaysProduction.initialCalendarDate,
+      duration: todaysProduction.duration,
+      createdAt: todaysProduction.createdAt,
+      lastUpdateDate: this.state.todaysDatePt,
+      viewToRestore: todaysProduction.viewToRestore,
+    };
+
+    this.updateProduction(currentProduction);
+
+    this.props.navigation.navigate(todaysProduction.viewToRestore, {
+      currentProduction: currentProduction,
+      currentRecipe: currentRecipe,
+    });
+  };
+
+  updateProduction = (currentProduction) => {
+    let allProductions = this.state.productions;
+    const production = allProductions.find(
+      (x) => x.id === currentProduction.id,
+    );
+    const index = allProductions.indexOf(production);
+
+    if (index !== -1) {
+      allProductions[index] = currentProduction;
+    }
+
     AsyncStorage.setItem(
-      CURRENT_PRODUCTION_KEY,
-      JSON.stringify(currentProduction),
+      PRODUCTIONS_KEY,
+      JSON.stringify(allProductions),
       (err) => {
         if (err) {
           console.log('an error occured');
           throw err;
         }
-        console.log('Success. Current production saved');
+        console.log('Success. Production updated');
       },
-    )
-      .catch((err) => {
-        console.log('error is: ' + err);
-      })
-      .then(
-        AsyncStorage.setItem(
-          CURRENT_RECIPE_KEY,
-          JSON.stringify(currentRecipe),
-          (err) => {
-            if (err) {
-              console.log('an error occured');
-              throw err;
-            }
-            console.log('Success. Current recipe saved');
-          },
-        )
-          .catch((err) => {
-            console.log('error is: ' + err);
-          })
-          .then(
-            this.props.navigation.navigate('Checklist de Limpeza', {
-              currentProduction: todaysProduction,
-              currentRecipe: currentRecipe,
-            }),
-          ),
-      );
+    ).catch((err) => {
+      console.log('error is: ' + err);
+    });
   };
 
   render() {
     let productions = this.state.productions;
 
+    let currentDate = this.state.todaysDatePt;
+    if (currentDate.length < 10) {
+      currentDate = 0 + currentDate;
+    }
+
     if (
       productions != null &&
       productions.length > 0 &&
       productions.find(
-        (x) =>
-          x.brewDate === this.state.todaysDatePt /*&& x.status !== 'finished'*/,
+        (x) => x.brewDate === currentDate && x.status !== 'finished',
       )
     ) {
       const todaysProduction = productions.find(
-        (x) => x.brewDate === this.state.todaysDatePt,
+        (x) => x.brewDate === currentDate,
       );
-      const duration = parseInt(todaysProduction.estimatedTime, 10) / 60;
-      return (
-        <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-          <View>
-            <Text style={styles.title}>Fala, cervejeiro!</Text>
-            <Text style={styles.bodyText2}>
-              Você possui uma brassagem agendada para hoje:
-            </Text>
-          </View>
-          <View style={styles.cardContainer}>
-            <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
-              <Text style={styles.listItemTitle}>{todaysProduction.name}</Text>
-              <Text style={styles.listItemTitle2}> - </Text>
-              <Text style={styles.listItemTitle2}>
-                {todaysProduction.volume} L
+      const duration = (
+        parseInt(todaysProduction.estimatedTime, 10) / 60
+      ).toFixed(2);
+
+      if (todaysProduction.status === 'in progress') {
+        return (
+          <SafeAreaView>
+            <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+            <View>
+              <Text style={styles.title}>Fala, cervejeiro!</Text>
+              <Text style={styles.bodyText2}>
+                Você possui uma brassagem em andamento:
               </Text>
             </View>
-            <View marginTop={15}>
-              <View style={styles.rowContainer} marginLeft={20}>
-                <Text style={styles.bodyText}>Estilo: </Text>
-                <Text style={styles.bodyText}>{todaysProduction.style}</Text>
+            <View style={styles.cardContainer}>
+              <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
+                <Text style={styles.listItemTitle}>
+                  {todaysProduction.name}
+                </Text>
+                <Text style={styles.listItemTitle2}> - </Text>
+                <Text style={styles.listItemTitle2}>
+                  {todaysProduction.volume} L
+                </Text>
               </View>
-              <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
-                <Text style={styles.bodyText}>Data: </Text>
-                <Text style={styles.bodyText}>{todaysProduction.brewDate}</Text>
+              <View marginTop={15}>
+                <View style={styles.rowContainer} marginLeft={20}>
+                  <Text style={styles.bodyText}>Estilo: </Text>
+                  <Text style={styles.bodyText}>{todaysProduction.style}</Text>
+                </View>
+                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                  <Text style={styles.bodyText}>Data: </Text>
+                  <Text style={styles.bodyText}>
+                    {todaysProduction.brewDate}
+                  </Text>
+                </View>
+                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                  <Text style={styles.bodyText}>Tempo estimado: </Text>
+                  <Text style={styles.bodyText}>{duration} hrs</Text>
+                </View>
               </View>
-              <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
-                <Text style={styles.bodyText}>Tempo estimado: </Text>
-                <Text style={styles.bodyText}>{duration} hrs</Text>
-              </View>
+              <TouchableHighlight>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    title="Retomar"
+                    color="#000000"
+                    onPress={() => this.continueBrewing(todaysProduction)}
+                  />
+                </View>
+              </TouchableHighlight>
             </View>
-            <TouchableHighlight>
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="Iniciar"
-                  color="#000000"
-                  onPress={() => this.startBrewing(todaysProduction)}
-                />
+          </SafeAreaView>
+        );
+      } else {
+        return (
+          <SafeAreaView>
+            <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+            <View>
+              <Text style={styles.title}>Fala, cervejeiro!</Text>
+              <Text style={styles.bodyText2}>
+                Você possui uma brassagem agendada para hoje:
+              </Text>
+            </View>
+            <View style={styles.cardContainer}>
+              <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
+                <Text style={styles.listItemTitle}>
+                  {todaysProduction.name}
+                </Text>
+                <Text style={styles.listItemTitle2}> - </Text>
+                <Text style={styles.listItemTitle2}>
+                  {todaysProduction.volume} L
+                </Text>
               </View>
-            </TouchableHighlight>
-          </View>
-        </SafeAreaView>
-      );
+              <View marginTop={15}>
+                <View style={styles.rowContainer} marginLeft={20}>
+                  <Text style={styles.bodyText}>Estilo: </Text>
+                  <Text style={styles.bodyText}>{todaysProduction.style}</Text>
+                </View>
+                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                  <Text style={styles.bodyText}>Data: </Text>
+                  <Text style={styles.bodyText}>
+                    {todaysProduction.brewDate}
+                  </Text>
+                </View>
+                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                  <Text style={styles.bodyText}>Tempo estimado: </Text>
+                  <Text style={styles.bodyText}>{duration} hrs</Text>
+                </View>
+              </View>
+              <TouchableHighlight>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    title="Iniciar"
+                    color="#000000"
+                    onPress={() => this.startBrewing(todaysProduction)}
+                  />
+                </View>
+              </TouchableHighlight>
+            </View>
+          </SafeAreaView>
+        );
+      }
     } else {
       return (
         <SafeAreaView>

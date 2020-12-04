@@ -13,6 +13,8 @@ import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
 import Brewery from '../../assets/brewery.png';
+import AsyncStorage from '@react-native-community/async-storage';
+import {PRODUCTIONS_KEY} from '../statics/Statics';
 
 class FermentationStartScreen extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class FermentationStartScreen extends Component {
       new Date().getFullYear();
 
     this.state = {
+      productions: [],
       todaysProduction: [],
       todaysDatePt: todayPt,
       todaysRecipe: [],
@@ -34,7 +37,23 @@ class FermentationStartScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
+    this.getProductions();
   }
+
+  getProductions = async () => {
+    try {
+      let currentProduction = this.props.route.params?.production;
+      this.setState({todaysProduction: currentProduction});
+
+      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      if (value !== null) {
+        this.setState({productions: JSON.parse(value)});
+        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   keepStopwatchGoing = () => {
     let currentProduction = this.props.route.params?.currentProduction;
@@ -78,7 +97,10 @@ class FermentationStartScreen extends Component {
       duration: window.stopwatchComponent.showDisplay(),
       createdAt: this.state.todaysProduction.createdAt,
       lastUpdateDate: this.state.todaysDatePt,
+      viewToRestore: 'Início da Fermentação',
     };
+
+    this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Checklist Final de Limpeza', {
       currentProduction: productionUpdated,
@@ -86,6 +108,32 @@ class FermentationStartScreen extends Component {
     });
 
     window.stopwatchComponent.clearStopwatch();
+  };
+
+  updateProduction = (currentProduction) => {
+    let allProductions = this.state.productions;
+    const production = allProductions.find(
+      (x) => x.id === currentProduction.id,
+    );
+    const index = allProductions.indexOf(production);
+
+    if (index !== -1) {
+      allProductions[index] = currentProduction;
+    }
+
+    AsyncStorage.setItem(
+      PRODUCTIONS_KEY,
+      JSON.stringify(allProductions),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Production updated');
+      },
+    ).catch((err) => {
+      console.log('error is: ' + err);
+    });
   };
 
   render() {
