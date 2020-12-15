@@ -167,13 +167,11 @@ class SuccessfulScreen extends Component {
             Lembre de editar a FG da cerveja assim que a fermentação acabar!
           </Text>
         </View>
-        <TouchableHighlight>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Voltar para o início"
-              onPress={() => this.goToNextView()}
-            />
-          </View>
+
+        <TouchableHighlight
+          style={styles.buttonContainer}
+          onPress={() => this.goToNextView()}>
+          <Text style={styles.bodyText2}>Voltar para o início</Text>
         </TouchableHighlight>
       </SafeAreaView>
     );
@@ -251,15 +249,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    marginTop: 40,
-    marginLeft: 180,
-    width: 200,
+    marginTop: 25,
+    marginRight: 15,
+    marginBottom: 15,
+    alignSelf: 'flex-end',
+    width: 170,
+    height: 40,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  bodyText2: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
   },
   sectionContainer: {
     flex: 1,

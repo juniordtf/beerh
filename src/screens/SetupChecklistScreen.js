@@ -251,13 +251,11 @@ class SetupChecklistScreen extends Component {
               </View>
             </View>
           </View>
-          <TouchableHighlight>
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Avançar"
-                onPress={() => this.goToNextView(this.state.todaysProduction)}
-              />
-            </View>
+
+          <TouchableHighlight
+            style={styles.buttonContainer}
+            onPress={() => this.goToNextView(this.state.todaysProduction)}>
+            <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>
         </ScrollView>
       </SafeAreaView>
@@ -279,7 +277,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     marginTop: 10,
-    marginLeft: 40,
+    marginLeft: 15,
     alignItems: 'flex-start',
   },
   checklistText: {
@@ -296,6 +294,11 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
+  bodyText2: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
+  },
   rowContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -305,7 +308,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 380,
+    height: 230,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -330,14 +333,19 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 25,
-    marginLeft: 200,
+    marginRight: 15,
+    marginBottom: 15,
+    alignSelf: 'flex-end',
     width: 170,
+    height: 40,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   sectionContainer: {
     flex: 1,

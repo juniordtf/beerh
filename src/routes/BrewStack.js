@@ -65,6 +65,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -80,6 +81,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -95,6 +97,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -110,6 +113,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -125,6 +129,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -140,6 +145,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -155,6 +161,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -170,6 +177,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -185,6 +193,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -200,6 +209,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -215,6 +225,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -230,6 +241,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -245,6 +257,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -260,6 +273,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -275,6 +289,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -290,6 +305,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -305,6 +321,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -320,6 +337,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -335,6 +353,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -350,6 +369,7 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerLeft: null,
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

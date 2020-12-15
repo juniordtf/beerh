@@ -128,7 +128,7 @@ class ProductionScreen extends React.Component {
     if (productions != null && productions.length > 0) {
       return (
         <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
           <View style={styles.listContainer}>
             <FlatList
               data={productions}
@@ -148,14 +148,11 @@ class ProductionScreen extends React.Component {
               Nenhuma produção em andamento ou finalizada...
             </Text>
           </View>
-          <TouchableHighlight>
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Começar uma produção"
-                color="#000000"
-                onPress={() => this.goToCreationView()}
-              />
-            </View>
+
+          <TouchableHighlight
+            style={styles.buttonContainer}
+            onPress={() => this.goToCreationView()}>
+            <Text style={styles.bodyText}>Começar uma produção</Text>
           </TouchableHighlight>
         </SafeAreaView>
       );
@@ -190,12 +187,15 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 250,
+    height: 40,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   listItemContainer: {
     marginTop: 5,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: 5,
     marginRight: marginHorizontal,
-    width: 60,
+    width: 40,
     height: 60,
     justifyContent: 'center',
     alignItems: 'center',
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: 5,
     marginRight: marginHorizontal,
-    width: 330,
+    maxWidth: 330,
     height: 60,
     justifyContent: 'center',
     alignItems: 'flex-start',

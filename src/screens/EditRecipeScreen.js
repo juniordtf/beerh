@@ -2568,10 +2568,10 @@ class EditRecipeScreen extends React.Component {
             <View backgroundColor={'#000000'} height={1} marginBottom={5} />
           </View>
           <View marginTop={10} marginBottom={10}>
-            <TouchableHighlight>
-              <View style={styles.buttonContainer}>
-                <Button title="Salvar" onPress={() => this.editRecipe()} />
-              </View>
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={() => this.editRecipe()}>
+              <Text style={styles.bodyText}>Salvar</Text>
             </TouchableHighlight>
           </View>
         </ScrollView>
@@ -2626,6 +2626,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   addButtonContainer: {
     marginLeft: 5,

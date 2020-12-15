@@ -21,11 +21,11 @@ function MyTabs() {
         activeTintColor: '#ffff',
         labelStyle: {
           fontSize: 12,
-          marginBottom: 5,
+          marginBottom: 10,
         },
         style: {
           backgroundColor: '#000000',
-          height: 90,
+          height: 80,
         },
       }}>
       <Tab.Screen
@@ -34,6 +34,7 @@ function MyTabs() {
         options={{
           tabBarIcon: ({color, size, focused}) => (
             <Image
+              marginBottom={-10}
               color={color}
               size={size}
               source={focused ? StoveWhiteIcon : StoveGrayIcon}
@@ -47,6 +48,7 @@ function MyTabs() {
         options={{
           tabBarIcon: ({color, size, focused}) => (
             <Image
+              marginBottom={-10}
               color={color}
               size={size}
               source={focused ? ProductionWhiteIcon : ProductionGrayIcon}
@@ -60,6 +62,7 @@ function MyTabs() {
         options={{
           tabBarIcon: ({color, size, focused}) => (
             <Image
+              marginBottom={-10}
               color={color}
               size={size}
               source={focused ? RecipeWhiteIcon : RecipeGrayIcon}

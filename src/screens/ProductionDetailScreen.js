@@ -283,34 +283,25 @@ class ProductionDetailScreen extends React.Component {
             <View style={styles.bodyContainer}>
               <Text style={styles.bodyText}>
                 Tempo de brassagem (real / estimado): /{' '}
-                {this.state.estimatedTime} hrs
+                {parseInt(this.state.estimatedTime, 10).toFixed(2)} hrs
               </Text>
             </View>
           </View>
           <View style={styles.rowContainer} marginTop={10}>
             <View style={styles.rowContainer}>
               <View marginTop={10} marginBottom={10}>
-                <TouchableHighlight>
-                  <View style={styles.eraseButtonContainer}>
-                    <Button
-                      title="Apagar"
-                      color="#000000"
-                      onPress={() => this.openModal()}
-                    />
-                  </View>
+                <TouchableHighlight
+                  style={styles.eraseButtonContainer}
+                  onPress={() => this.openModal()}>
+                  <Text style={styles.bodyText2}>Apagar</Text>
                 </TouchableHighlight>
               </View>
             </View>
             <View marginTop={10} marginBottom={10} marginLeft={10}>
-              <TouchableHighlight>
-                <View style={styles.editButtonContainer}>
-                  <Button
-                    title="Editar"
-                    onPress={() =>
-                      this.goToEditView(this.state.currentProduction)
-                    }
-                  />
-                </View>
+              <TouchableHighlight
+                style={styles.editButtonContainer}
+                onPress={() => this.goToEditView(this.state.currentProduction)}>
+                <Text style={styles.bodyText2}>Editar</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -481,22 +472,26 @@ const styles = StyleSheet.create({
   editButtonContainer: {
     marginRight: 'auto',
     marginLeft: 'auto',
-    width: 190,
+    width: 160,
     height: 40,
     backgroundColor: 'yellow',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   eraseButtonContainer: {
     marginRight: 'auto',
     marginLeft: 'auto',
-    width: 190,
+    width: 160,
     height: 40,
     backgroundColor: 'red',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   legendContainer: {
     marginTop: 10,
@@ -508,6 +503,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   bodyText: {
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'center',
+  },
+  bodyText2: {
     fontSize: 15,
     color: 'black',
     textAlign: 'center',

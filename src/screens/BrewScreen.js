@@ -216,13 +216,11 @@ class BrewScreen extends React.Component {
                   <Text style={styles.bodyText}>{duration} hrs</Text>
                 </View>
               </View>
-              <TouchableHighlight>
-                <View style={styles.buttonContainer}>
-                  <Button
-                    title="Retomar"
-                    onPress={() => this.continueBrewing(todaysProduction)}
-                  />
-                </View>
+
+              <TouchableHighlight
+                style={styles.buttonContainer}
+                onPress={() => this.continueBrewing(todaysProduction)}>
+                <Text style={styles.bodyText}>Retomar</Text>
               </TouchableHighlight>
             </View>
           </SafeAreaView>
@@ -263,13 +261,11 @@ class BrewScreen extends React.Component {
                   <Text style={styles.bodyText}>{duration} hrs</Text>
                 </View>
               </View>
-              <TouchableHighlight>
-                <View style={styles.buttonContainer}>
-                  <Button
-                    title="Iniciar"
-                    onPress={() => this.startBrewing(todaysProduction)}
-                  />
-                </View>
+
+              <TouchableHighlight
+                style={styles.buttonContainer}
+                onPress={() => this.startBrewing(todaysProduction)}>
+                <Text style={styles.bodyText}>Iniciar</Text>
               </TouchableHighlight>
             </View>
           </SafeAreaView>
@@ -330,9 +326,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   title: {
-    marginLeft: 40,
+    marginLeft: 30,
     marginTop: 40,
     fontSize: 27,
+    color: 'black',
   },
   cardContainer: {
     marginTop: 35,
@@ -351,12 +348,15 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginLeft: 130,
     width: 170,
+    height: 40,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   rowContainer: {
     display: 'flex',

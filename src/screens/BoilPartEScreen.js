@@ -284,10 +284,11 @@ class BoilPartEScreen extends Component {
               </View>
             </View>
           </View>
-          <TouchableHighlight>
-            <View style={styles.buttonContainer}>
-              <Button title="Avançar" onPress={() => this.goToNextView()} />
-            </View>
+
+          <TouchableHighlight
+            style={styles.buttonContainer}
+            onPress={() => this.goToNextView()}>
+            <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>
         </ScrollView>
       </SafeAreaView>
@@ -309,7 +310,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     marginTop: 10,
-    marginLeft: 30,
+    marginLeft: 15,
     alignItems: 'flex-start',
   },
   title: {
@@ -325,7 +326,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardContainer: {
-    marginTop: 140,
+    marginTop: 50,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
@@ -368,14 +369,24 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 25,
-    marginLeft: 200,
+    marginRight: 15,
+    marginBottom: 15,
+    alignSelf: 'flex-end',
     width: 170,
+    height: 40,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  bodyText2: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
   },
   sectionContainer: {
     flex: 1,
@@ -428,7 +439,7 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: marginHorizontal,
     marginRight: marginHorizontal,
-    width: 40,
+    width: 30,
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',

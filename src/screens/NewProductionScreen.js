@@ -416,10 +416,10 @@ class NewProductionScreen extends React.Component {
             </View>
           </View>
           <View marginTop={10} marginBottom={10}>
-            <TouchableHighlight>
-              <View style={styles.buttonContainer}>
-                <Button title="Salvar" onPress={() => this.addProduction()} />
-              </View>
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={() => this.addProduction()}>
+              <Text style={styles.bodyText}>Salvar</Text>
             </TouchableHighlight>
           </View>
 
@@ -715,6 +715,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     marginTop: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  bodyText: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
   },
 });
 
