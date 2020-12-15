@@ -21,6 +21,7 @@ function MyTabs() {
         activeTintColor: '#ffff',
         labelStyle: {
           fontSize: 12,
+          marginBottom: 5,
         },
         style: {
           backgroundColor: '#000000',

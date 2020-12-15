@@ -864,7 +864,7 @@ class NewRecipeScreen extends React.Component {
                 value={this.state.NameIng01}
                 placeholder="Nome"
                 underlineColorAndroid="transparent"
-                width={200}
+                width={160}
                 marginLeft={5}
               />
               <View style={styles.addButtonContainer}>
@@ -915,7 +915,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng02}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -976,7 +976,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng03}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1037,7 +1037,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng04}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1098,7 +1098,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng05}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1159,7 +1159,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng06}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1220,7 +1220,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng07}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1281,7 +1281,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng08}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1342,7 +1342,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng09}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1403,7 +1403,7 @@ class NewRecipeScreen extends React.Component {
                     value={this.state.NameIng10}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={160}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1631,7 +1631,7 @@ class NewRecipeScreen extends React.Component {
           <View marginTop={10}>
             <Text style={styles.innerSectionText}>Fervura:</Text>
             <View style={styles.parametersRow}>
-              <View>
+              <View marginLeft={-5}>
                 <View style={styles.parametersRow}>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1669,9 +1669,8 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(NameBoil01) => this.setState({NameBoil01})}
                     value={this.state.NameBoil01}
                     placeholder="Nome"
-                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
-                    width={150}
+                    width={160}
                     marginLeft={10}
                   />
                 </View>
@@ -1694,7 +1693,7 @@ class NewRecipeScreen extends React.Component {
               <View
                 style={styles.addButtonContainer}
                 height={80}
-                marginLeft={20}>
+                marginLeft={10}>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => this.handleAddBoilInput('0')}>
@@ -1706,7 +1705,7 @@ class NewRecipeScreen extends React.Component {
               {this.state.inputSecondBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={47}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -1751,9 +1750,8 @@ class NewRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil02}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
-                        width={150}
+                        width={160}
                         marginLeft={10}
                       />
                     </View>
@@ -1781,7 +1779,7 @@ class NewRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('1')}>
@@ -1807,7 +1805,7 @@ class NewRecipeScreen extends React.Component {
               {this.state.inputThirdBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={47}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -1852,9 +1850,8 @@ class NewRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil03}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
-                        width={150}
+                        width={160}
                         marginLeft={10}
                       />
                     </View>
@@ -1882,7 +1879,7 @@ class NewRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('2')}>
@@ -1908,7 +1905,7 @@ class NewRecipeScreen extends React.Component {
               {this.state.inputFourthBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={47}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -1953,9 +1950,8 @@ class NewRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil04}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
-                        width={150}
+                        width={160}
                         marginLeft={10}
                       />
                     </View>
@@ -1983,7 +1979,7 @@ class NewRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('3')}>
@@ -2009,7 +2005,7 @@ class NewRecipeScreen extends React.Component {
               {this.state.inputFifthBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={49}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -2054,9 +2050,8 @@ class NewRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil05}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
-                        width={150}
+                        width={160}
                         marginLeft={10}
                       />
                     </View>
@@ -2084,7 +2079,7 @@ class NewRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleRemoveBoilInput('3')}>
@@ -2500,7 +2495,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   styleInputMask: {
-    height: 35,
+    height: 38,
     width: 200,
     borderColor: 'gray',
     borderWidth: 1,
@@ -2514,12 +2509,12 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   bodyInputMask: {
-    height: 34,
+    height: 36,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 10,
-    fontSize: 14,
+    fontSize: 12,
     backgroundColor: '#fff',
     textAlign: 'center',
   },
@@ -2546,14 +2541,14 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
-    width: 55,
-    height: 34,
+    width: 70,
+    height: 36,
     marginLeft: 5,
     display: 'flex',
     flexDirection: 'row',
   },
   onePicker: {
-    width: 35,
+    width: 50,
     height: 40,
   },
   onePickerItem: {
@@ -2569,18 +2564,18 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
-    width: 110,
-    height: 34,
+    width: 150,
+    height: 36,
     marginLeft: 5,
     display: 'flex',
     flexDirection: 'row',
   },
   onePickerLarge: {
-    width: 90,
+    width: 130,
     height: 40,
   },
   signContainer: {
-    height: 34,
+    height: 36,
     width: 20,
     justifyContent: 'center',
     alignItems: 'center',

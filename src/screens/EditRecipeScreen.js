@@ -1819,7 +1819,6 @@ class EditRecipeScreen extends React.Component {
                     onChangeText={(NameBoil01) => this.setState({NameBoil01})}
                     value={this.state.NameBoil01}
                     placeholder="Nome"
-                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={150}
                     marginLeft={10}
@@ -1844,7 +1843,7 @@ class EditRecipeScreen extends React.Component {
               <View
                 style={styles.addButtonContainer}
                 height={80}
-                marginLeft={20}>
+                marginLeft={10}>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => this.handleAddBoilInput('0')}>
@@ -1856,7 +1855,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputSecondBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={47}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -1901,7 +1900,6 @@ class EditRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil02}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
                         width={150}
                         marginLeft={10}
@@ -1931,7 +1929,7 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('1')}>
@@ -1957,7 +1955,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputThirdBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={47}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -2002,7 +2000,6 @@ class EditRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil03}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
                         width={150}
                         marginLeft={10}
@@ -2032,7 +2029,7 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('2')}>
@@ -2058,7 +2055,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputFourthBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={47}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -2103,7 +2100,6 @@ class EditRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil04}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
                         width={150}
                         marginLeft={10}
@@ -2133,7 +2129,7 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('3')}>
@@ -2159,7 +2155,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputFifthBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={49}
+                  marginLeft={35}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -2204,7 +2200,6 @@ class EditRecipeScreen extends React.Component {
                         }
                         value={this.state.NameBoil05}
                         placeholder="Nome"
-                        keyboardType="numeric"
                         underlineColorAndroid="transparent"
                         width={150}
                         marginLeft={10}
@@ -2234,7 +2229,7 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={20}>
+                    marginLeft={10}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleRemoveBoilInput('3')}>
@@ -2719,14 +2714,14 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
-    width: 110,
+    width: 150,
     height: 34,
     marginLeft: 5,
     display: 'flex',
     flexDirection: 'row',
   },
   onePickerLarge: {
-    width: 90,
+    width: 130,
     height: 40,
   },
   signContainer: {

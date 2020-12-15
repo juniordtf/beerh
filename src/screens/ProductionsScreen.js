@@ -99,7 +99,7 @@ class ProductionScreen extends React.Component {
               <View style={styles.listItemContainer}>
                 <View style={styles.rowContainer}>
                   <Text style={styles.listItemTitle}>{item.name} - </Text>
-                  <Text style={styles.listItemTitle2}>{item.style}</Text>
+                  <Text style={styles.listItemTitle2}>{item.style.trim()}</Text>
                   <Text style={styles.listItemTitle2}> ({item.volume} L)</Text>
                 </View>
                 <View style={styles.rowContainer} marginTop={5}>
@@ -128,7 +128,7 @@ class ProductionScreen extends React.Component {
     if (productions != null && productions.length > 0) {
       return (
         <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#000000" />
+          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
           <View style={styles.listContainer}>
             <FlatList
               data={productions}
