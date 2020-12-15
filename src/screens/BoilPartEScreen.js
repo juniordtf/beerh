@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight,
   Button,
+  ScrollView,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -121,7 +122,7 @@ class BoilPartEScreen extends Component {
       viewToRestore: 'Fervura Parte E',
     };
 
-    this.updateProduction(productionUpdated);
+    //this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Whirlpool', {
       currentProduction: productionUpdated,
@@ -160,135 +161,135 @@ class BoilPartEScreen extends Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            {this.state.todaysProduction.name} -{' '}
-            {this.state.todaysProduction.volume}L
-          </Text>
-        </View>
-        <View style={styles.subContainer}>
-          <Stopwatch />
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer}>
-            <View style={styles.sectionContainerLeft}>
-              <View style={styles.circle}>
-                <Text style={styles.bodyText}>5</Text>
-              </View>
-            </View>
-            <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>
-                Fervura (5/{this.getStepsTotal()})
-              </Text>
-            </View>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.title}>
+              {this.state.todaysProduction.name} -{' '}
+              {this.state.todaysProduction.volume}L
+            </Text>
           </View>
-        </View>
-        <View style={styles.bodyContainer} marginTop={15}>
-          <View style={styles.rowContainer}>
-            <Text style={styles.bodyText}>Atividades:</Text>
+          <View style={styles.subContainer}>
+            <Stopwatch />
           </View>
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Manter temperatura de controle em 97.2 °C;
-              </Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Colocar {this.getHopQuantity()} {this.getHopUnit()} de{' '}
-                {this.getHopName()};
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.bodyContainer} marginTop={30}>
-          <View style={styles.sectionContainer}>
-            <View style={styles.boxContainerLeft}>
-              <Image source={BrewBoiler} />
-            </View>
-            <View style={styles.boxContainerRight}>
-              <View>
-                <View style={styles.blackBoxContainer} marginBottom={15}>
-                  <Text style={styles.redText}>97.2 °C</Text>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer}>
+              <View style={styles.sectionContainerLeft}>
+                <View style={styles.circle}>
+                  <Text style={styles.bodyText}>5</Text>
                 </View>
-                <Timer />
+              </View>
+              <View style={styles.sectionContainerRight}>
+                <Text style={styles.bodyText}>
+                  Fervura (5/{this.getStepsTotal()})
+                </Text>
               </View>
             </View>
           </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <Text style={styles.bodyTextLeft}>
-            Etapas a serem feitas em paralelo:
-          </Text>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.cardListContainerRight}>
-              <Text style={styles.checklistText}>
-                Montar sistema de resfriamento do mosto;
-              </Text>
+          <View style={styles.bodyContainer} marginTop={15}>
+            <View style={styles.rowContainer}>
+              <Text style={styles.bodyText}>Atividades:</Text>
             </View>
           </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.bodyText}>
+                  Manter temperatura de controle em 97.2 °C;
+                </Text>
+              </View>
             </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.checklistText}>Ensacar bagaço de malte;</Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.checklistText}>
-                Lavar panelas de brassagem;
-              </Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.checklistText}>
-                Remover fogões de brassagem;
-              </Text>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.bodyText}>
+                  Colocar {this.getHopQuantity()} {this.getHopUnit()} de{' '}
+                  {this.getHopName()};
+                </Text>
+              </View>
             </View>
           </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.cardListContainerRight}>
-              <Text style={styles.checklistText}>
-                Remover sistema de recirculação de mosto;
-              </Text>
+          <View style={styles.bodyContainer} marginTop={30}>
+            <View style={styles.sectionContainer}>
+              <View style={styles.boxContainerLeft}>
+                <Image source={BrewBoiler} />
+              </View>
+              <View style={styles.boxContainerRight}>
+                <View>
+                  <View style={styles.blackBoxContainer} marginBottom={15}>
+                    <Text style={styles.redText}>97.2 °C</Text>
+                  </View>
+                  <Timer />
+                </View>
+              </View>
             </View>
           </View>
-        </View>
-        <TouchableHighlight>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Avançar"
-              color="#000000"
-              onPress={() => this.goToNextView()}
-            />
+          <View style={styles.cardContainer}>
+            <Text style={styles.bodyTextLeft}>
+              Etapas a serem feitas em paralelo:
+            </Text>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.cardListContainerRight}>
+                <Text style={styles.checklistText}>
+                  Montar sistema de resfriamento do mosto;
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.checklistText}>
+                  Ensacar bagaço de malte;
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.checklistText}>
+                  Lavar panelas de brassagem;
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.checklistText}>
+                  Remover fogões de brassagem;
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.cardListContainerRight}>
+                <Text style={styles.checklistText}>
+                  Remover sistema de recirculação de mosto;
+                </Text>
+              </View>
+            </View>
           </View>
-        </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={styles.buttonContainer}>
+              <Button title="Avançar" onPress={() => this.goToNextView()} />
+            </View>
+          </TouchableHighlight>
+        </ScrollView>
       </SafeAreaView>
     );
   }

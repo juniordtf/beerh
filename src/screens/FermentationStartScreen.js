@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Button,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -42,7 +43,7 @@ class FermentationStartScreen extends Component {
 
   getProductions = async () => {
     try {
-      let currentProduction = this.props.route.params?.production;
+      let currentProduction = this.props.route.params?.currentProduction;
       this.setState({todaysProduction: currentProduction});
 
       const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
@@ -100,7 +101,7 @@ class FermentationStartScreen extends Component {
       viewToRestore: 'Início da Fermentação',
     };
 
-    this.updateProduction(productionUpdated);
+    //this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Checklist Final de Limpeza', {
       currentProduction: productionUpdated,
@@ -139,124 +140,123 @@ class FermentationStartScreen extends Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            {this.state.todaysProduction.name} -{' '}
-            {this.state.todaysProduction.volume}L
-          </Text>
-        </View>
-        <View style={styles.subContainer}>
-          <Stopwatch />
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer}>
-            <View style={styles.sectionContainerLeft}>
-              <View style={styles.circle}>
-                <Text style={styles.bodyText}>8</Text>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.title}>
+              {this.state.todaysProduction.name} -{' '}
+              {this.state.todaysProduction.volume}L
+            </Text>
+          </View>
+          <View style={styles.subContainer}>
+            <Stopwatch />
+          </View>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer}>
+              <View style={styles.sectionContainerLeft}>
+                <View style={styles.circle}>
+                  <Text style={styles.bodyText}>8</Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Início da fermentação</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.bodyContainer} marginTop={15}>
-          <View style={styles.rowContainer}>
-            <Text style={styles.bodyText}>Atividades:</Text>
-          </View>
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Medir a densidade inicial (OG);
-              </Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.doubleListContainerRight}>
-              <Text style={styles.bodyText}>
-                Alterar temperatura de controle do freezer para{' '}
-                {this.getInitialTemperature()} °C;
-              </Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Fazer solução de água + álcool para blow-offs;
-              </Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.doubleListContainerRight}>
-              <Text style={styles.bodyText}>
-                Colocar o mosto nos baldes, acrescentar a levedura e tampá-los;
-              </Text>
-            </View>
-          </View>
-          <View style={styles.rowContainer} marginTop={5}>
-            <View style={styles.listContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.listContainerRight}>
-              <Text style={styles.bodyText}>
-                Colocar baldes fermentadores no freezer;
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.bodyContainer} marginTop={40}>
-          <View style={styles.rowContainer}>
-            <View style={styles.boxContainerLeft}>
-              <Image source={Brewery} />
-            </View>
-            <View style={styles.boxContainerRight}>
-              <View>
-                <View style={styles.blackBoxContainer} marginBottom={15}>
-                  <Text style={styles.redText}>
-                    {this.getInitialTemperature()} °C
-                  </Text>
-                </View>
-                <View style={styles.centeredTitleContainer}>
-                  <Text style={styles.bodyTextLeft}>OG medida: </Text>
-                </View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    style={styles.inputText}
-                    onChangeText={(realOg) => this.setState({realOg})}
-                    value={this.state.realOg}
-                    keyboardType="numeric"
-                    underlineColorAndroid="transparent"
-                    width={120}
-                  />
-                </View>
+              <View style={styles.sectionContainerRight}>
+                <Text style={styles.bodyText}>Início da fermentação</Text>
               </View>
             </View>
           </View>
-        </View>
-        <TouchableHighlight>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Avançar"
-              color="#000000"
-              onPress={() => this.goToNextView()}
-            />
+          <View style={styles.bodyContainer} marginTop={15}>
+            <View style={styles.rowContainer}>
+              <Text style={styles.bodyText}>Atividades:</Text>
+            </View>
           </View>
-        </TouchableHighlight>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.bodyText}>
+                  Medir a densidade inicial (OG);
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.doubleListContainerRight}>
+                <Text style={styles.bodyText}>
+                  Alterar temperatura de controle do freezer para{' '}
+                  {this.getInitialTemperature()} °C;
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.bodyText}>
+                  Fazer solução de água + álcool para blow-offs;
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.doubleListContainerRight}>
+                <Text style={styles.bodyText}>
+                  Colocar o mosto nos baldes, acrescentar a levedura e
+                  tampá-los;
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowContainer} marginTop={5}>
+              <View style={styles.listContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.listContainerRight}>
+                <Text style={styles.bodyText}>
+                  Colocar baldes fermentadores no freezer;
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.bodyContainer} marginTop={40}>
+            <View style={styles.rowContainer}>
+              <View style={styles.boxContainerLeft}>
+                <Image source={Brewery} />
+              </View>
+              <View style={styles.boxContainerRight}>
+                <View>
+                  <View style={styles.blackBoxContainer} marginBottom={15}>
+                    <Text style={styles.redText}>
+                      {this.getInitialTemperature()} °C
+                    </Text>
+                  </View>
+                  <View style={styles.centeredTitleContainer}>
+                    <Text style={styles.bodyTextLeft}>OG medida: </Text>
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      style={styles.inputText}
+                      onChangeText={(realOg) => this.setState({realOg})}
+                      value={this.state.realOg}
+                      keyboardType="numeric"
+                      underlineColorAndroid="transparent"
+                      width={120}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <TouchableHighlight>
+            <View style={styles.buttonContainer}>
+              <Button title="Avançar" onPress={() => this.goToNextView()} />
+            </View>
+          </TouchableHighlight>
+        </ScrollView>
       </SafeAreaView>
     );
   }

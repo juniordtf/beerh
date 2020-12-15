@@ -10,7 +10,6 @@ import {
   Alert,
   TouchableHighlight,
   ScrollView,
-  TextInput,
 } from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
@@ -297,7 +296,7 @@ class NewProductionScreen extends React.Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <ScrollView>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
@@ -419,11 +418,7 @@ class NewProductionScreen extends React.Component {
           <View marginTop={10} marginBottom={10}>
             <TouchableHighlight>
               <View style={styles.buttonContainer}>
-                <Button
-                  title="Salvar"
-                  color="#000000"
-                  onPress={() => this.addProduction()}
-                />
+                <Button title="Salvar" onPress={() => this.addProduction()} />
               </View>
             </TouchableHighlight>
           </View>

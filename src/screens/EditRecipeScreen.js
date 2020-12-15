@@ -887,7 +887,7 @@ class EditRecipeScreen extends React.Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <ScrollView>
           <View style={styles.titleContainer}>
             <TextInput
@@ -2575,11 +2575,7 @@ class EditRecipeScreen extends React.Component {
           <View marginTop={10} marginBottom={10}>
             <TouchableHighlight>
               <View style={styles.buttonContainer}>
-                <Button
-                  title="Salvar"
-                  color="#000000"
-                  onPress={() => this.editRecipe()}
-                />
+                <Button title="Salvar" onPress={() => this.editRecipe()} />
               </View>
             </TouchableHighlight>
           </View>

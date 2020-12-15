@@ -120,7 +120,7 @@ class RecipesScreen extends React.Component {
     if (recipes != null && recipes.length > 0) {
       return (
         <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
           <View style={styles.listContainer}>
             <FlatList
               data={recipes}
@@ -133,7 +133,7 @@ class RecipesScreen extends React.Component {
     } else {
       return (
         <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
           <Image source={Chefhat} style={styles.image} />
           <View style={styles.container}>
             <Text style={styles.bodyText}>Você ainda não possui receitas</Text>

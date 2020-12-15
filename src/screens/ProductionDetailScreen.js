@@ -4,7 +4,6 @@ import {
   View,
   StatusBar,
   StyleSheet,
-  Image,
   Modal,
   Button,
   Alert,
@@ -161,7 +160,7 @@ class ProductionDetailScreen extends React.Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <ScrollView>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
@@ -307,7 +306,6 @@ class ProductionDetailScreen extends React.Component {
                 <View style={styles.editButtonContainer}>
                   <Button
                     title="Editar"
-                    color="#000000"
                     onPress={() =>
                       this.goToEditView(this.state.currentProduction)
                     }

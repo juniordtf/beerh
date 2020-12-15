@@ -308,7 +308,7 @@ class EditProductionScreen extends React.Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <ScrollView>
           <View marginTop={5}>
             <View style={styles.productionTitleContainer}>
@@ -446,11 +446,7 @@ class EditProductionScreen extends React.Component {
           <View marginTop={20} marginBottom={10}>
             <TouchableHighlight>
               <View style={styles.buttonContainer}>
-                <Button
-                  title="Salvar"
-                  color="#000000"
-                  onPress={() => this.editProduction()}
-                />
+                <Button title="Salvar" onPress={() => this.editProduction()} />
               </View>
             </TouchableHighlight>
           </View>

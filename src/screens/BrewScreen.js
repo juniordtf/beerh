@@ -183,7 +183,7 @@ class BrewScreen extends React.Component {
       if (todaysProduction.status === 'in progress') {
         return (
           <SafeAreaView>
-            <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+            <StatusBar barStyle="light-content" backgroundColor="#000000" />
             <View>
               <Text style={styles.title}>Fala, cervejeiro!</Text>
               <Text style={styles.bodyText2}>
@@ -220,7 +220,6 @@ class BrewScreen extends React.Component {
                 <View style={styles.buttonContainer}>
                   <Button
                     title="Retomar"
-                    color="#000000"
                     onPress={() => this.continueBrewing(todaysProduction)}
                   />
                 </View>
@@ -231,7 +230,7 @@ class BrewScreen extends React.Component {
       } else {
         return (
           <SafeAreaView>
-            <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+            <StatusBar barStyle="light-content" backgroundColor="#000000" />
             <View>
               <Text style={styles.title}>Fala, cervejeiro!</Text>
               <Text style={styles.bodyText2}>
@@ -268,7 +267,6 @@ class BrewScreen extends React.Component {
                 <View style={styles.buttonContainer}>
                   <Button
                     title="Iniciar"
-                    color="#000000"
                     onPress={() => this.startBrewing(todaysProduction)}
                   />
                 </View>
@@ -280,7 +278,7 @@ class BrewScreen extends React.Component {
     } else {
       return (
         <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
           <View style={styles.labelContainer}>
             <Text style={styles.label}>Day off</Text>
           </View>

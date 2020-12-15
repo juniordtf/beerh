@@ -128,7 +128,7 @@ class ProductionScreen extends React.Component {
     if (productions != null && productions.length > 0) {
       return (
         <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
           <View style={styles.listContainer}>
             <FlatList
               data={productions}
@@ -141,7 +141,7 @@ class ProductionScreen extends React.Component {
     } else {
       return (
         <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
           <Image source={EmptyBox} style={styles.image} />
           <View style={styles.container}>
             <Text style={styles.bodyText}>

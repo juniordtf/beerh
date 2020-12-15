@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight,
   Button,
+  ScrollView,
 } from 'react-native';
 import ChecklistIcon from '../../assets/checklistIcon.png';
 import CircleChecked from '../../assets/CircleChecked.png';
@@ -133,7 +134,7 @@ class CleaningChecklistScreen extends Component {
       viewToRestore: 'Checklist de Limpeza',
     };
 
-    this.updateProduction(productionUpdated);
+    //this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Checklist de Montagem', {
       currentProduction: productionUpdated,
@@ -172,114 +173,113 @@ class CleaningChecklistScreen extends Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            {this.state.todaysProduction.name} -{' '}
-            {this.state.todaysProduction.volume}L
-          </Text>
-        </View>
-        <View style={styles.subContainer}>
-          <Stopwatch />
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer}>
-            <View style={styles.sectionContainerLeft}>
-              <View style={styles.circle}>
-                <Text style={styles.bodyText}>1</Text>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.title}>
+              {this.state.todaysProduction.name} -{' '}
+              {this.state.todaysProduction.volume}L
+            </Text>
+          </View>
+          <View style={styles.subContainer}>
+            <Stopwatch />
+          </View>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer}>
+              <View style={styles.sectionContainerLeft}>
+                <View style={styles.circle}>
+                  <Text style={styles.bodyText}>1</Text>
+                </View>
+              </View>
+              <View style={styles.sectionContainerRight}>
+                <Text style={styles.bodyText}>Limpeza</Text>
               </View>
             </View>
-            <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Limpeza</Text>
+          </View>
+          <View style={styles.bodyContainer} marginTop={15}>
+            <View style={styles.rowContainer}>
+              <Image source={ChecklistIcon} marginLeft={5} />
+              <Text style={styles.bodyText}> Checklist de Limpeza</Text>
             </View>
           </View>
-        </View>
-        <View style={styles.bodyContainer} marginTop={15}>
-          <View style={styles.rowContainer}>
-            <Image source={ChecklistIcon} marginLeft={5} />
-            <Text style={styles.bodyText}> Checklist de Limpeza</Text>
-          </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <View style={styles.sectionContainer}>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar a área</Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemOneDone: !this.state.checklistItemOneDone,
-                  })
-                }>
-                {this.renderCheckImage01()}
-              </TouchableHighlight>
-            </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar as panelas</Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemTwoDone: !this.state.checklistItemTwoDone,
-                  })
-                }>
-                {this.renderCheckImage02()}
-              </TouchableHighlight>
-            </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar fundos falsos</Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemThreeDone: !this.state.checklistItemThreeDone,
-                  })
-                }>
-                {this.renderCheckImage03()}
-              </TouchableHighlight>
-            </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>
-                Lavar kit de recirculação
-              </Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemFourDone: !this.state.checklistItemFourDone,
-                  })
-                }>
-                {this.renderCheckImage04()}
-              </TouchableHighlight>
-            </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Lavar as bombas</Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemFiveDone: !this.state.checklistItemFiveDone,
-                  })
-                }>
-                {this.renderCheckImage05()}
-              </TouchableHighlight>
+          <View style={styles.cardContainer}>
+            <View style={styles.sectionContainer}>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>Lavar a área</Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemOneDone: !this.state.checklistItemOneDone,
+                    })
+                  }>
+                  {this.renderCheckImage01()}
+                </TouchableHighlight>
+              </View>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>Lavar as panelas</Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemTwoDone: !this.state.checklistItemTwoDone,
+                    })
+                  }>
+                  {this.renderCheckImage02()}
+                </TouchableHighlight>
+              </View>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>Lavar fundos falsos</Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemThreeDone: !this.state
+                        .checklistItemThreeDone,
+                    })
+                  }>
+                  {this.renderCheckImage03()}
+                </TouchableHighlight>
+              </View>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>
+                  Lavar kit de recirculação
+                </Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemFourDone: !this.state.checklistItemFourDone,
+                    })
+                  }>
+                  {this.renderCheckImage04()}
+                </TouchableHighlight>
+              </View>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>Lavar as bombas</Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemFiveDone: !this.state.checklistItemFiveDone,
+                    })
+                  }>
+                  {this.renderCheckImage05()}
+                </TouchableHighlight>
+              </View>
             </View>
           </View>
-        </View>
-        <TouchableHighlight>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Avançar"
-              color="#000000"
-              onPress={() => this.goToNextView()}
-            />
-          </View>
-        </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={styles.buttonContainer}>
+              <Button title="Avançar" onPress={() => this.goToNextView()} />
+            </View>
+          </TouchableHighlight>
+        </ScrollView>
       </SafeAreaView>
     );
   }

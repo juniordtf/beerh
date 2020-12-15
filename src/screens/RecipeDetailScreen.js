@@ -263,7 +263,7 @@ class RecipeDetailScreen extends React.Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <ScrollView>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
@@ -356,11 +356,7 @@ class RecipeDetailScreen extends React.Component {
               <View marginTop={10} marginBottom={10}>
                 <TouchableHighlight>
                   <View style={styles.eraseButtonContainer}>
-                    <Button
-                      title="Apagar"
-                      color="#000000"
-                      onPress={() => this.openModal()}
-                    />
+                    <Button title="Apagar" onPress={() => this.openModal()} />
                   </View>
                 </TouchableHighlight>
               </View>
@@ -370,7 +366,6 @@ class RecipeDetailScreen extends React.Component {
                 <View style={styles.editButtonContainer}>
                   <Button
                     title="Editar"
-                    color="#000000"
                     onPress={() => this.goToEditView(this.state.currentRecipe)}
                   />
                 </View>

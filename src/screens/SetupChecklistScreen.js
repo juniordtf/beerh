@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight,
   Button,
+  ScrollView,
 } from 'react-native';
 import ChecklistIcon from '../../assets/checklistIcon.png';
 import CircleChecked from '../../assets/CircleChecked.png';
@@ -39,7 +40,7 @@ class SetupChecklistScreen extends Component {
 
   getProductions = async () => {
     try {
-      let currentProduction = this.props.route.params?.production;
+      let currentProduction = this.props.route.params?.currentProduction;
       this.setState({todaysProduction: currentProduction});
 
       const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
@@ -121,7 +122,7 @@ class SetupChecklistScreen extends Component {
       viewToRestore: 'Checklist de Montagem',
     };
 
-    this.updateProduction(productionUpdated);
+    //this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Brassagem Parte A', {
       currentProduction: productionUpdated,
@@ -160,103 +161,105 @@ class SetupChecklistScreen extends Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            {this.state.todaysProduction.name} -{' '}
-            {this.state.todaysProduction.volume}L
-          </Text>
-        </View>
-        <View style={styles.subContainer}>
-          <Stopwatch />
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer}>
-            <View style={styles.sectionContainerLeft}>
-              <View style={styles.circle}>
-                <Text style={styles.bodyText}>2</Text>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.title}>
+              {this.state.todaysProduction.name} -{' '}
+              {this.state.todaysProduction.volume}L
+            </Text>
+          </View>
+          <View style={styles.subContainer}>
+            <Stopwatch />
+          </View>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer}>
+              <View style={styles.sectionContainerLeft}>
+                <View style={styles.circle}>
+                  <Text style={styles.bodyText}>2</Text>
+                </View>
+              </View>
+              <View style={styles.sectionContainerRight}>
+                <Text style={styles.bodyText}>Montagem</Text>
               </View>
             </View>
-            <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>Montagem</Text>
+          </View>
+          <View style={styles.bodyContainer} marginTop={15}>
+            <View style={styles.rowContainer}>
+              <Image source={ChecklistIcon} marginLeft={5} />
+              <Text style={styles.bodyText}> Checklist de Montagem</Text>
             </View>
           </View>
-        </View>
-        <View style={styles.bodyContainer} marginTop={15}>
-          <View style={styles.rowContainer}>
-            <Image source={ChecklistIcon} marginLeft={5} />
-            <Text style={styles.bodyText}> Checklist de Montagem</Text>
-          </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <View style={styles.sectionContainer}>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Colocar cortina</Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemOneDone: !this.state.checklistItemOneDone,
-                  })
-                }>
-                {this.renderCheckImage01()}
-              </TouchableHighlight>
-            </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>Montar fogões e gás</Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemTwoDone: !this.state.checklistItemTwoDone,
-                  })
-                }>
-                {this.renderCheckImage02()}
-              </TouchableHighlight>
-            </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>
-                Montar kit de recirculação
-              </Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemThreeDone: !this.state.checklistItemThreeDone,
-                  })
-                }>
-                {this.renderCheckImage03()}
-              </TouchableHighlight>
-            </View>
-            <View style={styles.boxContainerLeft}>
-              <Text style={styles.checklistText}>
-                Montar controlador de temperatura
-              </Text>
-            </View>
-            <View style={styles.boxContainerRight}>
-              <TouchableHighlight
-                onPress={() =>
-                  this.setState({
-                    checklistItemFourDone: !this.state.checklistItemFourDone,
-                  })
-                }>
-                {this.renderCheckImage04()}
-              </TouchableHighlight>
+          <View style={styles.cardContainer}>
+            <View style={styles.sectionContainer}>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>Colocar cortina</Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemOneDone: !this.state.checklistItemOneDone,
+                    })
+                  }>
+                  {this.renderCheckImage01()}
+                </TouchableHighlight>
+              </View>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>Montar fogões e gás</Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemTwoDone: !this.state.checklistItemTwoDone,
+                    })
+                  }>
+                  {this.renderCheckImage02()}
+                </TouchableHighlight>
+              </View>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>
+                  Montar kit de recirculação
+                </Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemThreeDone: !this.state
+                        .checklistItemThreeDone,
+                    })
+                  }>
+                  {this.renderCheckImage03()}
+                </TouchableHighlight>
+              </View>
+              <View style={styles.boxContainerLeft}>
+                <Text style={styles.checklistText}>
+                  Montar controlador de temperatura
+                </Text>
+              </View>
+              <View style={styles.boxContainerRight}>
+                <TouchableHighlight
+                  onPress={() =>
+                    this.setState({
+                      checklistItemFourDone: !this.state.checklistItemFourDone,
+                    })
+                  }>
+                  {this.renderCheckImage04()}
+                </TouchableHighlight>
+              </View>
             </View>
           </View>
-        </View>
-        <TouchableHighlight>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Avançar"
-              color="#000000"
-              onPress={() => this.goToNextView(this.state.todaysProduction)}
-            />
-          </View>
-        </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Avançar"
+                onPress={() => this.goToNextView(this.state.todaysProduction)}
+              />
+            </View>
+          </TouchableHighlight>
+        </ScrollView>
       </SafeAreaView>
     );
   }

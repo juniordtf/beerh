@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight,
   Button,
+  ScrollView,
 } from 'react-native';
 import BrewingMill from '../../assets/brewingMill.png';
 import HotWater from '../../assets/hotWater.png';
@@ -109,7 +110,7 @@ class BrewPartAScreen extends Component {
       viewToRestore: 'Brassagem Parte A',
     };
 
-    this.updateProduction(productionUpdated);
+    //this.updateProduction(productionUpdated);
 
     this.props.navigation.navigate('Brassagem Parte B', {
       currentProduction: productionUpdated,
@@ -148,82 +149,80 @@ class BrewPartAScreen extends Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            {this.state.todaysProduction.name} -{' '}
-            {this.state.todaysProduction.volume}L
-          </Text>
-        </View>
-        <View style={styles.subContainer}>
-          <Stopwatch />
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer}>
-            <View style={styles.sectionContainerLeft}>
-              <View style={styles.circle}>
-                <Text style={styles.bodyText}>3</Text>
-              </View>
-            </View>
-            <View style={styles.sectionContainerRight}>
-              <Text style={styles.bodyText}>
-                Brassagem (1/{this.getStepsTotal()})
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.bodyContainer} marginTop={15}>
-          <View style={styles.rowContainer}>
-            <Text style={styles.bodyText}>
-              {' '}
-              Realizar as tarefas abaixo em paralelo:
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.title}>
+              {this.state.todaysProduction.name} -{' '}
+              {this.state.todaysProduction.volume}L
             </Text>
           </View>
-        </View>
-        <View style={styles.bodyContainer}>
-          <View>
+          <View style={styles.subContainer}>
+            <Stopwatch />
+          </View>
+          <View style={styles.bodyContainer}>
             <View style={styles.rowContainer}>
-              <View style={styles.boxContainerRight}>
-                <Image source={BrewingMill} />
+              <View style={styles.sectionContainerLeft}>
+                <View style={styles.circle}>
+                  <Text style={styles.bodyText}>3</Text>
+                </View>
               </View>
-              <View style={styles.boxContainerLeft}>
-                <Text style={styles.bodyText}>Moer os grãos</Text>
-              </View>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.boxContainerRight}>
-                <Image source={HotWater} />
-              </View>
-              <View style={styles.boxContainerLeft}>
+              <View style={styles.sectionContainerRight}>
                 <Text style={styles.bodyText}>
-                  Encher as panelas com água e colocar para esquentar
+                  Brassagem (1/{this.getStepsTotal()})
                 </Text>
               </View>
             </View>
           </View>
-        </View>
-        <View style={styles.bodyContainer}>
-          <View style={styles.rowContainer}>
-            <View style={styles.boxContainerRight}>
-              <Text style={styles.bodyText}>Obs.:</Text>
-            </View>
-            <View style={styles.boxContainerLeft} alignItems={'flex-start'}>
+          <View style={styles.bodyContainer} marginTop={15}>
+            <View style={styles.rowContainer}>
               <Text style={styles.bodyText}>
-                Alterar temperatura do controlador para:{' '}
-                {this.getInitialTemperature()} °C
+                {' '}
+                Realizar as tarefas abaixo em paralelo:
               </Text>
             </View>
           </View>
-        </View>
-        <TouchableHighlight>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Avançar"
-              color="#000000"
-              onPress={() => this.goToNextView()}
-            />
+          <View style={styles.bodyContainer}>
+            <View>
+              <View style={styles.rowContainer}>
+                <View style={styles.boxContainerRight}>
+                  <Image source={BrewingMill} />
+                </View>
+                <View style={styles.boxContainerLeft}>
+                  <Text style={styles.bodyText}>Moer os grãos</Text>
+                </View>
+              </View>
+              <View style={styles.rowContainer}>
+                <View style={styles.boxContainerRight}>
+                  <Image source={HotWater} />
+                </View>
+                <View style={styles.boxContainerLeft}>
+                  <Text style={styles.bodyText}>
+                    Encher as panelas com água e colocar para esquentar
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
-        </TouchableHighlight>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer}>
+              <View style={styles.boxContainerRight}>
+                <Text style={styles.bodyText}>Obs.:</Text>
+              </View>
+              <View style={styles.boxContainerLeft} alignItems={'flex-start'}>
+                <Text style={styles.bodyText}>
+                  Alterar temperatura do controlador para:{' '}
+                  {this.getInitialTemperature()} °C
+                </Text>
+              </View>
+            </View>
+          </View>
+          <TouchableHighlight>
+            <View style={styles.buttonContainer}>
+              <Button title="Avançar" onPress={() => this.goToNextView()} />
+            </View>
+          </TouchableHighlight>
+        </ScrollView>
       </SafeAreaView>
     );
   }

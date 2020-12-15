@@ -145,7 +145,7 @@ class SuccessfulScreen extends Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <View style={styles.container}>
           <Image source={Cheers} />
           <Text style={styles.title}>Parabéns!</Text>
@@ -171,7 +171,6 @@ class SuccessfulScreen extends Component {
           <View style={styles.buttonContainer}>
             <Button
               title="Voltar para o início"
-              color="#000000"
               onPress={() => this.goToNextView()}
             />
           </View>
