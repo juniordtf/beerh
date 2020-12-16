@@ -36,8 +36,8 @@ class SpargeScreen extends Component {
 
   componentDidMount() {
     this.keepStopwatchGoing();
-    this.startTimer();
     this.getProductions();
+    this.getCurrentRecipe();
   }
 
   getProductions = async () => {
@@ -62,16 +62,9 @@ class SpargeScreen extends Component {
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
 
-  startTimer() {
+  getCurrentRecipe() {
     const currentRecipe = this.props.route.params?.currentRecipe;
     this.setState({todaysRecipe: currentRecipe});
-
-    let rampDuration = 59;
-    if (currentRecipe != null) {
-      rampDuration = parseInt(currentRecipe.ramps[0].time, 10) - 1;
-    }
-
-    window.timerComponent.setTimer(rampDuration);
   }
 
   getMashoutTemperature() {
