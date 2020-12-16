@@ -25,6 +25,7 @@ function ProductionsStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate('Nova Produção')}>
@@ -55,6 +56,7 @@ function ProductionsStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -69,6 +71,7 @@ function ProductionsStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -83,6 +86,7 @@ function ProductionsStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

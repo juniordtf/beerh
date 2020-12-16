@@ -29,7 +29,9 @@ class EditProductionScreen extends React.Component {
       name: '',
       volume: '',
       og: '',
+      realOg: '',
       fg: '',
+      realFg: '',
       style: '',
       estimatedTime: '',
       status: '',
@@ -79,7 +81,9 @@ class EditProductionScreen extends React.Component {
       name: production.name,
       volume: production.volume,
       og: production.og,
+      realOg: production.realOg,
       fg: production.fg,
+      realFg: production.realFg,
       style: production.style,
       estimatedTime: production.estimatedTime,
       status: production.status,
@@ -258,7 +262,9 @@ class EditProductionScreen extends React.Component {
       name: this.state.name,
       volume: this.state.volume,
       og: this.state.og,
+      realOg: this.state.realOg,
       fg: this.state.fg,
+      realFg: this.state.realFg,
       style: this.state.style,
       estimatedTime: this.state.estimatedTime,
       status: this.state.status,
@@ -273,7 +279,7 @@ class EditProductionScreen extends React.Component {
         initialDate.slice(5, 7) +
         '-' +
         initialDate.slice(8, 10),
-      duration: '',
+      duration: this.state.duration,
       createdAt: this.state.createdAt,
     };
 
@@ -444,10 +450,10 @@ class EditProductionScreen extends React.Component {
             </View>
           </View>
           <View marginTop={20} marginBottom={10}>
-            <TouchableHighlight>
-              <View style={styles.buttonContainer}>
-                <Button title="Salvar" onPress={() => this.editProduction()} />
-              </View>
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={() => this.editProduction()}>
+              <Text style={styles.bodyText}>Salvar</Text>
             </TouchableHighlight>
           </View>
 
@@ -655,7 +661,7 @@ const styles = StyleSheet.create({
   onePickerContainer: {
     backgroundColor: '#F6F0F0',
     borderColor: 'black',
-    width: 280,
+    width: 220,
     height: 44,
     borderWidth: 1,
     marginLeft: 15,
@@ -699,7 +705,7 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     height: 44,
-    width: 235,
+    width: 175,
     marginLeft: 15,
     justifyContent: 'center',
   },
@@ -754,7 +760,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
-    marginTop: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  bodyText: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
   },
   rowContainer: {
     display: 'flex',

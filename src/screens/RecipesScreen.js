@@ -138,14 +138,11 @@ class RecipesScreen extends React.Component {
           <View style={styles.container}>
             <Text style={styles.bodyText}>Você ainda não possui receitas</Text>
           </View>
-          <TouchableHighlight>
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Criar uma receita"
-                color="#000000"
-                onPress={() => this.props.navigation.navigate('Nova Receita')}
-              />
-            </View>
+
+          <TouchableHighlight
+            style={styles.buttonContainer}
+            onPress={() => this.props.navigation.navigate('Nova Receita')}>
+            <Text style={styles.bodyText}>Criar uma receita</Text>
           </TouchableHighlight>
         </SafeAreaView>
       );
@@ -207,12 +204,15 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 250,
+    height: 40,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   line: {
     borderBottomColor: 'grey',

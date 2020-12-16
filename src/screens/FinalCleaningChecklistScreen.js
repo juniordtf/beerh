@@ -42,11 +42,18 @@ class FinalCleaningChecklistScreen extends Component {
   }
 
   componentDidMount() {
-    window.stopwatchComponent.startStopwatch();
+    this.keepStopwatchGoing();
     this.getProductions();
     this.getCurrentProduction();
     this.getCurrentRecipe();
   }
+
+  keepStopwatchGoing = () => {
+    let currentProduction = this.props.route.params?.currentProduction;
+    this.setState({todaysProduction: currentProduction});
+    window.stopwatchComponent.startStopwatch();
+    window.stopwatchComponent.continueStopwatch(currentProduction.duration);
+  };
 
   getCurrentProduction = () => {
     let currentProduction = this.props.route.params?.currentProduction;
@@ -121,7 +128,7 @@ class FinalCleaningChecklistScreen extends Component {
       realFg: this.state.todaysProduction.realFg,
       style: this.state.todaysProduction.style,
       estimatedTime: this.state.todaysProduction.estimatedTime,
-      status: 'in progress',
+      status: this.state.todaysProduction.status,
       brewDate: this.state.todaysProduction.brewDate,
       fermentationDate: this.state.todaysProduction.fermentationDate,
       carbonationDate: this.state.todaysProduction.carbonationDate,

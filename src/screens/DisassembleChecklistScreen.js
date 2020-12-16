@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
   ScrollView,
 } from 'react-native';
 import ChecklistIcon from '../../assets/checklistIcon.png';
@@ -104,21 +103,25 @@ class DisassembleChecklistScreen extends Component {
     window.stopwatchComponent.stopStopwatch();
 
     const productionUpdated = {
-      id: currentProduction.id,
-      name: currentProduction.name,
-      volume: currentProduction.volume,
-      og: currentProduction.og,
-      fg: currentProduction.fg,
-      style: currentProduction.style,
-      estimatedTime: currentProduction.estimatedTime,
-      status: currentProduction.status,
-      brewDate: currentProduction.brewDate,
-      fermentationDate: currentProduction.fermentationDate,
-      carbonationDate: currentProduction.carbonationDate,
-      ageingDate: currentProduction.ageingDate,
-      fillingDate: currentProduction.fillingDate,
+      id: this.state.todaysProduction.id,
+      name: this.state.todaysProduction.name,
+      volume: this.state.todaysProduction.volume,
+      og: this.state.todaysProduction.og,
+      realOg: this.state.todaysProduction.realOg,
+      fg: this.state.todaysProduction.fg,
+      realFg: this.state.todaysProduction.realFg,
+      style: this.state.todaysProduction.style,
+      estimatedTime: this.state.todaysProduction.estimatedTime,
+      status: this.state.todaysProduction.status,
+      brewDate: this.state.todaysProduction.brewDate,
+      fermentationDate: this.state.todaysProduction.fermentationDate,
+      carbonationDate: this.state.todaysProduction.carbonationDate,
+      ageingDate: this.state.todaysProduction.ageingDate,
+      fillingDate: this.state.todaysProduction.fillingDate,
+      initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
       duration: window.stopwatchComponent.showDisplay(),
-      createdAt: currentProduction.createdAt,
+      createdAt: this.state.todaysProduction.createdAt,
+      lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: 'Checklist de Desmontagem',
     };
 

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
   ScrollView,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
@@ -66,7 +65,7 @@ class BoilPartDScreen extends Component {
 
     let rampDuration = 59;
     if (currentRecipe != null) {
-      if (currentRecipe.boil[3]) {
+      if (currentRecipe.boil[4]) {
         rampDuration =
           parseInt(currentRecipe.boil[3].time, 10) -
           parseInt(currentRecipe.boil[4].time, 10) -

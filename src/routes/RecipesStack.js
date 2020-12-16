@@ -25,6 +25,7 @@ function RecipesStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate('Nova Receita')}>
@@ -54,6 +55,7 @@ function RecipesStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -68,6 +70,7 @@ function RecipesStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -82,6 +85,7 @@ function RecipesStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

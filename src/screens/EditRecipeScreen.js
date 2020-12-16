@@ -832,6 +832,24 @@ class EditRecipeScreen extends React.Component {
     const fermentation = this.setFermentation();
     const ageing = this.setAgeing();
 
+    let elapsedTime = parseFloat(this.state.TimeRamp01, 10).toFixed(2);
+
+    if (this.state.TimeRamp02 != null) {
+      elapsedTime += parseFloat(this.state.TimeRamp02, 10).toFixed(2);
+    }
+    if (this.state.TimeRamp03 != null) {
+      elapsedTime += parseFloat(this.state.TimeRamp03, 10).toFixed(2);
+    }
+    if (this.state.TimeRamp04 != null) {
+      elapsedTime += parseFloat(this.state.TimeRamp04, 10).toFixed(2);
+    }
+    if (this.state.TimeRamp05 != null) {
+      elapsedTime += parseFloat(this.state.TimeRamp05, 10).toFixed(2);
+    }
+    if (this.state.TimeBoil01 != null) {
+      elapsedTime += parseFloat(this.state.TimeBoil01, 10).toFixed(2);
+    }
+
     const currentRecipe = {
       id: this.state.id,
       title: this.state.title,
@@ -850,13 +868,7 @@ class EditRecipeScreen extends React.Component {
       carbonationMethod: this.state.carbonationMethod,
       carbonationValue: this.state.carbonationValue,
       carbonationUnit: this.state.carbonationUnit,
-      estimatedTime:
-        parseInt(this.state.TimeRamp01, 10) +
-        parseInt(this.state.TimeRamp02, 10) +
-        parseInt(this.state.TimeRamp03, 10) +
-        parseInt(this.state.TimeRamp04, 10) +
-        parseInt(this.state.TimeRamp05, 10) +
-        parseInt(this.state.TimeBoil01, 10),
+      estimatedTime: elapsedTime,
       annotation: this.state.annotation,
       createdAt: this.state.todaysDatePt,
       lastUpdateDate: this.state.todaysDatePt,
@@ -1004,9 +1016,6 @@ class EditRecipeScreen extends React.Component {
                     );
                   })}
                 </Picker>
-                <View style={styles.signContainer}>
-                  <Image source={UpDown} style={{height: 10, width: 10}} />
-                </View>
               </View>
               <TextInput
                 style={styles.bodyInputMask}
@@ -1014,7 +1023,7 @@ class EditRecipeScreen extends React.Component {
                 value={this.state.NameIng01}
                 placeholder="Nome"
                 underlineColorAndroid="transparent"
-                width={200}
+                width={130}
                 marginLeft={5}
               />
               <View style={styles.addButtonContainer}>
@@ -1055,9 +1064,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1065,7 +1071,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng02}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1116,9 +1122,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1126,7 +1129,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng03}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1177,9 +1180,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1187,7 +1187,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng04}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1238,9 +1238,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1248,7 +1245,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng05}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1299,9 +1296,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1309,7 +1303,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng06}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1360,9 +1354,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1370,7 +1361,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng07}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1421,9 +1412,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1431,7 +1419,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng08}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1482,9 +1470,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1492,7 +1477,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng09}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1543,9 +1528,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1553,7 +1535,7 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameIng10}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={200}
+                    width={130}
                     marginLeft={5}
                   />
                   <View style={styles.addButtonContainer}>
@@ -1781,7 +1763,7 @@ class EditRecipeScreen extends React.Component {
           <View marginTop={10}>
             <Text style={styles.innerSectionText}>Fervura:</Text>
             <View style={styles.parametersRow}>
-              <View>
+              <View marginLeft={-5}>
                 <View style={styles.parametersRow}>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1810,9 +1792,6 @@ class EditRecipeScreen extends React.Component {
                         );
                       })}
                     </Picker>
-                    <View style={styles.signContainer}>
-                      <Image source={UpDown} style={{height: 10, width: 10}} />
-                    </View>
                   </View>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1820,8 +1799,8 @@ class EditRecipeScreen extends React.Component {
                     value={this.state.NameBoil01}
                     placeholder="Nome"
                     underlineColorAndroid="transparent"
-                    width={150}
-                    marginLeft={10}
+                    width={130}
+                    marginLeft={5}
                   />
                 </View>
                 <View style={styles.parametersSecondRow}>
@@ -1843,7 +1822,7 @@ class EditRecipeScreen extends React.Component {
               <View
                 style={styles.addButtonContainer}
                 height={80}
-                marginLeft={10}>
+                marginLeft={5}>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => this.handleAddBoilInput('0')}>
@@ -1855,7 +1834,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputSecondBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={35}
+                  marginLeft={28}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -1886,12 +1865,6 @@ class EditRecipeScreen extends React.Component {
                             );
                           })}
                         </Picker>
-                        <View style={styles.signContainer}>
-                          <Image
-                            source={UpDown}
-                            style={{height: 10, width: 10}}
-                          />
-                        </View>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
@@ -1901,8 +1874,8 @@ class EditRecipeScreen extends React.Component {
                         value={this.state.NameBoil02}
                         placeholder="Nome"
                         underlineColorAndroid="transparent"
-                        width={150}
-                        marginLeft={10}
+                        width={130}
+                        marginLeft={5}
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
@@ -1929,7 +1902,7 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={10}>
+                    marginLeft={5}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('1')}>
@@ -1955,7 +1928,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputThirdBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={35}
+                  marginLeft={28}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -1986,12 +1959,6 @@ class EditRecipeScreen extends React.Component {
                             );
                           })}
                         </Picker>
-                        <View style={styles.signContainer}>
-                          <Image
-                            source={UpDown}
-                            style={{height: 10, width: 10}}
-                          />
-                        </View>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
@@ -2001,8 +1968,8 @@ class EditRecipeScreen extends React.Component {
                         value={this.state.NameBoil03}
                         placeholder="Nome"
                         underlineColorAndroid="transparent"
-                        width={150}
-                        marginLeft={10}
+                        width={130}
+                        marginLeft={5}
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
@@ -2029,7 +1996,7 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={10}>
+                    marginLeft={5}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('2')}>
@@ -2055,7 +2022,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputFourthBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={35}
+                  marginLeft={28}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -2086,12 +2053,6 @@ class EditRecipeScreen extends React.Component {
                             );
                           })}
                         </Picker>
-                        <View style={styles.signContainer}>
-                          <Image
-                            source={UpDown}
-                            style={{height: 10, width: 10}}
-                          />
-                        </View>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
@@ -2101,8 +2062,8 @@ class EditRecipeScreen extends React.Component {
                         value={this.state.NameBoil04}
                         placeholder="Nome"
                         underlineColorAndroid="transparent"
-                        width={150}
-                        marginLeft={10}
+                        width={130}
+                        marginLeft={5}
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
@@ -2129,7 +2090,7 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={10}>
+                    marginLeft={5}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleAddBoilInput('3')}>
@@ -2155,7 +2116,7 @@ class EditRecipeScreen extends React.Component {
               {this.state.inputFifthBoilClicked ? (
                 <View
                   style={styles.parametersRow}
-                  marginLeft={35}
+                  marginLeft={28}
                   marginTop={-2}>
                   <View>
                     <View style={styles.parametersRow}>
@@ -2186,12 +2147,6 @@ class EditRecipeScreen extends React.Component {
                             );
                           })}
                         </Picker>
-                        <View style={styles.signContainer}>
-                          <Image
-                            source={UpDown}
-                            style={{height: 10, width: 10}}
-                          />
-                        </View>
                       </View>
                       <TextInput
                         style={styles.bodyInputMask}
@@ -2201,8 +2156,8 @@ class EditRecipeScreen extends React.Component {
                         value={this.state.NameBoil05}
                         placeholder="Nome"
                         underlineColorAndroid="transparent"
-                        width={150}
-                        marginLeft={10}
+                        width={130}
+                        marginLeft={5}
                       />
                     </View>
                     <View style={styles.parametersSecondRow}>
@@ -2229,18 +2184,14 @@ class EditRecipeScreen extends React.Component {
                   <View
                     style={styles.addButtonContainer}
                     height={80}
-                    marginLeft={10}>
+                    marginLeft={5}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => this.handleRemoveBoilInput('3')}>
                       <Image source={Minus} />
                     </TouchableOpacity>
                   </View>
-                  <View
-                    style={styles.addButtonContainer}
-                    height={80}
-                    marginLeft={-1}
-                  />
+                  <View style={styles.addButtonContainer} height={80} />
                 </View>
               ) : (
                 <View />
@@ -2524,9 +2475,6 @@ class EditRecipeScreen extends React.Component {
                     );
                   })}
                 </Picker>
-                <View style={styles.signContainer}>
-                  <Image source={UpDown} style={{height: 10, width: 10}} />
-                </View>
               </View>
               <TextInput
                 style={styles.bodyInputMask}
@@ -2538,7 +2486,7 @@ class EditRecipeScreen extends React.Component {
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
                 width={70}
-                marginLeft={8}
+                marginLeft={5}
               />
               <View style={styles.centeredBodyTextContainer}>
                 <Text style={styles.smallBodyText}>
@@ -2647,7 +2595,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   styleInputMask: {
-    height: 35,
+    height: 38,
     width: 200,
     borderColor: 'gray',
     borderWidth: 1,
@@ -2661,7 +2609,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   bodyInputMask: {
-    height: 34,
+    height: 36,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
@@ -2693,47 +2641,45 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
-    width: 55,
-    height: 34,
+    width: 75,
+    height: 36,
     marginLeft: 5,
     display: 'flex',
     flexDirection: 'row',
   },
   onePicker: {
-    width: 35,
-    height: 40,
+    width: 90,
+    height: 36,
   },
   onePickerItem: {
-    height: 40,
+    height: 36,
     color: 'black',
     fontSize: 12,
     textAlign: 'center',
-    marginLeft: 10,
-    marginTop: -4,
   },
   onePickerContainerLarge: {
     backgroundColor: '#fff',
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
-    width: 150,
-    height: 34,
+    width: 147,
+    height: 36,
     marginLeft: 5,
     display: 'flex',
     flexDirection: 'row',
   },
   onePickerLarge: {
-    width: 130,
-    height: 40,
+    width: 160,
+    height: 36,
   },
   signContainer: {
-    height: 34,
+    height: 36,
     width: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   centeredBodyTextContainer: {
-    height: 32,
+    height: 36,
     justifyContent: 'center',
     alignItems: 'center',
   },

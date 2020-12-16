@@ -33,7 +33,7 @@ class ProductionDetailScreen extends React.Component {
       fg: '',
       realFg: '',
       estimatedTime: '',
-      spentTime: '',
+      duration: '',
       status: '',
       initialDate: '',
       year: '',
@@ -90,7 +90,7 @@ class ProductionDetailScreen extends React.Component {
       fg: production.fg,
       realFg: production.realFg,
       estimatedTime: parseInt(production.estimatedTime, 10) / 60,
-      spentTime: production.spentTime,
+      duration: production.duration,
       status: production.state,
       initialCalendarDate: production.initialCalendarDate,
     });
@@ -282,7 +282,7 @@ class ProductionDetailScreen extends React.Component {
           <View marginTop={5}>
             <View style={styles.bodyContainer}>
               <Text style={styles.bodyText}>
-                Tempo de brassagem (real / estimado): /{' '}
+                Tempo de brassagem (real / estimado): {this.state.duration} /{' '}
                 {parseInt(this.state.estimatedTime, 10).toFixed(2)} hrs
               </Text>
             </View>

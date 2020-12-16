@@ -320,9 +320,6 @@ class NewProductionScreen extends React.Component {
                   );
                 })}
               </Picker>
-              <View style={styles.signContainer}>
-                <Image source={UpDown} />
-              </View>
             </View>
           </View>
           <View marginTop={5}>
@@ -615,7 +612,7 @@ const styles = StyleSheet.create({
   onePickerContainer: {
     backgroundColor: '#F6F0F0',
     borderColor: 'black',
-    width: 280,
+    width: 220,
     height: 44,
     borderWidth: 1,
     marginLeft: 15,
@@ -624,7 +621,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   onePicker: {
-    width: 250,
+    width: 225,
     height: 44,
   },
   onePickerItem: {
@@ -659,7 +656,7 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     height: 44,
-    width: 235,
+    width: 175,
     marginLeft: 15,
     justifyContent: 'center',
   },

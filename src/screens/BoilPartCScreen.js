@@ -66,7 +66,7 @@ class BoilPartCScreen extends Component {
 
     let rampDuration = 59;
     if (currentRecipe != null) {
-      if (currentRecipe.boil[2]) {
+      if (currentRecipe.boil[3]) {
         rampDuration =
           parseInt(currentRecipe.boil[2].time, 10) -
           parseInt(currentRecipe.boil[3].time, 10) -

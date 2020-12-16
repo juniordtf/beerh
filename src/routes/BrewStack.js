@@ -42,6 +42,7 @@ function BrewStack() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerTitleAlign: 'center',
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => window.brewScreen.getProductions()}>
