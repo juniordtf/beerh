@@ -120,7 +120,7 @@ class ProductionDetailScreen extends React.Component {
     });
   };
 
-  deleteProduction = (currentProduction) => {
+  deleteProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -131,7 +131,7 @@ class ProductionDetailScreen extends React.Component {
       allProductions.splice(index, 1);
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {
@@ -141,10 +141,14 @@ class ProductionDetailScreen extends React.Component {
         }
         console.log('Success. Production removed');
       },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    )
+      .then(this.afterDeletion(allProductions))
+      .catch((err) => {
+        console.log('error is: ' + err);
+      });
+  };
 
+  afterDeletion = (allProductions) => {
     this.closeModal();
 
     this.props.navigation.navigate('Produções', {productions: allProductions});

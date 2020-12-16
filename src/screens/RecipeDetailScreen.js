@@ -111,7 +111,7 @@ class RecipeDetailScreen extends React.Component {
     });
   };
 
-  deleteRecipe = (currentRecipe) => {
+  deleteRecipe = async (currentRecipe) => {
     var production = this.state.productions.find(
       (x) => x.name === currentRecipe.title,
     );
@@ -130,21 +130,29 @@ class RecipeDetailScreen extends React.Component {
         allRecipes.splice(index, 1);
       }
 
-      AsyncStorage.setItem(RECIPES_KEY, JSON.stringify(allRecipes), (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Recipe removed');
-      }).catch((err) => {
-        console.log('error is: ' + err);
-      });
-
-      this.closeModal();
-
-      this.props.navigation.navigate('Receitas', {productions: allRecipes});
-      Alert.alert('Receita removida com sucesso!');
+      await AsyncStorage.setItem(
+        RECIPES_KEY,
+        JSON.stringify(allRecipes),
+        (err) => {
+          if (err) {
+            console.log('an error occured');
+            throw err;
+          }
+          console.log('Success. Recipe removed');
+        },
+      )
+        .then(this.afterDeletion(allRecipes))
+        .catch((err) => {
+          console.log('error is: ' + err);
+        });
     }
+  };
+
+  afterDeletion = (allRecipes) => {
+    this.closeModal();
+
+    this.props.navigation.navigate('Receitas', {productions: allRecipes});
+    Alert.alert('Receita removida com sucesso!');
   };
 
   goToEditView = (currentRecipe) => {

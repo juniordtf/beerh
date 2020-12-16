@@ -30,8 +30,7 @@ class ProductionScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getProductions();
-    this.getRecipes();
+    this.getRecipes().then(this.getProductions());
   }
 
   getProductions = async () => {
