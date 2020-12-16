@@ -114,8 +114,14 @@ class BrewPartCScreen extends Component {
       viewToRestore: 'Brassagem Parte C',
     };
 
-    //this.updateProduction(productionUpdated);
+    this.updateProduction(productionUpdated).then(
+      this.decideNextView(productionUpdated),
+    );
 
+    window.stopwatchComponent.clearStopwatch();
+  };
+
+  decideNextView = (productionUpdated) => {
     if (this.state.todaysRecipe.ramps[2] != null) {
       this.props.navigation.navigate('Brassagem Parte D', {
         currentProduction: productionUpdated,
@@ -127,11 +133,9 @@ class BrewPartCScreen extends Component {
         currentRecipe: this.state.todaysRecipe,
       });
     }
-
-    window.stopwatchComponent.clearStopwatch();
   };
 
-  updateProduction = (currentProduction) => {
+  updateProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -142,7 +146,7 @@ class BrewPartCScreen extends Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {

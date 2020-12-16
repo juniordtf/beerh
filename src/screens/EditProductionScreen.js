@@ -254,7 +254,7 @@ class EditProductionScreen extends React.Component {
     });
   }
 
-  editProduction = () => {
+  editProduction = async () => {
     let initialDate = this.state.selectedBrewDate;
 
     const currentProduction = {
@@ -293,7 +293,7 @@ class EditProductionScreen extends React.Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {

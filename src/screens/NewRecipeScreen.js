@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   Image,
-  Button,
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
@@ -16,7 +15,6 @@ import {Picker} from '@react-native-community/picker';
 import SafeAreaView from 'react-native-safe-area-view';
 import Plus from '../../assets/plus.png';
 import Minus from '../../assets/minus.png';
-import UpDown from '../../assets/up-and-down.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY} from '../statics/Statics';
 import {Units} from '../statics/Statics';
@@ -671,7 +669,7 @@ class NewRecipeScreen extends React.Component {
     });
   }
 
-  addRecipe = () => {
+  addRecipe = async () => {
     const ingredients = this.setIngridients();
     const ramps = this.setRamps();
     const boil = this.setBoil();
@@ -731,13 +729,17 @@ class NewRecipeScreen extends React.Component {
       }
     }
 
-    AsyncStorage.setItem(RECIPES_KEY, JSON.stringify(allRecipes), (err) => {
-      if (err) {
-        console.log('an error occured');
-        throw err;
-      }
-      console.log('Success. Recipe added');
-    }).catch((err) => {
+    await AsyncStorage.setItem(
+      RECIPES_KEY,
+      JSON.stringify(allRecipes),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Recipe added');
+      },
+    ).catch((err) => {
       console.log('error is: ' + err);
     });
 

@@ -122,17 +122,17 @@ class BoilPartEScreen extends Component {
       viewToRestore: 'Fervura Parte E',
     };
 
-    //this.updateProduction(productionUpdated);
-
-    this.props.navigation.navigate('Whirlpool', {
-      currentProduction: productionUpdated,
-      currentRecipe: this.state.todaysRecipe,
-    });
+    this.updateProduction(productionUpdated).then(
+      this.props.navigation.navigate('Whirlpool', {
+        currentProduction: productionUpdated,
+        currentRecipe: this.state.todaysRecipe,
+      }),
+    );
 
     window.stopwatchComponent.clearStopwatch();
   };
 
-  updateProduction = (currentProduction) => {
+  updateProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -143,7 +143,7 @@ class BoilPartEScreen extends Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {

@@ -825,7 +825,7 @@ class EditRecipeScreen extends React.Component {
     });
   }
 
-  editRecipe = () => {
+  editRecipe = async () => {
     const ingredients = this.setIngridients();
     const ramps = this.setRamps();
     const boil = this.setBoil();
@@ -882,13 +882,17 @@ class EditRecipeScreen extends React.Component {
       allRecipes[index] = currentRecipe;
     }
 
-    AsyncStorage.setItem(RECIPES_KEY, JSON.stringify(allRecipes), (err) => {
-      if (err) {
-        console.log('an error occured');
-        throw err;
-      }
-      console.log('Success. Recipe updated');
-    }).catch((err) => {
+    await AsyncStorage.setItem(
+      RECIPES_KEY,
+      JSON.stringify(allRecipes),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Recipe updated');
+      },
+    ).catch((err) => {
       console.log('error is: ' + err);
     });
 

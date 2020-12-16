@@ -96,17 +96,17 @@ class CoolingScreen extends Component {
       viewToRestore: 'Resfriamento',
     };
 
-    //this.updateProduction(productionUpdated);
-
-    this.props.navigation.navigate('Início da Fermentação', {
-      currentProduction: productionUpdated,
-      currentRecipe: this.state.todaysRecipe,
-    });
+    this.updateProduction(productionUpdated).then(
+      this.props.navigation.navigate('Início da Fermentação', {
+        currentProduction: productionUpdated,
+        currentRecipe: this.state.todaysRecipe,
+      }),
+    );
 
     window.stopwatchComponent.clearStopwatch();
   };
 
-  updateProduction = (currentProduction) => {
+  updateProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -117,7 +117,7 @@ class CoolingScreen extends Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {

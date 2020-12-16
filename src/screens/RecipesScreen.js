@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   Image,
-  Button,
   FlatList,
   TouchableOpacity,
   TouchableHighlight,

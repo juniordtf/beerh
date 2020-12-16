@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import Cheers from '../../assets/cheers.png';
@@ -82,15 +81,15 @@ class SuccessfulScreen extends Component {
       viewToRestore: 'Sucesso',
     };
 
-    this.updateProduction(productionUpdated);
-
-    this.props.navigation.navigate('Brassagem', {
-      currentProduction: productionUpdated,
-      currentRecipe: this.state.todaysRecipe,
-    });
+    this.updateProduction(productionUpdated).then(
+      this.props.navigation.navigate('Brassagem', {
+        currentProduction: productionUpdated,
+        currentRecipe: this.state.todaysRecipe,
+      }),
+    );
   };
 
-  updateProduction = (currentProduction) => {
+  updateProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -101,33 +100,7 @@ class SuccessfulScreen extends Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
-  };
-
-  updateProduction = (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {

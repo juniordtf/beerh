@@ -113,17 +113,17 @@ class SpargeScreen extends Component {
       viewToRestore: 'Lavagem',
     };
 
-    //this.updateProduction(productionUpdated);
-
-    this.props.navigation.navigate('Fervura Parte A', {
-      currentProduction: productionUpdated,
-      currentRecipe: this.state.todaysRecipe,
-    });
+    this.updateProduction(productionUpdated).then(
+      this.props.navigation.navigate('Fervura Parte A', {
+        currentProduction: productionUpdated,
+        currentRecipe: this.state.todaysRecipe,
+      }),
+    );
 
     window.stopwatchComponent.clearStopwatch();
   };
 
-  updateProduction = (currentProduction) => {
+  updateProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -134,7 +134,7 @@ class SpargeScreen extends Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {

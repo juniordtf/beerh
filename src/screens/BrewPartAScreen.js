@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
   ScrollView,
 } from 'react-native';
 import BrewingMill from '../../assets/brewingMill.png';
@@ -110,17 +109,17 @@ class BrewPartAScreen extends Component {
       viewToRestore: 'Brassagem Parte A',
     };
 
-    //this.updateProduction(productionUpdated);
-
-    this.props.navigation.navigate('Brassagem Parte B', {
-      currentProduction: productionUpdated,
-      currentRecipe: this.state.todaysRecipe,
-    });
+    this.updateProduction(productionUpdated).then(
+      this.props.navigation.navigate('Brassagem Parte B', {
+        currentProduction: productionUpdated,
+        currentRecipe: this.state.todaysRecipe,
+      }),
+    );
 
     window.stopwatchComponent.clearStopwatch();
   };
 
-  updateProduction = (currentProduction) => {
+  updateProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -131,7 +130,7 @@ class BrewPartAScreen extends Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {

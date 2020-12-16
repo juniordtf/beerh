@@ -230,7 +230,7 @@ class NewProductionScreen extends React.Component {
     });
   }
 
-  addProduction = () => {
+  addProduction = async () => {
     const currentRecipe = this.state.recipes.find(
       (x) => x.title === this.state.selectedRecipe,
     );
@@ -275,7 +275,7 @@ class NewProductionScreen extends React.Component {
       }
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {
