@@ -24,7 +24,7 @@ function MyTabs() {
           marginBottom: 10,
         },
         style: {
-          backgroundColor: '#000000',
+          backgroundColor: '#232324',
           height: 90,
         },
       }}>
