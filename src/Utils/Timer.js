@@ -134,26 +134,25 @@ class Timer extends Component {
           <View style={styles.timerContainer}>
             <Text style={styles.bodyText}>{this.showDisplay()}</Text>
           </View>
-        </View>
-        <View style={styles.rowContainer} marginLeft={5}>
-          <TouchableHighlight
-            style={styles.timerContainer}
-            onPress={this.startTimer}
-            disabled={!this.state.iniciarHabilitado}>
-            <Image source={PlayIcon} style={styles.imageStyle} />
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.buttonsContainer}
-            onPress={this.pauseTimer}
-            disabled={!this.state.pausarHabilitado}>
-            <Image source={PauseIcon} style={styles.imageStyle} />
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.buttonsContainer}
-            onPress={this.stopTimer}
-            disabled={!this.state.pararHabilitado}>
-            <Image source={StopIcon} style={styles.imageStyle} />
-          </TouchableHighlight>
+          <View marginLeft={3}>
+            <View>
+              {this.state.iniciarHabilitado ? (
+                <TouchableHighlight
+                  style={styles.timerContainer}
+                  onPress={this.startTimer}
+                  disabled={!this.state.iniciarHabilitado}>
+                  <Image source={PlayIcon} style={styles.imageStyle} />
+                </TouchableHighlight>
+              ) : (
+                <TouchableHighlight
+                  style={styles.buttonsContainer}
+                  onPress={this.pauseTimer}
+                  disabled={!this.state.pausarHabilitado}>
+                  <Image source={PauseIcon} style={styles.imageStyle} />
+                </TouchableHighlight>
+              )}
+            </View>
+          </View>
         </View>
       </View>
     );
@@ -174,8 +173,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   imageStyle: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
   },
   timerContainer: {
     marginTop: marginVertical,

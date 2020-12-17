@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
   ScrollView,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
@@ -16,6 +15,13 @@ import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+const Sound = require('react-native-sound');
+
+Sound.setCategory('Playback');
+
+const sleep = (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
 class BrewPartBScreen extends Component {
   constructor(props) {
@@ -32,10 +38,12 @@ class BrewPartBScreen extends Component {
       todaysProduction: [],
       todaysDatePt: todayPt,
       todaysRecipe: [],
+      advanceBtnEnabled: false,
     };
   }
 
   componentDidMount() {
+    this.preloadSound();
     this.keepStopwatchGoing();
     this.startTimer();
     this.getProductions();
@@ -70,6 +78,47 @@ class BrewPartBScreen extends Component {
     }
 
     window.timerComponent.setTimer(rampDuration);
+
+    this.whenTimerIsDone();
+  }
+
+  whenTimerIsDone = async () => {
+    while (true) {
+      console.log(window.timerComponent.showDisplay());
+      if (window.timerComponent.showDisplay() === '00:00') {
+        this.playAlarmSound();
+        this.setState({advanceBtnEnabled: true});
+        break;
+      }
+      await sleep(1000);
+    }
+  };
+
+  preloadSound = () => {
+    this.bell = new Sound('bell.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+
+      console.log(
+        'duration in seconds: ' +
+          this.bell.getDuration() +
+          ', ' +
+          'number of channels: ' +
+          this.bell.getNumberOfChannels(),
+      );
+    });
+  };
+
+  playAlarmSound() {
+    this.bell.play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
   }
 
   getInitialTemperature() {
@@ -259,8 +308,13 @@ class BrewPartBScreen extends Component {
           </View>
 
           <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.goToNextView()}>
+            style={
+              this.state.advanceBtnEnabled
+                ? styles.buttonContainer
+                : styles.buttonDisabledContainer
+            }
+            onPress={() => this.goToNextView()}
+            disabled={!this.state.advanceBtnEnabled}>
             <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>
         </ScrollView>
@@ -344,6 +398,22 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisabledContainer: {
+    marginTop: 25,
+    marginRight: 15,
+    marginBottom: 15,
+    alignSelf: 'flex-end',
+    width: 170,
+    height: 40,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: '#345722',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
