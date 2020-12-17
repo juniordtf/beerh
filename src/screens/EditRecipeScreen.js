@@ -892,12 +892,14 @@ class EditRecipeScreen extends React.Component {
         }
         console.log('Success. Recipe updated');
       },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
-
-    this.props.navigation.navigate('Receitas', {recipes: allRecipes});
-    Alert.alert('Receita alterada com sucesso!');
+    )
+      .then(
+        this.props.navigation.navigate('Receitas', {recipes: allRecipes}),
+        Alert.alert('Receita alterada com sucesso!'),
+      )
+      .catch((err) => {
+        console.log('error is: ' + err);
+      });
   };
 
   render() {

@@ -153,6 +153,9 @@ class ProductionDetailScreen extends React.Component {
 
     this.props.navigation.navigate('Produções', {productions: allProductions});
     Alert.alert('Produção removida com sucesso!');
+
+    window.productionsScreen.getProductions();
+    window.brewScreen.getProductions();
   };
 
   goToEditView = (currentProduction) => {

@@ -17,7 +17,7 @@ import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY} from '../statics/Statics';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
-import Sound from 'react-native-sound';
+const Sound = require('react-native-sound');
 
 Sound.setCategory('Playback');
 
@@ -315,12 +315,19 @@ class NewProductionScreen extends React.Component {
         }
         console.log('Success. Production added');
       },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    )
+      .then(this.returnToPreviousView(allProductions))
+      .catch((err) => {
+        console.log('error is: ' + err);
+      });
+  };
 
-    Alert.alert('Produção salva com sucesso!');
+  returnToPreviousView = (allProductions) => {
     this.props.navigation.navigate('Produções', {productions: allProductions});
+    Alert.alert('Produção salva com sucesso!');
+
+    window.productionsScreen.getProductions();
+    window.brewScreen.getProductions();
   };
 
   render() {

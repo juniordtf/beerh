@@ -303,12 +303,19 @@ class EditProductionScreen extends React.Component {
         }
         console.log('Success. Production updated');
       },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    )
+      .then(this.returnToPreviousView(allProductions))
+      .catch((err) => {
+        console.log('error is: ' + err);
+      });
+  };
 
+  returnToPreviousView = (allProductions) => {
     this.props.navigation.navigate('Produções', {productions: allProductions});
     Alert.alert('Produção alterada com sucesso!');
+
+    window.productionsScreen.getProductions();
+    window.brewScreen.getProductions();
   };
 
   render() {

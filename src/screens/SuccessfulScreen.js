@@ -83,6 +83,8 @@ class SuccessfulScreen extends Component {
 
     this.updateProduction(productionUpdated).then(
       this.props.navigation.navigate('Brassagem'),
+      window.productionsScreen.getProductions(),
+      window.brewScreen.getProductions(),
     );
   };
 

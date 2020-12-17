@@ -86,12 +86,13 @@ class BrewScreen extends React.Component {
       viewToRestore: '',
     };
 
-    this.updateProduction(currentProduction);
-
-    this.props.navigation.navigate('Checklist de Limpeza', {
-      currentProduction: currentProduction,
-      currentRecipe: currentRecipe,
-    });
+    this.updateProduction(currentProduction).then(
+      this.props.navigation.navigate('Checklist de Limpeza', {
+        currentProduction: currentProduction,
+        currentRecipe: currentRecipe,
+      }),
+      window.productionsScreen.getProductions(),
+    );
   };
 
   continueBrewing = (todaysProduction) => {
@@ -122,15 +123,16 @@ class BrewScreen extends React.Component {
       viewToRestore: todaysProduction.viewToRestore,
     };
 
-    this.updateProduction(currentProduction);
-
-    this.props.navigation.navigate(todaysProduction.viewToRestore, {
-      currentProduction: currentProduction,
-      currentRecipe: currentRecipe,
-    });
+    this.updateProduction(currentProduction).then(
+      this.props.navigation.navigate(todaysProduction.viewToRestore, {
+        currentProduction: currentProduction,
+        currentRecipe: currentRecipe,
+      }),
+      window.productionsScreen.getProductions(),
+    );
   };
 
-  updateProduction = (currentProduction) => {
+  updateProduction = async (currentProduction) => {
     let allProductions = this.state.productions;
     const production = allProductions.find(
       (x) => x.id === currentProduction.id,
@@ -141,7 +143,7 @@ class BrewScreen extends React.Component {
       allProductions[index] = currentProduction;
     }
 
-    AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       PRODUCTIONS_KEY,
       JSON.stringify(allProductions),
       (err) => {
