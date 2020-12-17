@@ -82,10 +82,7 @@ class SuccessfulScreen extends Component {
     };
 
     this.updateProduction(productionUpdated).then(
-      this.props.navigation.navigate('Brassagem', {
-        currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
-      }),
+      this.props.navigation.navigate('Brassagem'),
     );
   };
 

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   Modal,
-  Button,
   Alert,
   TouchableHighlight,
   ScrollView,
@@ -14,11 +13,13 @@ import {
 import {Picker} from '@react-native-community/picker';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
-import UpDown from '../../assets/up-and-down.png';
 import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY} from '../statics/Statics';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+import Sound from 'react-native-sound';
+
+Sound.setCategory('Playback');
 
 class NewProductionScreen extends React.Component {
   constructor(props) {
@@ -64,8 +65,36 @@ class NewProductionScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getProductions();
-    this.getRecipes();
+    this.getRecipes().then(this.getProductions());
+    this.preloadSound();
+  }
+  M;
+
+  preloadSound = () => {
+    this.bell = new Sound('bell.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+
+      console.log(
+        'duration in seconds: ' +
+          this.bell.getDuration() +
+          ', ' +
+          'number of channels: ' +
+          this.bell.getNumberOfChannels(),
+      );
+    });
+  };
+
+  handlePress() {
+    this.bell.play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
   }
 
   getProductions = async () => {
@@ -97,6 +126,7 @@ class NewProductionScreen extends React.Component {
   };
 
   openModalBrewCalendar = () => {
+    this.handlePress();
     this.setState({
       modalBrewCalendarVisible: true,
     });

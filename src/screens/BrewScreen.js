@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import Beach from '../../assets/beach.png';
