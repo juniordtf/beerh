@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, Platform} from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
 
 class Stopwatch extends Component {
   constructor(props) {
@@ -73,7 +74,11 @@ class Stopwatch extends Component {
   };
 
   startStopwatch = () => {
-    let intervalId = setInterval(this.addSecond, 1000);
+    if (Platform.OS === 'ios') {
+      BackgroundTimer.start();
+    }
+
+    let intervalId = BackgroundTimer.setInterval(this.addSecond, 1000);
     this.setState({
       intervalId: intervalId,
 
@@ -84,7 +89,7 @@ class Stopwatch extends Component {
   };
 
   pauseStopwatch = () => {
-    clearInterval(this.state.intervalId);
+    BackgroundTimer.clearInterval(this.state.intervalId);
 
     this.setState({
       iniciarHabilitado: true,
@@ -94,7 +99,8 @@ class Stopwatch extends Component {
   };
 
   stopStopwatch = () => {
-    clearInterval(this.state.intervalId);
+    BackgroundTimer.clearInterval(this.state.intervalId);
+
     this.setState({
       pausarHabilitado: false,
       pararHabilitado: false,

@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -38,7 +39,6 @@ class BrewPartBScreen extends Component {
       todaysProduction: [],
       todaysDatePt: todayPt,
       todaysRecipe: [],
-      advanceBtnEnabled: false,
     };
   }
 
@@ -84,10 +84,9 @@ class BrewPartBScreen extends Component {
 
   whenTimerIsDone = async () => {
     while (true) {
-      console.log(window.timerComponent.showDisplay());
       if (window.timerComponent.showDisplay() === '00:00') {
         this.playAlarmSound();
-        this.setState({advanceBtnEnabled: true});
+        Alert.alert('Tempo da 1ª rampa alcançado!');
         break;
       }
       await sleep(1000);
@@ -308,13 +307,8 @@ class BrewPartBScreen extends Component {
           </View>
 
           <TouchableHighlight
-            style={
-              this.state.advanceBtnEnabled
-                ? styles.buttonContainer
-                : styles.buttonDisabledContainer
-            }
-            onPress={() => this.goToNextView()}
-            disabled={!this.state.advanceBtnEnabled}>
+            style={styles.buttonContainer}
+            onPress={() => this.goToNextView()}>
             <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>
         </ScrollView>

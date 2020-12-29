@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TouchableHighlight,
+  Platform,
+} from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
 import TimerIcon from '../../assets/timer.png';
 import PlayIcon from '../../assets/play-button.png';
 import PauseIcon from '../../assets/pause-button.png';
@@ -66,7 +74,11 @@ class Timer extends Component {
   };
 
   startTimer = () => {
-    let intervalId = setInterval(this.subtractSecond, 1000);
+    if (Platform.OS === 'ios') {
+      BackgroundTimer.start();
+    }
+
+    let intervalId = BackgroundTimer.setInterval(this.subtractSecond, 1000);
     this.setState({
       intervalId: intervalId,
 
@@ -78,7 +90,7 @@ class Timer extends Component {
   };
 
   pauseTimer = () => {
-    clearInterval(this.state.intervalId);
+    BackgroundTimer.clearInterval(this.state.intervalId);
     this.setState({
       iniciarHabilitado: true,
       pausarHabilitado: false,
@@ -88,7 +100,7 @@ class Timer extends Component {
   };
 
   stopTimer = () => {
-    clearInterval(this.state.intervalId);
+    BackgroundTimer.clearInterval(this.state.intervalId);
     this.setState({
       contadorSegundo: 0,
       contadorMinuto: 1,
