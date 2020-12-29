@@ -38,7 +38,6 @@ class CleaningChecklistScreen extends Component {
       checklistItemThreeDone: false,
       checklistItemFourDone: false,
       checklistItemFiveDone: false,
-      advanceBtnEnabled: false,
     };
   }
 
@@ -268,7 +267,6 @@ class CleaningChecklistScreen extends Component {
                   onPress={() =>
                     this.setState({
                       checklistItemFiveDone: !this.state.checklistItemFiveDone,
-                      advanceBtnEnabled: true,
                     })
                   }>
                   {this.renderCheckImage05()}
@@ -279,11 +277,21 @@ class CleaningChecklistScreen extends Component {
 
           <TouchableHighlight
             style={
-              this.state.advanceBtnEnabled
+              this.state.checklistItemOneDone &&
+              this.state.checklistItemTwoDone &&
+              this.state.checklistItemThreeDone &&
+              this.state.checklistItemFourDone &&
+              this.state.checklistItemFiveDone
                 ? styles.buttonContainer
                 : styles.buttonDisabledContainer
             }
-            disabled={!this.state.advanceBtnEnabled}
+            disabled={
+              !this.state.checklistItemOneDone &&
+              !this.state.checklistItemTwoDone &&
+              !this.state.checklistItemThreeDone &&
+              !this.state.checklistItemFourDone &&
+              !this.state.checklistItemFiveDone
+            }
             onPress={() => this.goToNextView()}>
             <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>

@@ -253,7 +253,20 @@ class SetupChecklistScreen extends Component {
           </View>
 
           <TouchableHighlight
-            style={styles.buttonContainer}
+            style={
+              this.state.checklistItemOneDone &&
+              this.state.checklistItemTwoDone &&
+              this.state.checklistItemThreeDone &&
+              this.state.checklistItemFourDone
+                ? styles.buttonContainer
+                : styles.buttonDisabledContainer
+            }
+            disabled={
+              !this.state.checklistItemOneDone &&
+              !this.state.checklistItemTwoDone &&
+              !this.state.checklistItemThreeDone &&
+              !this.state.checklistItemFourDone
+            }
             onPress={() => this.goToNextView(this.state.todaysProduction)}>
             <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>
@@ -341,6 +354,22 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#65FF14',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisabledContainer: {
+    marginTop: 25,
+    marginRight: 15,
+    marginBottom: 15,
+    alignSelf: 'flex-end',
+    width: 170,
+    height: 40,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: '#345722',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
