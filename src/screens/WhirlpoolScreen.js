@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
+  Alert,
   ScrollView,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
@@ -16,6 +16,13 @@ import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+const Sound = require('react-native-sound');
+
+Sound.setCategory('Playback');
+
+const sleep = (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
 class WhirlpoolScreen extends Component {
   constructor(props) {
@@ -36,9 +43,11 @@ class WhirlpoolScreen extends Component {
   }
 
   componentDidMount() {
+    this.preloadSound();
     this.getProductions();
     this.keepStopwatchGoing();
     window.timerComponent.setTimer(1);
+    this.whenTimerIsDone();
   }
 
   getProductions = async () => {
@@ -62,6 +71,44 @@ class WhirlpoolScreen extends Component {
     window.stopwatchComponent.startStopwatch();
     window.stopwatchComponent.continueStopwatch(currentProduction.duration);
   };
+
+  whenTimerIsDone = async () => {
+    while (true) {
+      if (window.timerComponent.showDisplay() === '00:00') {
+        this.playAlarmSound();
+        Alert.alert('Tempo de Whirlpool alcançado!');
+        break;
+      }
+      await sleep(1000);
+    }
+  };
+
+  preloadSound = () => {
+    this.bell = new Sound('bell.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+
+      console.log(
+        'duration in seconds: ' +
+          this.bell.getDuration() +
+          ', ' +
+          'number of channels: ' +
+          this.bell.getNumberOfChannels(),
+      );
+    });
+  };
+
+  playAlarmSound() {
+    this.bell.play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+  }
 
   getStepsTotal() {
     let currentRecipe = this.props.route.params?.currentRecipe;
