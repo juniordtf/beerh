@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -16,6 +16,13 @@ import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+const Sound = require('react-native-sound');
+
+Sound.setCategory('Playback');
+
+const sleep = (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
 class BoilPartCScreen extends Component {
   constructor(props) {
@@ -36,6 +43,7 @@ class BoilPartCScreen extends Component {
   }
 
   componentDidMount() {
+    this.preloadSound();
     this.keepStopwatchGoing();
     this.startTimer();
     this.getProductions();
@@ -77,6 +85,44 @@ class BoilPartCScreen extends Component {
     }
 
     window.timerComponent.setTimer(rampDuration);
+  }
+
+  whenTimerIsDone = async () => {
+    while (true) {
+      if (window.timerComponent.showDisplay() === '00:00') {
+        this.playAlarmSound();
+        Alert.alert('Tempo da 3ª fervura alcançado!');
+        break;
+      }
+      await sleep(1000);
+    }
+  };
+
+  preloadSound = () => {
+    this.bell = new Sound('bell.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+
+      console.log(
+        'duration in seconds: ' +
+          this.bell.getDuration() +
+          ', ' +
+          'number of channels: ' +
+          this.bell.getNumberOfChannels(),
+      );
+    });
+  };
+
+  playAlarmSound() {
+    this.bell.play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
   }
 
   getStepsTotal() {
