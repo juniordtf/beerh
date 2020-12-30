@@ -81,7 +81,7 @@ class RecipesScreen extends React.Component {
                   <Text style={styles.listItemTitle}>{item.title}</Text>
                   <Text style={styles.listItemTitle}> - </Text>
                   <Text style={styles.listItemTitle2}>{item.style.trim()}</Text>
-                  <Text style={styles.listItemTitle2}> ({item.volume}L)</Text>
+                  <Text style={styles.listItemTitle2}> ({item.volume} L)</Text>
                 </View>
                 <View style={styles.rowContainer} marginTop={5}>
                   <Text style={styles.listItemBodyField}>OG: </Text>

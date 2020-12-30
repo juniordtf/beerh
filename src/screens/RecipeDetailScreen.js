@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   Modal,
-  Button,
   Alert,
   TouchableHighlight,
   ScrollView,

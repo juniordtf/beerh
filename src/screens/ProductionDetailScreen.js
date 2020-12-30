@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   Modal,
-  Button,
   Alert,
   TouchableHighlight,
   ScrollView,
@@ -165,6 +164,9 @@ class ProductionDetailScreen extends React.Component {
   };
 
   render() {
+    let formattedDuration =
+      parseInt(this.state.duration.slice(0, 2), 10) +
+      parseInt(this.state.duration.slice(3, 5), 10) / 60;
     return (
       <SafeAreaView>
         <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -287,11 +289,17 @@ class ProductionDetailScreen extends React.Component {
             </View>
           </View>
           <View marginTop={5}>
-            <View style={styles.bodyContainer}>
-              <Text style={styles.bodyText}>
-                Tempo de brassagem (real / estimado): {this.state.duration} /{' '}
-                {parseInt(this.state.estimatedTime, 10).toFixed(2)} hrs
-              </Text>
+            <View style={styles.rowContainer}>
+              <View style={styles.textContainerLeft} marginTop={10}>
+                <Text style={styles.bodyText}>Tempo de brassagem:</Text>
+                <Text>(real / estimado)</Text>
+              </View>
+              <View style={styles.textContainerRight}>
+                <Text>
+                  {formattedDuration.toFixed(2)} /{' '}
+                  {parseInt(this.state.estimatedTime, 10).toFixed(2)} hrs
+                </Text>
+              </View>
             </View>
           </View>
           <View style={styles.rowContainer} marginTop={10}>
@@ -622,6 +630,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  textContainerLeft: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 185,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 175,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
 });
 
