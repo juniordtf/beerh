@@ -28,7 +28,7 @@ function ProductionsStack() {
           headerTitleAlign: 'center',
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Nova Produção')}>
+              onPress={() => window.productionsScreen.goToCreationView()}>
               <View marginRight={20}>
                 <Image source={Add} />
               </View>
