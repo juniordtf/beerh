@@ -344,7 +344,7 @@ class WhirlpoolScreen extends Component {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>
-                O tempo da 1ª rampa ainda não foi atingido. Deseja realmente
+                O tempo de Whirlpool ainda não foi atingido. Deseja realmente
                 avançar?
               </Text>
               <View style={styles.rowContainer}>

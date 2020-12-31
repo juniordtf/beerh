@@ -88,7 +88,7 @@ class ProductionDetailScreen extends React.Component {
       realOg: production.realOg,
       fg: production.fg,
       realFg: production.realFg,
-      estimatedTime: parseInt(production.estimatedTime, 10) / 60,
+      estimatedTime: production.estimatedTime,
       duration: production.duration,
       status: production.state,
       initialCalendarDate: production.initialCalendarDate,
@@ -164,10 +164,26 @@ class ProductionDetailScreen extends React.Component {
   };
 
   render() {
-    const formattedDuration = (
-      parseInt(this.state.duration.slice(0, 2), 10) +
-      parseInt(this.state.duration.slice(3, 5), 10) / 60
-    ).toFixed(2);
+    let formattedDuration = this.state.duration;
+    let formattedOg = this.state.realOg;
+    let formattedFg = this.state.realFg;
+
+    if (formattedDuration === '') {
+      formattedDuration = '---';
+    } else {
+      formattedDuration = (
+        parseInt(this.state.duration.slice(0, 2), 10) +
+        parseInt(this.state.duration.slice(3, 5), 10) / 60
+      ).toFixed(2);
+    }
+
+    if (formattedOg === '') {
+      formattedOg = '---';
+    }
+
+    if (formattedFg === '') {
+      formattedFg = '---';
+    }
 
     const formattedEstimatedTime = (
       parseInt(this.state.estimatedTime, 10) / 60
@@ -282,14 +298,14 @@ class ProductionDetailScreen extends React.Component {
           <View marginTop={5}>
             <View style={styles.bodyContainer}>
               <Text style={styles.bodyText}>
-                OG (real / estimada): {this.state.realOg} / {this.state.og}
+                OG (real / estimada):{'   '} {formattedOg} / {this.state.og}
               </Text>
             </View>
           </View>
           <View marginTop={5}>
             <View style={styles.bodyContainer}>
               <Text style={styles.bodyText}>
-                FG (real / estimada): {this.state.realFg} / {this.state.fg}
+                FG (real / estimada):{'   '} {formattedFg} / {this.state.fg}
               </Text>
             </View>
           </View>

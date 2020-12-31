@@ -678,16 +678,16 @@ class NewRecipeScreen extends React.Component {
 
     let elapsedTime = parseFloat(this.state.TimeRamp01);
 
-    if (this.state.TimeRamp02 != null) {
+    if (this.state.inputSecondRampClicked === true) {
       elapsedTime += parseFloat(this.state.TimeRamp02);
     }
-    if (this.state.TimeRamp03 != null) {
+    if (this.state.inputThirdRampClicked === true) {
       elapsedTime += parseFloat(this.state.TimeRamp03);
     }
-    if (this.state.TimeRamp04 != null) {
+    if (this.state.inputFourthRampClicked === true) {
       elapsedTime += parseFloat(this.state.TimeRamp04);
     }
-    if (this.state.TimeRamp05 != null) {
+    if (this.state.inputFifthRampClicked === true) {
       elapsedTime += parseFloat(this.state.TimeRamp05);
     }
     if (this.state.TimeBoil01 != null) {

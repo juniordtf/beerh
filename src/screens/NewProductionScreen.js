@@ -233,6 +233,7 @@ class NewProductionScreen extends React.Component {
     );
 
     let initialDate = this.state.selectedBrewDate;
+    const totalEstimatedTime = parseFloat(currentRecipe.estimatedTime) + 360;
 
     const production = {
       id: Date.now() + this.state.selectedRecipe,
@@ -243,7 +244,7 @@ class NewProductionScreen extends React.Component {
       fg: currentRecipe.fg,
       realFg: '',
       style: currentRecipe.style,
-      estimatedTime: parseInt(currentRecipe.estimatedTime, 10) + 360,
+      estimatedTime: totalEstimatedTime,
       status: this.state.status,
       brewDate: this.state.brewDate,
       fermentationDate: this.state.fermentationDate,

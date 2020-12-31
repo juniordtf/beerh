@@ -301,8 +301,8 @@ class CoolingScreen extends Component {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>
-                O tempo da 1ª rampa ainda não foi atingido. Deseja realmente
-                avançar?
+                O tempo máximo de resfriamento ainda não foi atingido. Deseja
+                realmente avançar?
               </Text>
               <View style={styles.rowContainer}>
                 <TouchableHighlight
