@@ -243,7 +243,7 @@ class NewProductionScreen extends React.Component {
       fg: currentRecipe.fg,
       realFg: '',
       style: currentRecipe.style,
-      estimatedTime: currentRecipe.estimatedTime + 360,
+      estimatedTime: parseInt(currentRecipe.estimatedTime, 10) + 360,
       status: this.state.status,
       brewDate: this.state.brewDate,
       fermentationDate: this.state.fermentationDate,

@@ -164,9 +164,14 @@ class ProductionDetailScreen extends React.Component {
   };
 
   render() {
-    let formattedDuration =
+    const formattedDuration = (
       parseInt(this.state.duration.slice(0, 2), 10) +
-      parseInt(this.state.duration.slice(3, 5), 10) / 60;
+      parseInt(this.state.duration.slice(3, 5), 10) / 60
+    ).toFixed(2);
+
+    const formattedEstimatedTime = (
+      parseInt(this.state.estimatedTime, 10) / 60
+    ).toFixed(2);
     return (
       <SafeAreaView>
         <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -296,8 +301,7 @@ class ProductionDetailScreen extends React.Component {
               </View>
               <View style={styles.textContainerRight}>
                 <Text>
-                  {formattedDuration.toFixed(2)} /{' '}
-                  {parseInt(this.state.estimatedTime, 10).toFixed(2)} hrs
+                  {formattedDuration} / {formattedEstimatedTime} hrs
                 </Text>
               </View>
             </View>

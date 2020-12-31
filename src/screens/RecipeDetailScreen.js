@@ -152,6 +152,8 @@ class RecipeDetailScreen extends React.Component {
 
     this.props.navigation.navigate('Receitas', {productions: allRecipes});
     Alert.alert('Receita removida com sucesso!');
+
+    window.recipesScreen.getRecipes();
   };
 
   goToEditView = (currentRecipe) => {

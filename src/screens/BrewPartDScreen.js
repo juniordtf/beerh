@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   ScrollView,
   Alert,
+  Modal,
 } from 'react-native';
 import Bullet from '../../assets/bullet.png';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -39,6 +40,7 @@ class BrewPartDScreen extends Component {
       todaysProduction: [],
       todaysDatePt: todayPt,
       todaysRecipe: [],
+      modalVisible: false,
     };
   }
 
@@ -137,6 +139,10 @@ class BrewPartDScreen extends Component {
   }
 
   goToNextView = () => {
+    if (this.state.modalVisible === true) {
+      this.closeModal();
+    }
+
     window.stopwatchComponent.stopStopwatch();
 
     const productionUpdated = {
@@ -206,6 +212,26 @@ class BrewPartDScreen extends Component {
       },
     ).catch((err) => {
       console.log('error is: ' + err);
+    });
+  };
+
+  canGoToNextView = () => {
+    if (window.timerComponent.showDisplay() === '00:00') {
+      this.goToNextView();
+    } else {
+      this.openModal();
+    }
+  };
+
+  openModal = () => {
+    this.setState({
+      modalVisible: true,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      modalVisible: false,
     });
   };
 
@@ -300,10 +326,40 @@ class BrewPartDScreen extends Component {
 
           <TouchableHighlight
             style={styles.buttonContainer}
-            onPress={() => this.goToNextView()}>
+            onPress={() => this.canGoToNextView()}>
             <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>
         </ScrollView>
+
+        <Modal
+          name="AdvanceModal"
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                O tempo da 1ª rampa ainda não foi atingido. Deseja realmente
+                avançar?
+              </Text>
+              <View style={styles.rowContainer}>
+                <TouchableHighlight
+                  style={styles.cancelButton}
+                  onPress={this.closeModal}>
+                  <Text style={styles.textStyle}>Não</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.confirmButton}
+                  onPress={() => this.goToNextView()}>
+                  <Text style={styles.textStyle}>Sim</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     );
   }
@@ -477,6 +533,55 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: 'red',
+    textAlign: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  cancelButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 10,
+    width: 100,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    backgroundColor: '#99C7EB',
+  },
+  confirmButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 10,
+    width: 100,
+    marginRight: 'auto',
+    marginLeft: 15,
+    backgroundColor: '#2196F3',
+  },
+  modalText: {
+    marginBottom: 5,
+    fontSize: 15,
+    textAlign: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

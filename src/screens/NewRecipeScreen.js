@@ -676,22 +676,22 @@ class NewRecipeScreen extends React.Component {
     const fermentation = this.setFermentation();
     const ageing = this.setAgeing();
 
-    let elapsedTime = parseFloat(this.state.TimeRamp01, 10).toFixed(2);
+    let elapsedTime = parseFloat(this.state.TimeRamp01);
 
     if (this.state.TimeRamp02 != null) {
-      elapsedTime += parseFloat(this.state.TimeRamp02, 10).toFixed(2);
+      elapsedTime += parseFloat(this.state.TimeRamp02);
     }
     if (this.state.TimeRamp03 != null) {
-      elapsedTime += parseFloat(this.state.TimeRamp03, 10).toFixed(2);
+      elapsedTime += parseFloat(this.state.TimeRamp03);
     }
     if (this.state.TimeRamp04 != null) {
-      elapsedTime += parseFloat(this.state.TimeRamp04, 10).toFixed(2);
+      elapsedTime += parseFloat(this.state.TimeRamp04);
     }
     if (this.state.TimeRamp05 != null) {
-      elapsedTime += parseFloat(this.state.TimeRamp05, 10).toFixed(2);
+      elapsedTime += parseFloat(this.state.TimeRamp05);
     }
     if (this.state.TimeBoil01 != null) {
-      elapsedTime += parseFloat(this.state.TimeBoil01, 10).toFixed(2);
+      elapsedTime += parseFloat(this.state.TimeBoil01);
     }
 
     const recipe = {
