@@ -166,6 +166,16 @@ class BrewScreen extends React.Component {
       currentDate = 0 + currentDate;
     }
 
+    if (currentDate.length < 10) {
+      currentDate =
+        currentDate.slice(0, 2) +
+        '/' +
+        0 +
+        currentDate.slice(3, 4) +
+        '/' +
+        currentDate.slice(5, 9);
+    }
+
     if (
       productions != null &&
       productions.length > 0 &&
