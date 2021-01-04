@@ -150,7 +150,7 @@ class SpargeScreen extends Component {
           <View style={styles.container}>
             <Text style={styles.title}>
               {this.state.todaysProduction.name} -{' '}
-              {this.state.todaysProduction.volume}L
+              {this.state.todaysProduction.volume} L
             </Text>
           </View>
           <View style={styles.subContainer}>
@@ -213,8 +213,8 @@ class SpargeScreen extends Component {
               </View>
               <View style={styles.listContainerRight} height={40}>
                 <Text style={styles.bodyText}>
-                  Lavar grãos o restante da água quente, recircular o mosto e
-                  fazer 3ª trasfega;
+                  Lavar grãos com o restante da água quente, recircular o mosto
+                  e fazer 3ª trasfega;
                 </Text>
               </View>
             </View>

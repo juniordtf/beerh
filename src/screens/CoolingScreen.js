@@ -213,7 +213,7 @@ class CoolingScreen extends Component {
           <View style={styles.container}>
             <Text style={styles.title}>
               {this.state.todaysProduction.name} -{' '}
-              {this.state.todaysProduction.volume}L
+              {this.state.todaysProduction.volume} L
             </Text>
           </View>
           <View style={styles.subContainer}>
@@ -243,7 +243,7 @@ class CoolingScreen extends Component {
               </View>
               <View style={styles.listContainerRight}>
                 <Text style={styles.bodyText}>
-                  Abaixar a temperatura do mosto para pelo menos a temperatura
+                  Abaixar a temperatura do mosto até pelo menos a temperatura
                   ambiente;
                 </Text>
               </View>

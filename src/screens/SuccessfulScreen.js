@@ -127,7 +127,7 @@ class SuccessfulScreen extends Component {
             <Text>Você finalizou a brassagem da receita </Text>
             <Text style={{fontWeight: 'bold'}}>
               "{this.state.todaysProduction.name}{' '}
-              {this.state.todaysProduction.volume}L"{' '}
+              {this.state.todaysProduction.volume} L"{' '}
             </Text>
             <Text>
               com sucesso. Agora é hora de deixar a levedura fazer a parte dela.

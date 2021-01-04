@@ -256,7 +256,7 @@ class BoilPartDScreen extends Component {
           <View style={styles.container}>
             <Text style={styles.title}>
               {this.state.todaysProduction.name} -{' '}
-              {this.state.todaysProduction.volume}L
+              {this.state.todaysProduction.volume} L
             </Text>
           </View>
           <View style={styles.subContainer}>
