@@ -29,12 +29,26 @@ class NewProductionScreen extends React.Component {
       '-' +
       new Date().getDate();
 
-    const todayPt =
+    let todayPt =
       new Date().getDate() +
       '/' +
       (new Date().getMonth() + 1) +
       '/' +
       new Date().getFullYear();
+
+    if (todayPt.length < 10) {
+      todayPt = 0 + todayPt;
+    }
+
+    if (todayPt.length < 10) {
+      todayPt =
+        todayPt.slice(0, 2) +
+        '/' +
+        0 +
+        todayPt.slice(3, 4) +
+        '/' +
+        todayPt.slice(5, 9);
+    }
 
     this.state = {
       todaysDatePt: todayPt,
@@ -115,6 +129,7 @@ class NewProductionScreen extends React.Component {
       dateString.slice(0, 4);
     this.setState({
       brewDate: newbrewDate,
+      fermentationDate: newbrewDate,
       selectedBrewDate: dateString,
       selectedFermentationDate: dateString,
     });
@@ -142,6 +157,7 @@ class NewProductionScreen extends React.Component {
       dateString.slice(0, 4);
     this.setState({
       fermentationDate: newFermentationDate,
+      ageingDate: newFermentationDate,
       selectedFermentationDate: dateString,
       selectedAgeingDate: dateString,
     });
@@ -169,6 +185,7 @@ class NewProductionScreen extends React.Component {
       dateString.slice(0, 4);
     this.setState({
       carbonationDate: newCarbonationDate,
+      fillingDate: newCarbonationDate,
       selectedCarbonationDate: dateString,
       selectedFillingDate: dateString,
     });
@@ -196,6 +213,7 @@ class NewProductionScreen extends React.Component {
       dateString.slice(0, 4);
     this.setState({
       ageingDate: newAgeingDate,
+      carbonationDate: newAgeingDate,
       selectedAgeingDate: dateString,
       selectedCarbonationDate: dateString,
     });

@@ -176,21 +176,28 @@ class BrewScreen extends React.Component {
         currentDate.slice(5, 9);
     }
 
-    if (
-      productions != null &&
-      productions.length > 0 &&
-      productions.find(
-        (x) => x.brewDate === currentDate && x.status !== 'finished',
-      )
-    ) {
-      const todaysProduction = productions.find(
-        (x) => x.brewDate === currentDate,
-      );
-      const duration = (
-        parseInt(todaysProduction.estimatedTime, 10) / 60
-      ).toFixed(2);
+    let todaysProductions = null;
 
-      if (todaysProduction.status === 'in progress') {
+    if (productions != null && productions.length > 0) {
+      todaysProductions = productions.filter(
+        (x) => x.brewDate === currentDate && x.status !== 'finished',
+      );
+    }
+
+    if (todaysProductions != null) {
+      const todaysInProgressProduction = productions.find(
+        (x) => x.brewDate === currentDate && x.status === 'in progress',
+      );
+
+      const todaysNewProduction = productions.find(
+        (x) => x.brewDate === currentDate && x.status === 'not started',
+      );
+
+      if (todaysInProgressProduction != null) {
+        const duration = (
+          parseInt(todaysInProgressProduction.estimatedTime, 10) / 60
+        ).toFixed(2);
+
         return (
           <SafeAreaView>
             <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -203,22 +210,24 @@ class BrewScreen extends React.Component {
             <View style={styles.cardContainer}>
               <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
                 <Text style={styles.listItemTitle}>
-                  {todaysProduction.name}
+                  {todaysInProgressProduction.name}
                 </Text>
                 <Text style={styles.listItemTitle2}> - </Text>
                 <Text style={styles.listItemTitle2}>
-                  {todaysProduction.volume} L
+                  {todaysInProgressProduction.volume} L
                 </Text>
               </View>
               <View marginTop={15}>
                 <View style={styles.rowContainer} marginLeft={20}>
                   <Text style={styles.bodyText}>Estilo: </Text>
-                  <Text style={styles.bodyText}>{todaysProduction.style}</Text>
+                  <Text style={styles.bodyText}>
+                    {todaysInProgressProduction.style}
+                  </Text>
                 </View>
                 <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
                   <Text style={styles.bodyText}>Data: </Text>
                   <Text style={styles.bodyText}>
-                    {todaysProduction.brewDate}
+                    {todaysInProgressProduction.brewDate}
                   </Text>
                 </View>
                 <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
@@ -229,13 +238,18 @@ class BrewScreen extends React.Component {
 
               <TouchableHighlight
                 style={styles.buttonContainer}
-                onPress={() => this.continueBrewing(todaysProduction)}>
+                onPress={() =>
+                  this.continueBrewing(todaysInProgressProduction)
+                }>
                 <Text style={styles.bodyText}>Retomar</Text>
               </TouchableHighlight>
             </View>
           </SafeAreaView>
         );
       } else {
+        const duration = (
+          parseInt(todaysNewProduction.estimatedTime, 10) / 60
+        ).toFixed(2);
         return (
           <SafeAreaView>
             <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -248,22 +262,24 @@ class BrewScreen extends React.Component {
             <View style={styles.cardContainer}>
               <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
                 <Text style={styles.listItemTitle}>
-                  {todaysProduction.name}
+                  {todaysNewProduction.name}
                 </Text>
                 <Text style={styles.listItemTitle2}> - </Text>
                 <Text style={styles.listItemTitle2}>
-                  {todaysProduction.volume} L
+                  {todaysNewProduction.volume} L
                 </Text>
               </View>
               <View marginTop={15}>
                 <View style={styles.rowContainer} marginLeft={20}>
                   <Text style={styles.bodyText}>Estilo: </Text>
-                  <Text style={styles.bodyText}>{todaysProduction.style}</Text>
+                  <Text style={styles.bodyText}>
+                    {todaysNewProduction.style}
+                  </Text>
                 </View>
                 <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
                   <Text style={styles.bodyText}>Data: </Text>
                   <Text style={styles.bodyText}>
-                    {todaysProduction.brewDate}
+                    {todaysNewProduction.brewDate}
                   </Text>
                 </View>
                 <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
@@ -274,7 +290,7 @@ class BrewScreen extends React.Component {
 
               <TouchableHighlight
                 style={styles.buttonContainer}
-                onPress={() => this.startBrewing(todaysProduction)}>
+                onPress={() => this.startBrewing(todaysNewProduction)}>
                 <Text style={styles.bodyText}>Iniciar</Text>
               </TouchableHighlight>
             </View>
