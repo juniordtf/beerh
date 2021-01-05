@@ -246,7 +246,7 @@ class BrewScreen extends React.Component {
             </View>
           </SafeAreaView>
         );
-      } else {
+      } else if (todaysNewProduction != null) {
         const duration = (
           parseInt(todaysNewProduction.estimatedTime, 10) / 60
         ).toFixed(2);
@@ -293,6 +293,21 @@ class BrewScreen extends React.Component {
                 onPress={() => this.startBrewing(todaysNewProduction)}>
                 <Text style={styles.bodyText}>Iniciar</Text>
               </TouchableHighlight>
+            </View>
+          </SafeAreaView>
+        );
+      } else {
+        return (
+          <SafeAreaView>
+            <StatusBar barStyle="light-content" backgroundColor="#000000" />
+            <View style={styles.labelContainer}>
+              <Text style={styles.label}>Day off</Text>
+            </View>
+            <Image source={Beach} style={styles.image} />
+            <View style={styles.container}>
+              <Text style={styles.bodyText}>
+                Nenhuma brassagem agendada para hoje...
+              </Text>
             </View>
           </SafeAreaView>
         );
