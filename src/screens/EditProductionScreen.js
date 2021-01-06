@@ -54,6 +54,7 @@ class EditProductionScreen extends React.Component {
       modalAgeingCalendarVisible: false,
       modalFillingCalendarVisible: false,
       productions: [],
+      viewToRestore: '',
     };
   }
 
@@ -124,6 +125,7 @@ class EditProductionScreen extends React.Component {
         production.fillingDate.slice(3, 5) +
         '-' +
         production.fillingDate.slice(0, 2),
+      viewToRestore: production.viewToRestore,
     });
   };
 
@@ -257,6 +259,27 @@ class EditProductionScreen extends React.Component {
   editProduction = async () => {
     let initialDate = this.state.selectedBrewDate;
 
+    let todayPt =
+      new Date().getDate() +
+      '/' +
+      (new Date().getMonth() + 1) +
+      '/' +
+      new Date().getFullYear();
+
+    if (todayPt.length < 10) {
+      todayPt = 0 + todayPt;
+    }
+
+    if (todayPt.length < 10) {
+      todayPt =
+        todayPt.slice(0, 2) +
+        '/' +
+        0 +
+        todayPt.slice(3, 4) +
+        '/' +
+        todayPt.slice(5, 9);
+    }
+
     const currentProduction = {
       id: this.state.id,
       name: this.state.name,
@@ -281,6 +304,8 @@ class EditProductionScreen extends React.Component {
         initialDate.slice(8, 10),
       duration: this.state.duration,
       createdAt: this.state.createdAt,
+      lastUpdateDate: todayPt,
+      viewToRestore: this.state.viewToRestore,
     };
 
     let allProductions = this.state.productions;

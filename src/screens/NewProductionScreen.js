@@ -278,6 +278,7 @@ class NewProductionScreen extends React.Component {
       duration: '',
       createdAt: this.state.todaysDatePt,
       lastUpdateDate: this.state.todaysDatePt,
+      viewToRestore: '',
     };
 
     const productions = this.state.productions;
