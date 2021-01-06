@@ -80,6 +80,8 @@ class BoilPartEScreen extends Component {
     }
 
     window.timerComponent.setTimer(rampDuration);
+
+    this.whenTimerIsDone();
   }
 
   whenTimerIsDone = async () => {
