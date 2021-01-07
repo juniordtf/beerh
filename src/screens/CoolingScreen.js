@@ -243,8 +243,8 @@ class CoolingScreen extends Component {
               </View>
               <View style={styles.listContainerRight}>
                 <Text style={styles.bodyText}>
-                  Abaixar a temperatura do mosto até pelo menos a temperatura
-                  ambiente;
+                  Abaixar a temperatura do mosto até pelo menos igualar a
+                  temperatura ambiente;
                 </Text>
               </View>
             </View>
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardContainer: {
-    marginTop: 50,
+    marginTop: 40,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,

@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardContainer: {
-    marginTop: 50,
+    marginTop: 40,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,

@@ -136,7 +136,7 @@ class SuccessfulScreen extends Component {
         </View>
         <View style={styles.bodyContainer}>
           <Text style={styles.bodyText}>
-            Lembre de editar a FG da cerveja assim que a fermentação acabar!
+            Lembre-se de editar a FG da cerveja assim que a fermentação acabar!
           </Text>
         </View>
 

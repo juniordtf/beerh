@@ -281,7 +281,7 @@ class BrewPartDScreen extends Component {
               </View>
             </View>
           </View>
-          <View style={styles.bodyContainer} marginTop={30}>
+          <View style={styles.bodyContainer} marginTop={40}>
             <View style={styles.sectionContainer}>
               <View style={styles.boxContainerLeft}>
                 <Image source={BrewBoiler} />
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardContainer: {
-    marginTop: 60,
+    marginTop: 40,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 320,
     height: 20,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   blackBoxContainer: {

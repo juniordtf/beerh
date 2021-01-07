@@ -290,11 +290,11 @@ class BoilPartAScreen extends Component {
               </View>
               <View style={styles.listContainerRight}>
                 <Text style={styles.bodyText}>
-                  Alterar temperatura de controle para 97.2 °C;
+                  Alterar temperatura de controle {'\n'}para 97.2 °C;
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer} marginTop={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -419,7 +419,7 @@ class BoilPartAScreen extends Component {
 }
 
 const marginHorizontal = 2;
-const marginVertical = 2;
+const marginVertical = 3;
 
 const styles = StyleSheet.create({
   container: {marginTop: 20, justifyContent: 'center', alignItems: 'center'},
@@ -448,11 +448,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardContainer: {
-    marginTop: 50,
+    marginTop: 40,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 210,
+    height: 220,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   bodyTextLeft: {
     fontSize: 15,
@@ -572,7 +572,7 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 310,
     height: 20,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   cardListContainerRight: {

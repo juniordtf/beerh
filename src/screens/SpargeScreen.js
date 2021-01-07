@@ -185,8 +185,8 @@ class SpargeScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft} height={30}>
+            <View style={styles.rowContainer} marginTop={10}>
+              <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight} height={40}>
@@ -207,7 +207,7 @@ class SpargeScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={7}>
+            <View style={styles.rowContainer} marginTop={10}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardContainer: {
-    marginTop: 50,
+    marginTop: 40,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 290,
     height: 20,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   blackBoxContainer: {

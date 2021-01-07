@@ -178,7 +178,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -189,7 +189,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -199,7 +199,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer} marginTop={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -210,7 +210,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 300,
     height: 20,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   doubleListContainerRight: {
