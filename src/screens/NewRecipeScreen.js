@@ -2355,7 +2355,7 @@ class NewRecipeScreen extends React.Component {
               onChangeText={(annotation) => this.setState({annotation})}
               value={this.state.annotation}
               style={styles.styleInputMask}
-              width={350}
+              width={320}
               height={90}
               marginTop={10}
               multiline={true}
@@ -2444,6 +2444,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     backgroundColor: '#fff',
     textAlign: 'center',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   styleInputMask: {
     height: 38,
@@ -2458,6 +2460,8 @@ const styles = StyleSheet.create({
     marginTop: -10,
     marginRight: 'auto',
     marginLeft: 'auto',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   bodyInputMask: {
     height: 36,
@@ -2468,6 +2472,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     backgroundColor: '#fff',
     textAlign: 'center',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   smallBodyText: {
     marginLeft: 5,

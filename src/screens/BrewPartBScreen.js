@@ -283,7 +283,7 @@ class BrewPartBScreen extends Component {
               </View>
               <View style={styles.listContainerRight}>
                 <Text style={styles.bodyText}>
-                  Alterar temperatura de controle para{' '}
+                  Alterar temperatura de controle {'\n'} para{' '}
                   {this.getInitialTemperature()} °C;
                 </Text>
               </View>
@@ -374,7 +374,7 @@ class BrewPartBScreen extends Component {
 }
 
 const marginHorizontal = 2;
-const marginVertical = 2;
+const marginVertical = 3;
 
 const styles = StyleSheet.create({
   container: {marginTop: 20, justifyContent: 'center', alignItems: 'center'},
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   bodyTextLeft: {
     fontSize: 15,
@@ -535,7 +535,7 @@ const styles = StyleSheet.create({
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 320,
+    width: 290,
     height: 20,
     justifyContent: 'center',
     alignItems: 'flex-start',

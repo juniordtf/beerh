@@ -180,13 +180,13 @@ class SpargeScreen extends Component {
               </View>
               <View style={styles.listContainerRight}>
                 <Text style={styles.bodyText}>
-                  Manter a temperatura de controle em{' '}
+                  Manter a temperatura de controle{'\n'} em{' '}
                   {this.getMashoutTemperature()} °C;
                 </Text>
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft} height={30}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight} height={40}>
@@ -207,7 +207,7 @@ class SpargeScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginTop={7}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 330,
-    height: 100,
+    height: 110,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F7F7F7',
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 310,
+    width: 290,
     height: 20,
     justifyContent: 'center',
     alignItems: 'flex-start',

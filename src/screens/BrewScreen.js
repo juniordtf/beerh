@@ -387,7 +387,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 25,
-    marginLeft: 130,
+    marginRight: 10,
+    marginBottom: 15,
+    alignSelf: 'flex-end',
     width: 170,
     height: 40,
     paddingTop: 5,

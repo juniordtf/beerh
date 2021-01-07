@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: 5,
     marginRight: marginHorizontal,
-    maxWidth: 330,
+    maxWidth: 280,
     height: 60,
     justifyContent: 'center',
     alignItems: 'flex-start',
