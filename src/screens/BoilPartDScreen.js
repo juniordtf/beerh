@@ -290,11 +290,11 @@ class BoilPartDScreen extends Component {
               </View>
               <View style={styles.listContainerRight}>
                 <Text style={styles.bodyText}>
-                  Manter temperatura de controle em 97.2 °C;
+                  Manter temperatura de controle em{'\n'} 97.2 °C;
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={5} marginLeft={15}>
+            <View style={styles.rowContainer} marginTop={15} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -326,7 +326,7 @@ class BoilPartDScreen extends Component {
               Etapas a serem feitas em paralelo:
             </Text>
             <View style={styles.rowContainer} marginTop={5}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.cardListContainerRight}>
@@ -336,7 +336,7 @@ class BoilPartDScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight}>
@@ -346,7 +346,7 @@ class BoilPartDScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight}>
@@ -356,7 +356,7 @@ class BoilPartDScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight}>
@@ -366,7 +366,7 @@ class BoilPartDScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.cardListContainerRight}>
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 15,
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   bodyTextLeft: {
     fontSize: 15,
@@ -566,13 +566,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  listContainerLeft2: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 30,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
   listContainerRight: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 320,
+    width: 280,
     height: 20,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   cardListContainerRight: {

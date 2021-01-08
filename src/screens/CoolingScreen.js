@@ -249,7 +249,7 @@ class CoolingScreen extends Component {
               </View>
             </View>
           </View>
-          <View style={styles.bodyContainer} marginTop={30}>
+          <View style={styles.bodyContainer} marginTop={40}>
             <View style={styles.sectionContainer}>
               <View style={styles.boxContainerLeft}>
                 <View style={styles.rowContainer}>
@@ -272,7 +272,7 @@ class CoolingScreen extends Component {
               Etapas a serem feitas em paralelo:
             </Text>
             <View style={styles.rowContainer} marginTop={5}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.cardListContainerRight}>
@@ -472,13 +472,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  listContainerLeft2: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 30,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
   listContainerRight: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 310,
-    height: 40,
-    justifyContent: 'center',
+    width: 280,
+    height: 20,
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   cardListContainerRight: {

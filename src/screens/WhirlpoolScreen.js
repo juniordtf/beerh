@@ -275,7 +275,7 @@ class WhirlpoolScreen extends Component {
               Etapas a serem feitas em paralelo:
             </Text>
             <View style={styles.rowContainer} marginTop={5}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.cardListContainerRight}>
@@ -285,7 +285,7 @@ class WhirlpoolScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight}>
@@ -295,7 +295,7 @@ class WhirlpoolScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight}>
@@ -305,7 +305,7 @@ class WhirlpoolScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.listContainerRight}>
@@ -315,7 +315,7 @@ class WhirlpoolScreen extends Component {
               </View>
             </View>
             <View style={styles.rowContainer}>
-              <View style={styles.listContainerLeft}>
+              <View style={styles.listContainerLeft2}>
                 <Image source={Bullet} />
               </View>
               <View style={styles.cardListContainerRight}>
@@ -515,13 +515,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  listContainerLeft2: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 30,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
   listContainerRight: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 310,
+    width: 280,
     height: 20,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   cardListContainerRight: {

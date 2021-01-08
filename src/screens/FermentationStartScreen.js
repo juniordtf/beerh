@@ -168,7 +168,7 @@ class FermentationStartScreen extends Component {
             </View>
           </View>
           <View style={styles.bodyContainer}>
-            <View style={styles.rowContainer} marginTop={5} marginLeft={15}>
+            <View style={styles.rowContainer} marginTop={5} marginLeft={10}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -178,7 +178,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginLeft={15}>
+            <View style={styles.rowContainer} marginLeft={10}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -189,7 +189,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginLeft={15}>
+            <View style={styles.rowContainer} marginLeft={10}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -199,7 +199,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={15} marginLeft={15}>
+            <View style={styles.rowContainer} marginTop={15} marginLeft={10}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -210,7 +210,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginLeft={15}>
+            <View style={styles.rowContainer} marginLeft={10}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -221,7 +221,7 @@ class FermentationStartScreen extends Component {
               </View>
             </View>
           </View>
-          <View style={styles.bodyContainer} marginTop={40}>
+          <View style={styles.centeredBodyContainer} marginTop={40}>
             <View style={styles.rowContainer}>
               <View style={styles.boxContainerLeft}>
                 <Image source={Brewery} />
@@ -374,12 +374,12 @@ const styles = StyleSheet.create({
   boxContainerLeft: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
-    marginLeft: 30,
+    marginLeft: marginVertical,
     marginRight: marginHorizontal,
-    width: 190,
+    width: 160,
     height: 100,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   boxContainerRight: {
     marginTop: marginVertical,
