@@ -222,7 +222,7 @@ class FermentationStartScreen extends Component {
             </View>
           </View>
           <View style={styles.centeredBodyContainer} marginTop={40}>
-            <View style={styles.rowContainer}>
+            <View style={styles.sectionContainer}>
               <View style={styles.boxContainerLeft}>
                 <Image source={Brewery} />
               </View>
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: marginVertical,
     marginRight: marginHorizontal,
-    width: 160,
+    width: 135,
     height: 100,
     justifyContent: 'center',
     alignItems: 'flex-start',

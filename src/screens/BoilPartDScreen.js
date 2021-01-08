@@ -306,7 +306,7 @@ class BoilPartDScreen extends Component {
               </View>
             </View>
           </View>
-          <View style={styles.bodyContainer} marginTop={30}>
+          <View style={styles.centeredbodyContainer} marginTop={30}>
             <View style={styles.sectionContainer}>
               <View style={styles.boxContainerLeft}>
                 <Image source={BrewBoiler} />
@@ -435,6 +435,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     alignItems: 'flex-start',
   },
+  centeredbodyContainer: {
+    marginTop: 10,
+    marginLeft: 15,
+    alignItems: 'center',
+  },
   title: {
     marginRight: 'auto',
     marginLeft: 'auto',
@@ -522,7 +527,7 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: marginHorizontal,
     marginRight: marginHorizontal,
-    width: 210,
+    width: 160,
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
@@ -532,10 +537,10 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: marginHorizontal,
     marginRight: marginHorizontal,
-    width: 100,
+    width: 110,
     height: 100,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   sectionContainerLeft: {
     marginTop: marginVertical,

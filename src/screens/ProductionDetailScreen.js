@@ -296,22 +296,36 @@ class ProductionDetailScreen extends React.Component {
             </View>
           </View>
           <View marginTop={5}>
-            <View style={styles.bodyContainer}>
-              <Text style={styles.bodyText}>
-                OG (real / estimada):{'   '} {formattedOg} / {this.state.og}
-              </Text>
-            </View>
-          </View>
-          <View marginTop={5}>
-            <View style={styles.bodyContainer}>
-              <Text style={styles.bodyText}>
-                FG (real / estimada):{'   '} {formattedFg} / {this.state.fg}
-              </Text>
+            <View style={styles.rowContainer}>
+              <View style={styles.singleTextContainerLeft}>
+                <Text style={styles.bodyText}>
+                  OG (real / estimada):{'   '}
+                </Text>
+              </View>
+              <View style={styles.singleTextContainerRight}>
+                <Text style={styles.bodyText}>
+                  {formattedOg} / {this.state.og}
+                </Text>
+              </View>
             </View>
           </View>
           <View marginTop={5}>
             <View style={styles.rowContainer}>
-              <View style={styles.textContainerLeft} marginTop={10}>
+              <View style={styles.singleTextContainerLeft}>
+                <Text style={styles.bodyText}>
+                  FG (real / estimada):{'   '}
+                </Text>
+              </View>
+              <View style={styles.singleTextContainerRight}>
+                <Text style={styles.bodyText}>
+                  {formattedFg} / {this.state.fg}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <View style={styles.rowContainer}>
+              <View style={styles.textContainerLeft}>
                 <Text style={styles.bodyText}>Tempo de brassagem:</Text>
                 <Text>(real / estimado)</Text>
               </View>
@@ -658,8 +672,8 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 185,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   textContainerRight: {
     marginTop: marginVertical,
@@ -668,6 +682,26 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 175,
     height: 40,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  singleTextContainerLeft: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 185,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  singleTextContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: marginHorizontal,
+    marginRight: marginHorizontal,
+    width: 175,
+    height: 20,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
