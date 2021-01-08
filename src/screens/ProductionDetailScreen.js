@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     marginTop: 10,
-    marginLeft: 20,
+    marginLeft: 25,
     alignItems: 'flex-start',
   },
   bodyText: {
@@ -587,7 +587,7 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: marginHorizontal,
     marginRight: marginHorizontal,
-    width: 40,
+    width: 30,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -596,7 +596,7 @@ const styles = StyleSheet.create({
     marginTop: marginVertical,
     marginBottom: marginVertical,
     marginRight: marginHorizontal,
-    width: 100,
+    width: 120,
     height: 40,
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -659,7 +659,7 @@ const styles = StyleSheet.create({
     width: 185,
     height: 40,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   textContainerRight: {
     marginTop: marginVertical,

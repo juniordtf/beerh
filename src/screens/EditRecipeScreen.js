@@ -1768,8 +1768,8 @@ class EditRecipeScreen extends React.Component {
           </View>
           <View marginTop={10}>
             <Text style={styles.innerSectionText}>Fervura:</Text>
-            <View style={styles.parametersRow}>
-              <View marginLeft={-5}>
+            <View style={styles.parametersRow} marginLeft={28}>
+              <View>
                 <View style={styles.parametersRow}>
                   <TextInput
                     style={styles.bodyInputMask}
@@ -1835,6 +1835,11 @@ class EditRecipeScreen extends React.Component {
                   <Image source={Plus} />
                 </TouchableOpacity>
               </View>
+              <View
+                style={styles.addButtonContainer}
+                height={80}
+                marginLeft={-1}
+              />
             </View>
             <View>
               {this.state.inputSecondBoilClicked ? (

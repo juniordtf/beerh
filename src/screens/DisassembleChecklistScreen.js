@@ -188,7 +188,7 @@ class DisassembleChecklistScreen extends Component {
             </View>
           </View>
           <View style={styles.bodyContainer} marginTop={15}>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={5}>
               <Image source={ChecklistIcon} marginLeft={5} />
               <Text style={styles.bodyText}> Checklist de Desmontagem</Text>
             </View>

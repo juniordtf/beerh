@@ -163,12 +163,12 @@ class FermentationStartScreen extends Component {
             </View>
           </View>
           <View style={styles.bodyContainer} marginTop={15}>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <Text style={styles.bodyText}>Atividades:</Text>
             </View>
           </View>
           <View style={styles.bodyContainer}>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer} marginTop={5} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -178,7 +178,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -189,7 +189,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -199,7 +199,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={15}>
+            <View style={styles.rowContainer} marginTop={15} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -210,7 +210,7 @@ class FermentationStartScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
   boxContainerLeft: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
-    marginLeft: marginHorizontal,
+    marginLeft: 30,
     marginRight: marginHorizontal,
     width: 190,
     height: 100,

@@ -169,12 +169,12 @@ class SpargeScreen extends Component {
             </View>
           </View>
           <View style={styles.bodyContainer} marginTop={15}>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <Text style={styles.bodyText}>Atividades:</Text>
             </View>
           </View>
           <View style={styles.bodyContainer}>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer} marginTop={5} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -185,7 +185,7 @@ class SpargeScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={10}>
+            <View style={styles.rowContainer} marginTop={10} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -196,7 +196,7 @@ class SpargeScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -207,7 +207,7 @@ class SpargeScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={styles.rowContainer} marginTop={10}>
+            <View style={styles.rowContainer} marginTop={10} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
@@ -219,7 +219,7 @@ class SpargeScreen extends Component {
               </View>
             </View>
           </View>
-          <View style={styles.bodyContainer} marginTop={30}>
+          <View style={styles.bodyContainer} marginTop={40}>
             <View style={styles.sectionContainer}>
               <View style={styles.boxContainerLeft}>
                 <Image source={BrewBoiler} />

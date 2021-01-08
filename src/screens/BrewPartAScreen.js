@@ -174,14 +174,14 @@ class BrewPartAScreen extends Component {
             </View>
           </View>
           <View style={styles.bodyContainer} marginTop={15}>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <Text style={styles.bodyText}>
                 {' '}
                 Realizar as tarefas abaixo em paralelo:
               </Text>
             </View>
           </View>
-          <View style={styles.bodyContainer}>
+          <View style={styles.centeredbodyContainer}>
             <View>
               <View style={styles.rowContainer}>
                 <View style={styles.boxContainerRight}>
@@ -203,7 +203,7 @@ class BrewPartAScreen extends Component {
               </View>
             </View>
           </View>
-          <View style={styles.bodyContainer}>
+          <View style={styles.centeredbodyContainer}>
             <View style={styles.rowContainer}>
               <View style={styles.boxContainerRight}>
                 <Text style={styles.bodyText}>Obs.:</Text>
@@ -244,6 +244,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 15,
     alignItems: 'flex-start',
+  },
+  centeredbodyContainer: {
+    marginTop: 10,
+    marginLeft: 15,
+    alignItems: 'center',
   },
   title: {
     marginRight: 'auto',

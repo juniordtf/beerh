@@ -264,12 +264,12 @@ class BrewPartCScreen extends Component {
             </View>
           </View>
           <View style={styles.bodyContainer} marginTop={15}>
-            <View style={styles.rowContainer}>
+            <View style={styles.rowContainer} marginLeft={15}>
               <Text style={styles.bodyText}>Atividades:</Text>
             </View>
           </View>
           <View style={styles.bodyContainer}>
-            <View style={styles.rowContainer} marginTop={5}>
+            <View style={styles.rowContainer} marginTop={5} marginLeft={15}>
               <View style={styles.listContainerLeft}>
                 <Image source={Bullet} />
               </View>
