@@ -36,11 +36,14 @@ class NewProductionScreen extends React.Component {
       '/' +
       new Date().getFullYear();
 
-    if (todayPt.length < 10) {
+    let thisDay = new Date().getDate();
+    let thisMonth = new Date().getMonth() + 1;
+
+    if (thisDay < 10) {
       todayPt = 0 + todayPt;
     }
 
-    if (todayPt.length < 10) {
+    if (thisMonth < 10) {
       todayPt =
         todayPt.slice(0, 2) +
         '/' +

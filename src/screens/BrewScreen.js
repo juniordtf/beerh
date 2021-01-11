@@ -160,13 +160,15 @@ class BrewScreen extends React.Component {
 
   render() {
     let productions = this.state.productions;
-
     let currentDate = this.state.todaysDatePt;
-    if (currentDate.length < 10) {
+    let thisDay = new Date().getDate();
+    let thisMonth = new Date().getMonth() + 1;
+
+    if (thisDay < 10) {
       currentDate = 0 + currentDate;
     }
 
-    if (currentDate.length < 10) {
+    if (thisMonth < 10) {
       currentDate =
         currentDate.slice(0, 2) +
         '/' +
