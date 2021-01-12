@@ -41,6 +41,7 @@ class WhirlpoolScreen extends Component {
       todaysDatePt: todayPt,
       todaysRecipe: [],
       modalVisible: false,
+      isThisViewOnDisplay: true,
     };
   }
 
@@ -76,7 +77,10 @@ class WhirlpoolScreen extends Component {
 
   whenTimerIsDone = async () => {
     while (true) {
-      if (window.timerComponent.showDisplay() === '00:00') {
+      if (
+        window.timerComponent.showDisplay() === '00:00' &&
+        this.state.isThisViewOnDisplay
+      ) {
         this.playAlarmSound();
         Alert.alert('Tempo de Whirlpool alcançado!');
         break;
@@ -156,6 +160,7 @@ class WhirlpoolScreen extends Component {
     );
 
     window.stopwatchComponent.clearStopwatch();
+    this.setState({isThisViewOnDisplay: false});
   };
 
   updateProduction = async (currentProduction) => {

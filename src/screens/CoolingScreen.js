@@ -42,6 +42,7 @@ class CoolingScreen extends Component {
       todaysDatePt: todayPt,
       todaysRecipe: [],
       modalVisible: false,
+      isThisViewOnDisplay: true,
     };
   }
 
@@ -77,7 +78,10 @@ class CoolingScreen extends Component {
 
   whenTimerIsDone = async () => {
     while (true) {
-      if (window.timerComponent.showDisplay() === '00:00') {
+      if (
+        window.timerComponent.showDisplay() === '00:00' &&
+        this.state.isThisViewOnDisplay
+      ) {
         this.playAlarmSound();
         Alert.alert('Tempo máximo de resfriamento alcançado!');
         break;
@@ -157,6 +161,7 @@ class CoolingScreen extends Component {
     );
 
     window.stopwatchComponent.clearStopwatch();
+    this.setState({isThisViewOnDisplay: false});
   };
 
   updateProduction = async (currentProduction) => {

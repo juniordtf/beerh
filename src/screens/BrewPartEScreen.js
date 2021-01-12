@@ -41,6 +41,7 @@ class BrewPartEScreen extends Component {
       todaysDatePt: todayPt,
       todaysRecipe: [],
       modalVisible: false,
+      isThisViewOnDisplay: true,
     };
   }
 
@@ -87,7 +88,10 @@ class BrewPartEScreen extends Component {
 
   whenTimerIsDone = async () => {
     while (true) {
-      if (window.timerComponent.showDisplay() === '00:00') {
+      if (
+        window.timerComponent.showDisplay() === '00:00' &&
+        this.state.isThisViewOnDisplay
+      ) {
         this.playAlarmSound();
         Alert.alert('Tempo da 4ª rampa alcançado!');
         break;
@@ -174,6 +178,7 @@ class BrewPartEScreen extends Component {
     );
 
     window.stopwatchComponent.clearStopwatch();
+    this.setState({isThisViewOnDisplay: false});
   };
 
   decideNextView = (productionUpdated) => {

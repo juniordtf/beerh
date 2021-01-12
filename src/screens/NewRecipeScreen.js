@@ -24,12 +24,29 @@ class NewRecipeScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    const todayPt =
+    let todayPt =
       new Date().getDate() +
       '/' +
       (new Date().getMonth() + 1) +
       '/' +
       new Date().getFullYear();
+
+    let thisDay = new Date().getDate();
+    let thisMonth = new Date().getMonth() + 1;
+
+    if (thisDay < 10) {
+      todayPt = 0 + todayPt;
+    }
+
+    if (thisMonth < 10) {
+      todayPt =
+        todayPt.slice(0, 2) +
+        '/' +
+        0 +
+        todayPt.slice(3, 4) +
+        '/' +
+        todayPt.slice(5, 9);
+    }
 
     this.state = {
       todaysDatePt: todayPt,
@@ -894,6 +911,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng02) => this.setState({QteIng02})}
                     value={this.state.QteIng02}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -952,6 +970,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng03) => this.setState({QteIng03})}
                     value={this.state.QteIng03}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -1010,6 +1029,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng04) => this.setState({QteIng04})}
                     value={this.state.QteIng04}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -1068,6 +1088,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng05) => this.setState({QteIng05})}
                     value={this.state.QteIng05}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -1126,6 +1147,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng06) => this.setState({QteIng06})}
                     value={this.state.QteIng06}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -1184,6 +1206,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng07) => this.setState({QteIng07})}
                     value={this.state.QteIng07}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -1242,6 +1265,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng08) => this.setState({QteIng08})}
                     value={this.state.QteIng08}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -1300,6 +1324,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng09) => this.setState({QteIng09})}
                     value={this.state.QteIng09}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />
@@ -1358,6 +1383,7 @@ class NewRecipeScreen extends React.Component {
                     onChangeText={(QteIng10) => this.setState({QteIng10})}
                     value={this.state.QteIng10}
                     placeholder="Qte"
+                    keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={50}
                   />

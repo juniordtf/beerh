@@ -318,6 +318,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'black',
     textAlign: 'center',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   bodyTextLeft: {
     fontSize: 15,
@@ -378,7 +380,7 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 135,
     height: 100,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'flex-start',
   },
   boxContainerRight: {
@@ -388,7 +390,7 @@ const styles = StyleSheet.create({
     marginRight: marginHorizontal,
     width: 100,
     height: 100,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   sectionContainerLeft: {

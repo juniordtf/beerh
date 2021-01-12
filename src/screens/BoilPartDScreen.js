@@ -41,6 +41,7 @@ class BoilPartDScreen extends Component {
       todaysDatePt: todayPt,
       todaysRecipe: [],
       modalVisible: false,
+      isThisViewOnDisplay: true,
     };
   }
 
@@ -93,7 +94,10 @@ class BoilPartDScreen extends Component {
 
   whenTimerIsDone = async () => {
     while (true) {
-      if (window.timerComponent.showDisplay() === '00:00') {
+      if (
+        window.timerComponent.showDisplay() === '00:00' &&
+        this.state.isThisViewOnDisplay
+      ) {
         this.playAlarmSound();
         Alert.alert('Tempo da 4ª fervura alcançado!');
         break;
@@ -188,6 +192,7 @@ class BoilPartDScreen extends Component {
     );
 
     window.stopwatchComponent.clearStopwatch();
+    this.setState({isThisViewOnDisplay: false});
   };
 
   decideNextView = (productionUpdated) => {

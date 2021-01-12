@@ -93,7 +93,10 @@ class RecipesScreen extends React.Component {
                   <Text style={styles.listItemBodyField}> ABV: </Text>
                   <Text style={styles.listItemBody}>{item.abv}%</Text>
                 </View>
-                <View style={styles.rowContainer} marginTop={2}>
+                <View
+                  style={styles.rowContainer}
+                  marginTop={2}
+                  marginBottom={1}>
                   <Text style={styles.listItemBodyField}>
                     Data de criação:{' '}
                   </Text>
@@ -229,6 +232,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    marginTop: 2,
   },
   boxContainerLeft: {
     marginTop: marginVertical,
