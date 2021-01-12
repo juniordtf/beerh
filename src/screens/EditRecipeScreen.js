@@ -26,12 +26,29 @@ class EditRecipeScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    const todayPt =
+    let todayPt =
       new Date().getDate() +
       '/' +
       (new Date().getMonth() + 1) +
       '/' +
       new Date().getFullYear();
+
+    let thisDay = new Date().getDate();
+    let thisMonth = new Date().getMonth() + 1;
+
+    if (thisDay < 10) {
+      todayPt = 0 + todayPt;
+    }
+
+    if (thisMonth < 10) {
+      todayPt =
+        todayPt.slice(0, 2) +
+        '/' +
+        0 +
+        todayPt.slice(3, 4) +
+        '/' +
+        todayPt.slice(5, 9);
+    }
 
     this.state = {
       todaysDatePt: todayPt,

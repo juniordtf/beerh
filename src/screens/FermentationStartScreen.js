@@ -221,7 +221,7 @@ class FermentationStartScreen extends Component {
               </View>
             </View>
           </View>
-          <View style={styles.centeredBodyContainer} marginTop={40}>
+          <View style={styles.centeredBodyContainer} marginTop={70}>
             <View style={styles.sectionContainer}>
               <View style={styles.boxContainerLeft}>
                 <Image source={Brewery} />
@@ -281,7 +281,6 @@ const styles = StyleSheet.create({
   },
   centeredBodyContainer: {
     marginTop: 10,
-    marginLeft: 30,
     alignItems: 'center',
   },
   title: {
@@ -346,7 +345,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    marginTop: 50,
+    marginTop: 30,
     marginRight: 15,
     marginBottom: 15,
     alignSelf: 'flex-end',
@@ -391,7 +390,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   sectionContainerLeft: {
     marginTop: marginVertical,
