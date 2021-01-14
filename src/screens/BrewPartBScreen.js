@@ -80,7 +80,10 @@ class BrewPartBScreen extends Component {
       rampDuration = parseInt(currentRecipe.ramps[0].time, 10) - 1;
     }
 
-    window.timerComponent.setTimer(rampDuration);
+    window.timerComponent.setTimer(
+      rampDuration,
+      'Tempo da 1ª rampa alcançado!',
+    );
 
     this.whenTimerIsDone();
   }

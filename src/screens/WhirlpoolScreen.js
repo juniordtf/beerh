@@ -49,7 +49,7 @@ class WhirlpoolScreen extends Component {
     this.preloadSound();
     this.getProductions();
     this.keepStopwatchGoing();
-    window.timerComponent.setTimer(1);
+    window.timerComponent.setTimer(1, 'Tempo de Whirlpool alcançado!');
     this.whenTimerIsDone();
   }
 

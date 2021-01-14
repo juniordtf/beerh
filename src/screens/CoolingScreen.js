@@ -49,7 +49,10 @@ class CoolingScreen extends Component {
   componentDidMount() {
     this.preloadSound();
     this.keepStopwatchGoing();
-    window.timerComponent.setTimer(39);
+    window.timerComponent.setTimer(
+      39,
+      'Tempo máximo de resfriamento alcançado!',
+    );
     this.whenTimerIsDone();
     this.getProductions();
   }

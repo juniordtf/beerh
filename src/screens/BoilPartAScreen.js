@@ -87,7 +87,10 @@ class BoilPartAScreen extends Component {
       }
     }
 
-    window.timerComponent.setTimer(rampDuration);
+    window.timerComponent.setTimer(
+      rampDuration,
+      'Tempo da 1ª fervura alcançado!',
+    );
 
     this.whenTimerIsDone();
   }

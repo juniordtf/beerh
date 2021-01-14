@@ -8,10 +8,10 @@ import {
   Platform,
 } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
+import PushNotification from 'react-native-push-notification';
 import TimerIcon from '../../assets/timer.png';
 import PlayIcon from '../../assets/play-button.png';
 import PauseIcon from '../../assets/pause-button.png';
-import StopIcon from '../../assets/stop-button.png';
 
 class Timer extends Component {
   constructor(props) {
@@ -32,6 +32,7 @@ class Timer extends Component {
       pausarHabilitado: false,
       pararHabilitado: false,
       somarHabilitado: true,
+      message: 'Tempo alcançado!',
     };
   }
 
@@ -74,11 +75,17 @@ class Timer extends Component {
   };
 
   startTimer = () => {
+    this.sendScheduledPushNotification(
+      this.state.message,
+      this.state.contadorMinuto,
+    );
+
     if (Platform.OS === 'ios') {
       BackgroundTimer.start();
     }
 
     let intervalId = BackgroundTimer.setInterval(this.subtractSecond, 1000);
+
     this.setState({
       intervalId: intervalId,
 
@@ -124,15 +131,48 @@ class Timer extends Component {
     });
   };
 
-  setTimer(minutes) {
+  setTimer(minutes, pushMessage) {
     let minutoAtual = this.state.contadorMinuto;
     let minutoSomado = minutoAtual + parseInt(minutes, 10);
     this.setState({
+      message: pushMessage,
       contadorMinuto: minutoSomado,
 
       iniciarHabilitado: true,
       pararHabilitado: true,
       somarHabilitado: true,
+    });
+  }
+
+  sendPushNotification(pushMessage) {
+    PushNotification.localNotification({
+      /* Android Only Properties */
+      channelId: 'beerh-01', // (required) channelId, if the channel doesn't exist, it will be created with options passed above (importance, vibration, sound). Once the channel is created, the channel will not be update. Make sure your channelId is different if you change these options. If you have created a custom channel, it will apply options of the channel.
+
+      /* iOS and Android properties */
+      title: 'BeerH', // (optional)
+      message: pushMessage, // (required)
+      userInfo: {}, // (optional) default: {} (using null throws a JSON value '<null>' error)
+      playSound: true, // (optional) default: true
+      soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
+    });
+  }
+
+  sendScheduledPushNotification(pushMessage, time) {
+    console;
+    PushNotification.localNotificationSchedule({
+      /* Android Only Properties */
+      channelId: 'beerh-01', // (required) channelId, if the channel doesn't exist, it will be created with options passed above (importance, vibration, sound). Once the channel is created, the channel will not be update. Make sure your channelId is different if you change these options. If you have created a custom channel, it will apply options of the channel.
+
+      /* iOS and Android properties */
+      title: 'BeerH', // (optional)
+      message: pushMessage, // (required)
+      userInfo: {}, // (optional) default: {} (using null throws a JSON value '<null>' error)
+      playSound: true, // (optional) default: true
+      soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
+
+      date: new Date(Date.now() + time * 60 * 1000), // in 60 secs
+      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
     });
   }
 

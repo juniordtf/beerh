@@ -80,7 +80,10 @@ class BoilPartEScreen extends Component {
       rampDuration = parseInt(currentRecipe.boil[4].time, 10) - 1;
     }
 
-    window.timerComponent.setTimer(rampDuration);
+    window.timerComponent.setTimer(
+      rampDuration,
+      'Tempo da 5ª fervura alcançado!',
+    );
 
     this.whenTimerIsDone();
   }
