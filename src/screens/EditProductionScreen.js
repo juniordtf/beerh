@@ -6,16 +6,13 @@ import {
   StyleSheet,
   Image,
   Modal,
-  Button,
   Alert,
   TouchableHighlight,
   ScrollView,
   TextInput,
 } from 'react-native';
-import {Picker} from '@react-native-community/picker';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
-import UpDown from '../../assets/up-and-down.png';
 import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
@@ -28,10 +25,13 @@ class EditProductionScreen extends React.Component {
       id: '',
       name: '',
       volume: '',
+      realVolume: '',
       og: '',
       realOg: '',
       fg: '',
       realFg: '',
+      abv: '',
+      realAbv: '',
       style: '',
       estimatedTime: '',
       status: '',
@@ -81,10 +81,13 @@ class EditProductionScreen extends React.Component {
       id: production.id,
       name: production.name,
       volume: production.volume,
+      realVolume: production.realVolume,
       og: production.og,
       realOg: production.realOg,
       fg: production.fg,
       realFg: production.realFg,
+      abv: production.abv,
+      realAbv: production.realAbv,
       style: production.style,
       estimatedTime: production.estimatedTime,
       status: production.status,
@@ -284,10 +287,13 @@ class EditProductionScreen extends React.Component {
       id: this.state.id,
       name: this.state.name,
       volume: this.state.volume,
+      realVolume: this.state.realVolume,
       og: this.state.og,
       realOg: this.state.realOg,
       fg: this.state.fg,
       realFg: this.state.realFg,
+      abv: this.state.abv,
+      realAbv: this.state.realAbv,
       style: this.state.style,
       estimatedTime: this.state.estimatedTime,
       status: this.state.status,
@@ -447,7 +453,7 @@ class EditProductionScreen extends React.Component {
           </View>
           <View marginTop={5}>
             <View style={styles.rowContainer}>
-              <View width={150} marginLeft={10}>
+              <View width={150}>
                 <View style={styles.centeredTitleContainer}>
                   <Text style={styles.titleText}>OG Real:</Text>
                 </View>
@@ -472,6 +478,42 @@ class EditProductionScreen extends React.Component {
                     style={styles.bodyInputMask}
                     onChangeText={(realFg) => this.setState({realFg})}
                     value={this.state.realFg}
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <View style={styles.rowContainer}>
+              <View width={150}>
+                <View style={styles.centeredTitleContainer}>
+                  <Text style={styles.titleText}>ABV Real:</Text>
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    onChangeText={(realAbv) => this.setState({realAbv})}
+                    value={this.state.realAbv}
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={120}
+                    marginLeft={10}
+                  />
+                </View>
+              </View>
+              <View>
+                <View style={styles.centeredTitleContainer}>
+                  <Text style={styles.titleText}>{'   '}Volume Real:</Text>
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    onChangeText={(realVolume) => this.setState({realVolume})}
+                    value={this.state.realVolume}
                     keyboardType="numeric"
                     underlineColorAndroid="transparent"
                     width={120}

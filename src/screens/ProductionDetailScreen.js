@@ -27,10 +27,13 @@ class ProductionDetailScreen extends React.Component {
       fillingDate: '',
       initialCalendarDate: '',
       volume: '',
+      realVolume: '',
       og: '',
       realOg: '',
       fg: '',
       realFg: '',
+      abv: '',
+      realAbv: '',
       estimatedTime: '',
       duration: '',
       status: '',
@@ -84,10 +87,13 @@ class ProductionDetailScreen extends React.Component {
         '-' +
         production.fillingDate.slice(0, 2),
       volume: production.volume,
+      realVolume: production.realVolume,
       og: production.og,
       realOg: production.realOg,
       fg: production.fg,
       realFg: production.realFg,
+      abv: production.abv,
+      realAbv: production.realAbv,
       estimatedTime: production.estimatedTime,
       duration: production.duration,
       status: production.state,
@@ -167,6 +173,8 @@ class ProductionDetailScreen extends React.Component {
     let formattedDuration = this.state.duration;
     let formattedOg = this.state.realOg;
     let formattedFg = this.state.realFg;
+    let formattedAbv = this.state.realAbv;
+    let formattedVolume = this.state.realVolume;
 
     if (formattedDuration === '') {
       formattedDuration = '---';
@@ -183,6 +191,14 @@ class ProductionDetailScreen extends React.Component {
 
     if (formattedFg === '') {
       formattedFg = '---';
+    }
+
+    if (formattedAbv === '') {
+      formattedAbv = '---';
+    }
+
+    if (formattedVolume === '') {
+      formattedVolume = '---';
     }
 
     const formattedEstimatedTime = (
@@ -325,9 +341,37 @@ class ProductionDetailScreen extends React.Component {
           </View>
           <View marginTop={5}>
             <View style={styles.rowContainer}>
+              <View style={styles.singleTextContainerLeft}>
+                <Text style={styles.bodyText}>
+                  ABV (real / estimada):{'   '}
+                </Text>
+              </View>
+              <View style={styles.singleTextContainerRight}>
+                <Text style={styles.bodyText}>
+                  {formattedAbv} / {this.state.abv} %
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <View style={styles.rowContainer}>
+              <View style={styles.singleTextContainerLeft}>
+                <Text style={styles.bodyText}>
+                  Volume (real / estimado):{'   '}
+                </Text>
+              </View>
+              <View style={styles.singleTextContainerRight}>
+                <Text style={styles.bodyText}>
+                  {formattedVolume} / {this.state.volume} L
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <View style={styles.rowContainer}>
               <View style={styles.textContainerLeft}>
                 <Text style={styles.bodyText}>Tempo de brassagem:</Text>
-                <Text>(real / estimado)</Text>
+                <Text>{'     '}(real / estimado)</Text>
               </View>
               <View style={styles.textContainerRight}>
                 <Text>
@@ -668,12 +712,12 @@ const styles = StyleSheet.create({
   textContainerLeft: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
-    marginLeft: marginHorizontal,
+    marginLeft: 20,
     marginRight: marginHorizontal,
     width: 185,
     height: 40,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   textContainerRight: {
     marginTop: marginVertical,
@@ -688,12 +732,12 @@ const styles = StyleSheet.create({
   singleTextContainerLeft: {
     marginTop: marginVertical,
     marginBottom: marginVertical,
-    marginLeft: marginHorizontal,
+    marginLeft: 20,
     marginRight: marginHorizontal,
     width: 185,
     height: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   singleTextContainerRight: {
     marginTop: marginVertical,
