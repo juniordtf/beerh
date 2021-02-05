@@ -25,7 +25,6 @@ class Stopwatch extends Component {
       zerarHabilitado: false,
       elapsed: 0,
       appState: AppState.currentState,
-      isActive: true,
     };
   }
 
@@ -122,7 +121,6 @@ class Stopwatch extends Component {
       pausarHabilitado: false,
       pararHabilitado: false,
       zerarHabilitado: true,
-      isActive: false,
     });
   };
 
@@ -148,18 +146,6 @@ class Stopwatch extends Component {
   recordStartTime = async () => {
     try {
       const now = new Date();
-      await AsyncStorage.setItem('@start_time', now.toISOString());
-    } catch (err) {
-      // TODO: handle errors from setItem properly
-      console.warn(err);
-    }
-  };
-
-  recordStartTime = async () => {
-    try {
-      const now = new Date();
-      console.log(now);
-
       await AsyncStorage.setItem('@start_time', now.toISOString());
     } catch (err) {
       // TODO: handle errors from setItem properly
