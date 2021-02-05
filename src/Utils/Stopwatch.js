@@ -23,6 +23,7 @@ class Stopwatch extends Component {
       pausarHabilitado: false,
       pararHabilitado: false,
       zerarHabilitado: false,
+      initialTime: 0,
       elapsed: 0,
       appState: AppState.currentState,
     };
@@ -136,10 +137,15 @@ class Stopwatch extends Component {
   };
 
   continueStopwatch(time) {
+    const hours = parseInt(time.slice(0, 2), 10);
+    const minutes = parseInt(time.slice(3, 5), 10);
+    const seconds = parseInt(time.slice(6, 8), 10) + 1;
+
     this.setState({
-      contadorSegundo: parseInt(time.slice(6, 8), 10) + 1,
-      contadorMinuto: parseInt(time.slice(3, 5), 10),
-      contadorHora: parseInt(time.slice(0, 2), 10),
+      contadorSegundo: seconds,
+      contadorMinuto: minutes,
+      contadorHora: hours,
+      initialTime: hours * 3600 + minutes * 60 + seconds,
     });
   }
 
@@ -173,21 +179,25 @@ class Stopwatch extends Component {
       // on what we stored in AsyncStorage when we started.
       elapsed = await this.getElapsedTime();
       // Update the elapsed seconds state
+      let display = 0;
+
+      if (this.state.initialTime === 0) {
+        display = new Date(elapsed * 1000).toISOString().substr(11, 8);
+      } else {
+        let realElapsedTime = elapsed + this.state.initialTime;
+        display = new Date(realElapsedTime * 1000).toISOString().substr(11, 8);
+      }
+      this.setState({
+        contadorSegundo: parseInt(display.slice(6, 8), 10),
+        contadorMinuto: parseInt(display.slice(3, 5), 10),
+        contadorHora: parseInt(display.slice(0, 2), 10),
+      });
     }
 
     this.setState({
       elapsed: elapsed,
       appState: nextAppState,
     });
-
-    if (elapsed > 0) {
-      let display = new Date(elapsed * 1000).toISOString().substr(11, 8);
-      this.setState({
-        contadorSegundo: parseInt(display.slice(6, 8), 10) + 1,
-        contadorMinuto: parseInt(display.slice(3, 5), 10),
-        contadorHora: parseInt(display.slice(0, 2), 10),
-      });
-    }
   };
 
   getElapsedTime = async () => {

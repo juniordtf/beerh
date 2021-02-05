@@ -193,14 +193,6 @@ class Timer extends Component {
       // on what we stored in AsyncStorage when we started.
       elapsed = await this.getElapsedTime();
       // Update the elapsed seconds state
-    }
-
-    this.setState({
-      elapsed: elapsed,
-      appState: nextAppState,
-    });
-
-    if (elapsed > 0) {
       let timeDifference = this.state.initialTime * 60 - elapsed;
 
       if (timeDifference > 0) {
@@ -209,7 +201,7 @@ class Timer extends Component {
           .substr(11, 8);
 
         this.setState({
-          contadorSegundo: parseInt(display.slice(6, 8), 10) + 1,
+          contadorSegundo: parseInt(display.slice(6, 8), 10),
           contadorMinuto: parseInt(display.slice(3, 5), 10),
         });
       } else {
@@ -219,6 +211,11 @@ class Timer extends Component {
         });
       }
     }
+
+    this.setState({
+      elapsed: elapsed,
+      appState: nextAppState,
+    });
   };
 
   getElapsedTime = async () => {
