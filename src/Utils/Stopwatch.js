@@ -161,7 +161,7 @@ class Stopwatch extends Component {
 
   clearStartTime = async () => {
     try {
-      await AsyncStorage.setItem('@start_time', 0);
+      await AsyncStorage.setItem('@start_time', '');
     } catch (err) {
       // TODO: handle errors from setItem properly
       console.warn(err);
