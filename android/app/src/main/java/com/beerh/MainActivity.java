@@ -1,28 +1,40 @@
 package com.beerh;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 
+
 import com.beerh.service.BeerHService;
+import com.beerh.service.NotificationService;
 import com.facebook.react.ReactActivity;
 
 import org.devio.rn.splashscreen.SplashScreen;
 
+import java.util.Arrays;
+
 public class MainActivity extends ReactActivity implements ServiceConnection {
     private BeerHService beerHService;
+    private String TAG = "MainActivity";
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    private OnRequestPermissionsResultCallback onRequestPermissionsResultSuccessCallback;
+    private OnRequestPermissionsResultCallback onRequestPermissionsResultFailCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
         super.onCreate(savedInstanceState);
 
-        showPermissionDialog();
+        checkPermissions();
         startBeerHService();
     }
 
@@ -42,6 +54,26 @@ public class MainActivity extends ReactActivity implements ServiceConnection {
     @Override
     protected String getMainComponentName() {
         return "BeerH";
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.d(TAG, Arrays.toString(new String[]{"onRequestPermissionsResult", String.valueOf(requestCode), Arrays.toString(permissions), Arrays.toString(grantResults)}));
+        switch(requestCode){
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    this.onRequestPermissionsResultSuccessCallback.callback();
+                } else{
+                   this.onRequestPermissionsResultFailCallback.callback();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public interface OnRequestPermissionsResultCallback{
+        void callback();
     }
 
     private void startBeerHService(){
@@ -75,7 +107,29 @@ public class MainActivity extends ReactActivity implements ServiceConnection {
         }
     }
 
-    public void showPermissionDialog() {
-        getApplicationContext().startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    public void checkPermissions() {
+        ComponentName cn = new ComponentName(this, NotificationService.class);
+        String flat = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
+        final boolean enabled = flat != null && flat.contains(cn.flattenToString());
+
+        if(!enabled){
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.ask_notification_listener_permission_message_title))
+                    .setMessage(getString(R.string.ask_notification_listener_permission_message))
+                    .setCancelable(false)
+                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            getApplicationContext().startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        }
+                    })
+                    .show();
+        }
     }
 }

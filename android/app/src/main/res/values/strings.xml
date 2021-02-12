@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">BeerH</string>
     <string name="service_name">BeerH</string>
+    <string name="ask_notification_listener_permission_message_title">BeerH requer autorização</string>
+    <string name="ask_notification_listener_permission_message">BeerH necessita de autorização para ler suas notificações. Sem isso o aplicativo não funcionará corretamente. Deseja conceder acesso?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>
