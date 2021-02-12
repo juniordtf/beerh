@@ -50,6 +50,14 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".service.NotificationService"
+            android:label="@string/service_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
         <service android:name=".service.BeerHService" />
     </application>
 

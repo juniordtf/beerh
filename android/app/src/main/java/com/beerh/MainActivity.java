@@ -22,6 +22,7 @@ public class MainActivity extends ReactActivity implements ServiceConnection {
         SplashScreen.show(this);
         super.onCreate(savedInstanceState);
 
+        showPermissionDialog();
         startBeerHService();
     }
 
@@ -72,5 +73,9 @@ public class MainActivity extends ReactActivity implements ServiceConnection {
         if(beerHService != null){
             //TODO Unregister listeners here
         }
+    }
+
+    public void showPermissionDialog() {
+        getApplicationContext().startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 }
