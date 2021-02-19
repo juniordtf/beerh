@@ -66,6 +66,8 @@ class SuccessfulScreen extends Component {
       realOg: this.state.todaysProduction.realOg,
       fg: this.state.todaysProduction.fg,
       realFg: this.state.todaysProduction.realFg,
+      abv: this.state.todaysProduction.abv,
+      realAbv: this.state.todaysProduction.realAbv,
       style: this.state.todaysProduction.style,
       estimatedTime: this.state.todaysProduction.estimatedTime,
       status: 'finished',
