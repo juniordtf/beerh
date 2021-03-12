@@ -592,19 +592,19 @@ class NewRecipeScreen extends React.Component {
 
     let allBoils = [boil01];
 
-    if (this.state.inputSecondBoilClicked) {
+    if (this.state.inputSecondBoilClicked || this.state.UntBoil02 !== '') {
       allBoils.push(boil02);
     }
 
-    if (this.state.inputThirdBoilClicked) {
+    if (this.state.inputThirdBoilClicked || this.state.UntBoil03 !== '') {
       allBoils.push(boil03);
     }
 
-    if (this.state.inputFourthBoilClicked) {
+    if (this.state.inputFourthBoilClicked || this.state.UntBoil04 !== '') {
       allBoils.push(boil04);
     }
 
-    if (this.state.inputFifthBoilClicked) {
+    if (this.state.inputFifthBoilClicked || this.state.UntBoil05 !== '') {
       allBoils.push(boil05);
     }
 

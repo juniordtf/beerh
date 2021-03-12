@@ -7,6 +7,8 @@ export const Units = [
   {unit: 'Kg', name: 'kilograma'},
   {unit: 'mL', name: 'miliLitro'},
   {unit: 'L', name: 'Litro'},
+  {unit: 'pct', name: 'Pacote'},
+  {unit: 'item', name: 'item'},
 ];
 
 export const CarbonationMethods = [
