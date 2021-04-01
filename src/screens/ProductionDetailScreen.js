@@ -221,7 +221,6 @@ class ProductionDetailScreen extends React.Component {
               markingType="simple"
               minDate={this.state.brewDate}
               maxDate={this.state.fillingDate}
-              current={this.state.initialCalendarDate}
               markedDates={{
                 [this.state.brewDate]: {
                   selected: true,
@@ -244,6 +243,7 @@ class ProductionDetailScreen extends React.Component {
                   selectedColor: 'orange',
                 },
               }}
+              current={this.props.route.params?.production.initialCalendarDate}
             />
             <View backgroundColor={'#000000'} height={1} />
           </View>

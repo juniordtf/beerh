@@ -100,6 +100,7 @@ class Timer extends Component {
 
     let intervalId = BackgroundTimer.setInterval(this.subtractSecond, 1000);
 
+    this.clearStartTime();
     this.recordStartTime();
 
     this.setState({
@@ -195,20 +196,22 @@ class Timer extends Component {
       // Update the elapsed seconds state
       let timeDifference = this.state.initialTime * 60 - elapsed;
 
-      if (timeDifference > 0) {
-        let display = new Date(timeDifference * 1000)
-          .toISOString()
-          .substr(11, 8);
+      if (!this.state.iniciarHabilitado) {
+        if (timeDifference > 0) {
+          let display = new Date(timeDifference * 1000)
+            .toISOString()
+            .substr(11, 8);
 
-        this.setState({
-          contadorSegundo: parseInt(display.slice(6, 8), 10),
-          contadorMinuto: parseInt(display.slice(3, 5), 10),
-        });
-      } else {
-        this.setState({
-          contadorSegundo: 0,
-          contadorMinuto: 0,
-        });
+          this.setState({
+            contadorSegundo: parseInt(display.slice(6, 8), 10),
+            contadorMinuto: parseInt(display.slice(3, 5), 10),
+          });
+        } else {
+          this.setState({
+            contadorSegundo: 0,
+            contadorMinuto: 0,
+          });
+        }
       }
     }
 
