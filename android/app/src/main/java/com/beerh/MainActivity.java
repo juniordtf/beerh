@@ -143,4 +143,9 @@ public class MainActivity extends ReactActivity implements ServiceConnection {
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }
