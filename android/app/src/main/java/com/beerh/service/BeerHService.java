@@ -33,7 +33,6 @@ public class BeerHService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //stopForegroundService();
     }
 
     private void startForegroundService(){

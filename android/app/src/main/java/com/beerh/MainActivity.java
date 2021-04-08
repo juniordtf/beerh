@@ -1,5 +1,6 @@
 package com.beerh;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,12 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
+
+import androidx.core.content.ContextCompat;
 
 import com.beerh.service.BeerHService;
 import com.beerh.service.NotificationService;
@@ -112,24 +116,31 @@ public class MainActivity extends ReactActivity implements ServiceConnection {
         String flat = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
         final boolean enabled = flat != null && flat.contains(cn.flattenToString());
 
-        if(!enabled){
-            new AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.ask_notification_listener_permission_message_title))
-                    .setMessage(getString(R.string.ask_notification_listener_permission_message))
-                    .setCancelable(false)
-                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            getApplicationContext().startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        }
-                    })
-                    .show();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 0);
+            }
+
+            if(!enabled){
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.ask_notification_listener_permission_message_title))
+                        .setMessage(getString(R.string.ask_notification_listener_permission_message))
+                        .setCancelable(false)
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                getApplicationContext().startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            }
+                        })
+                        .show();
+            }
         }
     }
 }
