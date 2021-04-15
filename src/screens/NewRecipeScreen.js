@@ -761,6 +761,17 @@ class NewRecipeScreen extends React.Component {
     });
 
     Alert.alert('Receita salva com sucesso!');
+
+    if (window.recipesScreen !== undefined) {
+      window.recipesScreen.getRecipes();
+    }
+
+    if (window.productionsScreen !== undefined) {
+      window.productionsScreen
+        .getRecipes()
+        .then(window.productionsScreen.getProductions());
+    }
+
     this.props.navigation.navigate('Receitas', {recipes: allRecipes});
   };
 

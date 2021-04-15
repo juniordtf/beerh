@@ -36,7 +36,11 @@ function ProductionsStack() {
           ),
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => window.productionsScreen.getProductions()}>
+              onPress={() =>
+                window.productionsScreen
+                  .getRecipes()
+                  .then(window.productionsScreen.getProductions())
+              }>
               <View marginLeft={20}>
                 <Image source={Refresh} />
               </View>

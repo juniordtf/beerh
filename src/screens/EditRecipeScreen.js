@@ -917,6 +917,12 @@ class EditRecipeScreen extends React.Component {
       .catch((err) => {
         console.log('error is: ' + err);
       });
+
+    if (window.productionsScreen !== undefined) {
+      window.productionsScreen
+        .getRecipes()
+        .then(window.productionsScreen.getProductions());
+    }
   };
 
   render() {
