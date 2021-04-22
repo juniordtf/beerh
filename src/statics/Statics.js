@@ -12,6 +12,6 @@ export const Units = [
 ];
 
 export const CarbonationMethods = [
-  {unit: 'kpa', method: 'Forçada'},
+  {unit: 'CO₂ Vol', method: 'Forçada'},
   {unit: 'g/L', method: 'Primming'},
 ];

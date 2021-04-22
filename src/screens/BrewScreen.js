@@ -128,8 +128,13 @@ class BrewScreen extends React.Component {
         currentProduction: currentProduction,
         currentRecipe: currentRecipe,
       }),
-      window.productionsScreen.getProductions(),
     );
+
+    if (window.productionsScreen !== undefined) {
+      window.productionsScreen
+        .getRecipes()
+        .then(window.productionsScreen.getProductions());
+    }
   };
 
   updateProduction = async (currentProduction) => {
