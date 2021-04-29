@@ -69,12 +69,12 @@ class BrewPartAScreen extends Component {
     let currentRecipe = this.props.route.params?.currentRecipe;
 
     if (currentRecipe != null) {
-      return (parseFloat(currentRecipe.ramps[0].temperature, 10) + 9).toFixed(
+      return (parseFloat(currentRecipe.ramps[0].temperature, 10) + 2).toFixed(
         1,
       );
     }
 
-    return '75.0';
+    return '68.0';
   }
 
   getStepsTotal() {
