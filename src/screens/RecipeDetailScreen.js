@@ -13,7 +13,9 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-community/async-storage';
 import Bullet from '../../assets/bullet.png';
+import Export from '../../assets/export.png';
 import {RECIPES_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
+var RNFS = require('react-native-fs');
 
 class RecipeDetailScreen extends React.Component {
   constructor(props) {
@@ -38,6 +40,7 @@ class RecipeDetailScreen extends React.Component {
       carbonationUnit: '',
       annotation: '',
       modalVisible: false,
+      exportModalVisible: false,
       recipes: [],
       currentRecipe: '',
       productions: [],
@@ -110,6 +113,18 @@ class RecipeDetailScreen extends React.Component {
     });
   };
 
+  openExportModal = () => {
+    this.setState({
+      exportModalVisible: true,
+    });
+  };
+
+  closeExportModal = () => {
+    this.setState({
+      exportModalVisible: false,
+    });
+  };
+
   deleteRecipe = async (currentRecipe) => {
     var production = this.state.productions.find(
       (x) => x.name === currentRecipe.title,
@@ -162,6 +177,52 @@ class RecipeDetailScreen extends React.Component {
         .getRecipes()
         .then(window.productionsScreen.getProductions());
     }
+  };
+
+  saveRecipeInFile = async (currentRecipe) => {
+    this.closeExportModal();
+
+    var path =
+      RNFS.DownloadDirectoryPath +
+      '/' +
+      currentRecipe.title +
+      '_' +
+      currentRecipe.volume +
+      'L' +
+      '.txt';
+
+    RNFS.writeFile(path, JSON.stringify(currentRecipe), 'utf8')
+      .then((success) => {
+        console.log('FILE WRITTEN!');
+        console.log(
+          RNFS.DownloadDirectoryPath +
+            '/' +
+            currentRecipe.title +
+            '_' +
+            currentRecipe.volume +
+            'L' +
+            '.txt',
+        );
+        Alert.alert(
+          'Arquivo com nome "' +
+            currentRecipe.title +
+            '_' +
+            currentRecipe.volume +
+            'L' +
+            '" salvo com sucesso na pasta Downloads!',
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+        Alert.alert(
+          'Erro ao gerar arquivo. Verifique se já não existe um arquivo com nome ' +
+            currentRecipe.title +
+            '_' +
+            currentRecipe.volume +
+            'L' +
+            ' na pasta Downloads!',
+        );
+      });
   };
 
   goToEditView = (currentRecipe) => {
@@ -369,6 +430,20 @@ class RecipeDetailScreen extends React.Component {
             </View>
           </View>
           <View style={styles.centeredRowContainer} marginTop={10}>
+            <View marginTop={10}>
+              <TouchableHighlight
+                style={styles.exportButtonContainer}
+                onPress={() => this.openExportModal()}>
+                <View style={styles.rowContainer}>
+                  <View style={styles.image}>
+                    <Image source={Export} />
+                  </View>
+                  <Text style={styles.bodyText3}>Exportar receita</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+          <View style={styles.centeredRowContainer} marginTop={10}>
             <View style={styles.rowContainer}>
               <View marginTop={10} marginBottom={10}>
                 <TouchableHighlight
@@ -411,6 +486,36 @@ class RecipeDetailScreen extends React.Component {
                   style={styles.confirmButton}
                   onPress={() => this.deleteRecipe(this.state.currentRecipe)}>
                   <Text style={styles.textStyle}>Confirmar</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          name="ExportModal"
+          animationType="slide"
+          transparent={true}
+          visible={this.state.exportModalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Deseja salvar esta receita em um arquivo JSON?
+              </Text>
+              <View style={styles.rowContainer}>
+                <TouchableHighlight
+                  style={styles.cancelButton}
+                  onPress={this.closeModal}>
+                  <Text style={styles.textStyle}>Cancelar</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.confirmButton}
+                  onPress={() =>
+                    this.saveRecipeInFile(this.state.currentRecipe)
+                  }>
+                  <Text style={styles.textStyle}>Sim</Text>
                 </TouchableHighlight>
               </View>
             </View>
@@ -572,6 +677,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
   },
+  exportButtonContainer: {
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    width: 210,
+    height: 40,
+    backgroundColor: '#65FF14',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
   legendContainer: {
     marginTop: 10,
     alignItems: 'flex-start',
@@ -711,6 +828,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     flex: 1,
     flexGrow: 0,
+  },
+  image: {
+    marginLeft: 15,
+    marginRight: 15,
   },
 });
 

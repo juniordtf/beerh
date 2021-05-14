@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {TouchableOpacity, Image, View} from 'react-native';
+import {TouchableOpacity, Image, View, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import RecipesScreen from '../screens/RecipesScreen';
 import NewRecipeScreen from '../screens/NewRecipeScreen';
 import RecipeDetailScreen from '../screens/RecipeDetailScreen';
 import EditRecipeScreen from '../screens/EditRecipeScreen';
 import Add from '../../assets/add.png';
+import Import from '../../assets/import_white.png';
 import Refresh from '../../assets/refreshButton.png';
 
 const Stack = createStackNavigator();
@@ -27,12 +28,20 @@ function RecipesStack() {
           },
           headerTitleAlign: 'center',
           headerRight: () => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Nova Receita')}>
-              <View marginRight={20}>
-                <Image source={Add} />
-              </View>
-            </TouchableOpacity>
+            <View style={styles.rowContainer}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Nova Receita')}>
+                <View marginRight={20}>
+                  <Image source={Import} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Nova Receita')}>
+                <View marginRight={20}>
+                  <Image source={Add} />
+                </View>
+              </TouchableOpacity>
+            </View>
           ),
           headerLeft: () => (
             <TouchableOpacity onPress={() => window.recipesScreen.getRecipes()}>
@@ -91,5 +100,12 @@ function RecipesStack() {
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  rowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+});
 
 export default RecipesStack;

@@ -12,6 +12,8 @@ target 'BeerH' do
 
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'BeerHTests' do
     inherit! :complete
     # Pods for testing
