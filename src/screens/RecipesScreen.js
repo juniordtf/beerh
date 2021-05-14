@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableHighlight,
+  Alert,
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import Chefhat from '../../assets/chef-hat.png';
@@ -48,6 +49,56 @@ class RecipesScreen extends React.Component {
     this.props.navigation.navigate('Detalhe de Receita', {
       recipe: currentRecipe,
     });
+  };
+
+  importRecipe = async (recipe) => {
+    const recipes = this.state.recipes;
+    let allRecipes = [];
+    let isNotDuplicated = true;
+
+    if (recipes != null) {
+      if (recipes.length === 0) {
+        allRecipes = [recipe];
+      } else {
+        if (recipes.some((x) => x.id === recipe.id)) {
+          isNotDuplicated = false;
+          Alert.alert(
+            'Atençāo',
+            'A receita não pôde ser importada, pois já existe outra idêntica à ela!',
+          );
+        } else {
+          allRecipes = recipes.concat(recipe);
+        }
+      }
+    }
+
+    if (isNotDuplicated) {
+      await AsyncStorage.setItem(
+        RECIPES_KEY,
+        JSON.stringify(allRecipes),
+        (err) => {
+          if (err) {
+            console.log('an error occured');
+            throw err;
+          }
+          console.log('Success. Recipe added');
+        },
+      ).catch((err) => {
+        console.log('error is: ' + err);
+      });
+
+      Alert.alert('Receita importada com sucesso!');
+
+      if (window.recipesScreen !== undefined) {
+        window.recipesScreen.getRecipes();
+      }
+
+      if (window.productionsScreen !== undefined) {
+        window.productionsScreen
+          .getRecipes()
+          .then(window.productionsScreen.getProductions());
+      }
+    }
   };
 
   renderCupImage(color) {
