@@ -8,11 +8,15 @@ import {
   Alert,
   TouchableHighlight,
   ScrollView,
+  Image,
 } from 'react-native';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-community/async-storage';
+import Export from '../../assets/export.png';
+import CalendarImg from '../../assets/calendar.png';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+var RNFS = require('react-native-fs');
 
 class ProductionDetailScreen extends React.Component {
   constructor(props) {
@@ -41,6 +45,7 @@ class ProductionDetailScreen extends React.Component {
       year: '',
       month: '',
       modalVisible: false,
+      exportModalVisible: false,
       currentProduction: '',
       productions: [],
     };
@@ -106,6 +111,7 @@ class ProductionDetailScreen extends React.Component {
       const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
       if (value !== null) {
         this.setState({productions: JSON.parse(value)});
+        this.setState({});
         console.log(JSON.parse(value));
       }
     } catch (error) {
@@ -122,6 +128,18 @@ class ProductionDetailScreen extends React.Component {
   closeModal = () => {
     this.setState({
       modalVisible: false,
+    });
+  };
+
+  openExportModal = () => {
+    this.setState({
+      exportModalVisible: true,
+    });
+  };
+
+  closeExportModal = () => {
+    this.setState({
+      exportModalVisible: false,
     });
   };
 
@@ -174,6 +192,58 @@ class ProductionDetailScreen extends React.Component {
     this.props.navigation.navigate('Editar Produção', {
       production: currentProduction,
     });
+  };
+
+  saveProductionInFile = async (currentProduction) => {
+    this.closeExportModal();
+
+    var path =
+      RNFS.DownloadDirectoryPath +
+      '/' +
+      'Produção_' +
+      currentProduction.name +
+      '_' +
+      currentProduction.volume +
+      'L' +
+      '.txt';
+
+    RNFS.writeFile(path, JSON.stringify(currentProduction), 'utf8')
+      .then((success) => {
+        console.log('FILE WRITTEN!');
+        console.log(
+          RNFS.DownloadDirectoryPath +
+            '/' +
+            'Produção_' +
+            currentProduction.name +
+            '_' +
+            currentProduction.volume +
+            'L' +
+            '.txt',
+        );
+        Alert.alert(
+          'Sucesso',
+          'Arquivo com nome "' +
+            'Produção_' +
+            currentProduction.title +
+            '_' +
+            currentProduction.volume +
+            'L' +
+            '" salvo na pasta Downloads!',
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+        Alert.alert(
+          'Atençāo',
+          'Erro ao gravar o arquivo. Verifique se já não existe um arquivo com nome ' +
+            'Produção_' +
+            currentProduction.title +
+            '_' +
+            currentProduction.volume +
+            'L' +
+            ' na pasta Downloads!',
+        );
+      });
   };
 
   render() {
@@ -387,6 +457,34 @@ class ProductionDetailScreen extends React.Component {
               </View>
             </View>
           </View>
+          <View style={styles.centeredRowContainer} marginTop={10}>
+            <View marginTop={10}>
+              <TouchableHighlight
+                style={styles.exportButtonContainer}
+                onPress={() => this.openExportModal()}>
+                <View style={styles.rowContainer}>
+                  <View style={styles.image}>
+                    <Image source={CalendarImg} style={styles.calendarImg} />
+                  </View>
+                  <Text style={styles.bodyText3}>Exportar datas</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+          <View style={styles.centeredRowContainer} marginTop={5}>
+            <View marginTop={10}>
+              <TouchableHighlight
+                style={styles.exportButtonContainer}
+                onPress={() => this.openExportModal()}>
+                <View style={styles.rowContainer}>
+                  <View style={styles.image}>
+                    <Image source={Export} />
+                  </View>
+                  <Text style={styles.bodyText3}>Exportar produção</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
           <View style={styles.rowContainer} marginTop={10}>
             <View style={styles.rowContainer}>
               <View marginTop={10} marginBottom={10}>
@@ -432,6 +530,36 @@ class ProductionDetailScreen extends React.Component {
                     this.deleteProduction(this.state.currentProduction)
                   }>
                   <Text style={styles.textStyle}>Confirmar</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          name="ExportProductionModal"
+          animationType="slide"
+          transparent={true}
+          visible={this.state.exportModalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Deseja salvar esta receita como JSON em um arquivo ".txt"?
+              </Text>
+              <View style={styles.rowContainer}>
+                <TouchableHighlight
+                  style={styles.cancelButton}
+                  onPress={this.closeExportModal}>
+                  <Text style={styles.textStyle}>Cancelar</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.confirmButton}
+                  onPress={() =>
+                    this.saveProductionInFile(this.state.currentProduction)
+                  }>
+                  <Text style={styles.textStyle}>Sim</Text>
                 </TouchableHighlight>
               </View>
             </View>
@@ -592,6 +720,24 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  exportButtonContainer: {
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    width: 210,
+    height: 40,
+    backgroundColor: '#CAC5C5',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  centeredRowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginRight: 'auto',
+    marginLeft: 'auto',
   },
   legendContainer: {
     marginTop: 10,
@@ -755,6 +901,19 @@ const styles = StyleSheet.create({
     height: 20,
     justifyContent: 'center',
     alignItems: 'flex-start',
+  },
+  image: {
+    marginLeft: 15,
+    marginRight: 15,
+  },
+  calendarImg: {
+    width: 22,
+    height: 22,
+  },
+  bodyText3: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
   },
 });
 

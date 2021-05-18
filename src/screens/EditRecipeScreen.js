@@ -911,7 +911,7 @@ class EditRecipeScreen extends React.Component {
       },
     )
       .then(
-        this.props.navigation.navigate('Receitas', {recipes: allRecipes}),
+        this.props.navigation.navigate('Receitas'),
         Alert.alert('Receita alterada com sucesso!'),
       )
       .catch((err) => {

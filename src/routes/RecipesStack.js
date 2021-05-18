@@ -23,7 +23,10 @@ const selectRecipeFile = async () => {
     console.log('File Size : ' + res.size);
 
     if (res.type !== DocumentPicker.types.plainText) {
-      Alert.alert('O arquivo importado precisa estar em formato ".txt"');
+      Alert.alert(
+        'Atençāo',
+        'O arquivo importado precisa estar em formato ".txt"',
+      );
     } else {
       RNFS.readFile(res.uri, 'utf8')
         .then((content) => {

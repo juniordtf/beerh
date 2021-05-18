@@ -164,11 +164,6 @@ class RecipesScreen extends React.Component {
 
   render() {
     let recipes = this.state.recipes;
-    let updatedRecipes = this.props.route.params?.recipes;
-
-    if (updatedRecipes != null && updatedRecipes.length > 0) {
-      recipes = updatedRecipes;
-    }
 
     if (recipes != null && recipes.length > 0) {
       return (

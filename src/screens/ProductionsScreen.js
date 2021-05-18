@@ -85,6 +85,60 @@ class ProductionScreen extends React.Component {
     }
   };
 
+  importProduction = async (production) => {
+    const productions = this.state.productions;
+    const recipes = this.state.recipes;
+    let allProductions = [];
+    let isNotDuplicated = true;
+
+    if (recipes.some((x) => x.title === production.name)) {
+      if (productions != null) {
+        if (productions.length === 0) {
+          allProductions = [production];
+        } else {
+          if (productions.some((x) => x.id === production.id)) {
+            isNotDuplicated = false;
+            Alert.alert(
+              'Atençāo',
+              'A produção não pôde ser importada, pois já existe outra idêntica à ela!',
+            );
+          } else {
+            allProductions = productions.concat(production);
+          }
+        }
+      }
+
+      if (isNotDuplicated) {
+        await AsyncStorage.setItem(
+          PRODUCTIONS_KEY,
+          JSON.stringify(allProductions),
+          (err) => {
+            if (err) {
+              console.log('an error occured');
+              throw err;
+            }
+            console.log('Success. Production added');
+          },
+        ).catch((err) => {
+          console.log('error is: ' + err);
+        });
+
+        Alert.alert('Produção importada com sucesso!');
+
+        if (window.productionsScreen !== undefined) {
+          window.productionsScreen.getProductions();
+        }
+      }
+    } else {
+      Alert.alert(
+        'Atençāo',
+        'A produção não pôde ser importada, pois você não possui uma receita com o nome "' +
+          production.name +
+          '".',
+      );
+    }
+  };
+
   renderItem = ({item}) => {
     return (
       <View>
@@ -117,11 +171,6 @@ class ProductionScreen extends React.Component {
 
   render() {
     let productions = this.state.productions;
-    let updatedProductions = this.props.route.params?.productions;
-
-    if (updatedProductions != null && updatedProductions.length > 0) {
-      productions = updatedProductions;
-    }
 
     if (productions != null && productions.length > 0) {
       return (

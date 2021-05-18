@@ -316,7 +316,7 @@ class NewProductionScreen extends React.Component {
   };
 
   returnToPreviousView = (allProductions) => {
-    this.props.navigation.navigate('Produções', {productions: allProductions});
+    this.props.navigation.navigate('Produções');
     Alert.alert('Produção salva com sucesso!');
 
     if (window.brewScreen !== undefined) {

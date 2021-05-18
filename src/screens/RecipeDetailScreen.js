@@ -185,6 +185,7 @@ class RecipeDetailScreen extends React.Component {
     var path =
       RNFS.DownloadDirectoryPath +
       '/' +
+      'Receita_' +
       currentRecipe.title +
       '_' +
       currentRecipe.volume +
@@ -197,6 +198,7 @@ class RecipeDetailScreen extends React.Component {
         console.log(
           RNFS.DownloadDirectoryPath +
             '/' +
+            'Receita_' +
             currentRecipe.title +
             '_' +
             currentRecipe.volume +
@@ -204,18 +206,22 @@ class RecipeDetailScreen extends React.Component {
             '.txt',
         );
         Alert.alert(
+          'Sucesso',
           'Arquivo com nome "' +
+            'Receita_' +
             currentRecipe.title +
             '_' +
             currentRecipe.volume +
             'L' +
-            '" salvo com sucesso na pasta Downloads!',
+            '" salvo na pasta Downloads!',
         );
       })
       .catch((err) => {
         console.log(err.message);
         Alert.alert(
-          'Erro ao gerar arquivo. Verifique se já não existe um arquivo com nome ' +
+          'Atençāo',
+          'Erro ao gravar o arquivo. Verifique se já não existe um arquivo com nome ' +
+            'Receita_' +
             currentRecipe.title +
             '_' +
             currentRecipe.volume +
@@ -502,12 +508,12 @@ class RecipeDetailScreen extends React.Component {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>
-                Deseja salvar esta receita em um arquivo JSON?
+                Deseja salvar esta receita como JSON em um arquivo ".txt"?
               </Text>
               <View style={styles.rowContainer}>
                 <TouchableHighlight
                   style={styles.cancelButton}
-                  onPress={this.closeModal}>
+                  onPress={this.closeExportModal}>
                   <Text style={styles.textStyle}>Cancelar</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
@@ -682,7 +688,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     width: 210,
     height: 40,
-    backgroundColor: '#65FF14',
+    backgroundColor: '#CAC5C5',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',

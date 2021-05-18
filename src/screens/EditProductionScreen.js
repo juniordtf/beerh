@@ -342,7 +342,7 @@ class EditProductionScreen extends React.Component {
   };
 
   returnToPreviousView = (allProductions) => {
-    this.props.navigation.navigate('Produções', {productions: allProductions});
+    this.props.navigation.navigate('Produções');
     Alert.alert('Produção alterada com sucesso!');
 
     if (window.productionsScreen !== undefined) {

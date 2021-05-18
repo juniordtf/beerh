@@ -772,7 +772,7 @@ class NewRecipeScreen extends React.Component {
         .then(window.productionsScreen.getProductions());
     }
 
-    this.props.navigation.navigate('Receitas', {recipes: allRecipes});
+    this.props.navigation.navigate('Receitas');
   };
 
   render() {
