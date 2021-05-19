@@ -22,6 +22,7 @@
     "native-base": "^2.13.14",
     "react": "16.13.1",
     "react-native": "0.63.2",
+    "react-native-action-button": "^2.8.5",
     "react-native-background-timer": "^2.4.1",
     "react-native-calendar-events": "^2.2.0",
     "react-native-calendars": "^1.403.0",

@@ -12,9 +12,12 @@ import {
 } from 'react-native';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
+import ActionButton from 'react-native-action-button';
 import AsyncStorage from '@react-native-community/async-storage';
 import Export from '../../assets/export.png';
-import CalendarImg from '../../assets/calendar.png';
+import Garbage from '../../assets/garbage.png';
+import Pen from '../../assets/pen.png';
+import Date from '../../assets/date.png';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
 var RNFS = require('react-native-fs');
 
@@ -44,6 +47,7 @@ class ProductionDetailScreen extends React.Component {
       initialDate: '',
       year: '',
       month: '',
+      lastUpdateDate: '',
       modalVisible: false,
       exportModalVisible: false,
       currentProduction: '',
@@ -103,6 +107,7 @@ class ProductionDetailScreen extends React.Component {
       duration: production.duration,
       status: production.state,
       initialCalendarDate: production.initialCalendarDate,
+      lastUpdateDate: production.lastUpdateDate,
     });
   };
 
@@ -457,52 +462,39 @@ class ProductionDetailScreen extends React.Component {
               </View>
             </View>
           </View>
-          <View style={styles.centeredRowContainer} marginTop={10}>
-            <View marginTop={10}>
-              <TouchableHighlight
-                style={styles.exportButtonContainer}
-                onPress={() => this.openExportModal()}>
-                <View style={styles.rowContainer}>
-                  <View style={styles.image}>
-                    <Image source={CalendarImg} style={styles.calendarImg} />
-                  </View>
-                  <Text style={styles.bodyText3}>Exportar datas</Text>
-                </View>
-              </TouchableHighlight>
+          <View marginTop={60} marginBottom={15}>
+            <View style={styles.bodyContainer}>
+              <Text style={styles.bodyText4}>
+                Última atualização: {this.state.lastUpdateDate}
+              </Text>
             </View>
           </View>
-          <View style={styles.centeredRowContainer} marginTop={5}>
-            <View marginTop={10}>
-              <TouchableHighlight
-                style={styles.exportButtonContainer}
-                onPress={() => this.openExportModal()}>
-                <View style={styles.rowContainer}>
-                  <View style={styles.image}>
-                    <Image source={Export} />
-                  </View>
-                  <Text style={styles.bodyText3}>Exportar produção</Text>
-                </View>
-              </TouchableHighlight>
-            </View>
-          </View>
-          <View style={styles.rowContainer} marginTop={10}>
-            <View style={styles.rowContainer}>
-              <View marginTop={10} marginBottom={10}>
-                <TouchableHighlight
-                  style={styles.eraseButtonContainer}
-                  onPress={() => this.openModal()}>
-                  <Text style={styles.bodyText2}>Apagar</Text>
-                </TouchableHighlight>
-              </View>
-            </View>
-            <View marginTop={10} marginBottom={10} marginLeft={10}>
-              <TouchableHighlight
-                style={styles.editButtonContainer}
-                onPress={() => this.goToEditView(this.state.currentProduction)}>
-                <Text style={styles.bodyText2}>Editar</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
+          <ActionButton buttonColor="#767575">
+            <ActionButton.Item
+              buttonColor="#3498db"
+              title="Exportar datas"
+              onPress={() => Alert.alert('Added to favourite')}>
+              <Image source={Date} style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#1abc9c"
+              title="Exportar produção"
+              onPress={() => this.openExportModal()}>
+              <Image source={Export} style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#D3C72E"
+              title="Editar"
+              onPress={() => this.goToEditView(this.state.currentProduction)}>
+              <Image source={Pen} style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#FF2424"
+              title="Apagar"
+              onPress={() => this.openModal()}>
+              <Image source={Garbage} style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
         </ScrollView>
 
         <Modal
@@ -758,6 +750,12 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
   },
+  bodyText4: {
+    fontSize: 14,
+    color: 'gray',
+    fontStyle: 'italic',
+    textAlign: 'center',
+  },
   rowContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -914,6 +912,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'black',
     textAlign: 'center',
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+
+    color: 'white',
   },
 });
 

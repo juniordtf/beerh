@@ -14,7 +14,12 @@ import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-community/async-storage';
 import Bullet from '../../assets/bullet.png';
 import Export from '../../assets/export.png';
+import Garbage from '../../assets/garbage.png';
+import Pen from '../../assets/pen.png';
+import Date from '../../assets/date.png';
 import {RECIPES_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
+import ActionButton from 'react-native-action-button';
+
 var RNFS = require('react-native-fs');
 
 class RecipeDetailScreen extends React.Component {
@@ -39,6 +44,7 @@ class RecipeDetailScreen extends React.Component {
       carbonationValue: '',
       carbonationUnit: '',
       annotation: '',
+      lastUpdateDate: '',
       modalVisible: false,
       exportModalVisible: false,
       recipes: [],
@@ -74,6 +80,7 @@ class RecipeDetailScreen extends React.Component {
       carbonationValue: recipe.carbonationValue,
       carbonationUnit: recipe.carbonationUnit,
       annotation: recipe.annotation,
+      lastUpdateDate: recipe.lastUpdateDate,
     });
   };
 
@@ -435,38 +442,33 @@ class RecipeDetailScreen extends React.Component {
               </View>
             </View>
           </View>
-          <View style={styles.centeredRowContainer} marginTop={10}>
-            <View marginTop={10}>
-              <TouchableHighlight
-                style={styles.exportButtonContainer}
-                onPress={() => this.openExportModal()}>
-                <View style={styles.rowContainer}>
-                  <View style={styles.image}>
-                    <Image source={Export} />
-                  </View>
-                  <Text style={styles.bodyText3}>Exportar receita</Text>
-                </View>
-              </TouchableHighlight>
+          <View marginTop={60} marginBottom={15}>
+            <View style={styles.bodyContainer}>
+              <Text style={styles.bodyText4}>
+                Última atualização: {this.state.lastUpdateDate}
+              </Text>
             </View>
           </View>
-          <View style={styles.centeredRowContainer} marginTop={10}>
-            <View style={styles.rowContainer}>
-              <View marginTop={10} marginBottom={10}>
-                <TouchableHighlight
-                  style={styles.eraseButtonContainer}
-                  onPress={() => this.openModal()}>
-                  <Text style={styles.bodyText3}>Apagar</Text>
-                </TouchableHighlight>
-              </View>
-            </View>
-            <View marginTop={10} marginBottom={10} marginLeft={10}>
-              <TouchableHighlight
-                style={styles.editButtonContainer}
-                onPress={() => this.goToEditView(this.state.currentRecipe)}>
-                <Text style={styles.bodyText3}>Editar</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
+          <ActionButton buttonColor="#767575">
+            <ActionButton.Item
+              buttonColor="#1abc9c"
+              title="Exportar receita"
+              onPress={() => this.openExportModal()}>
+              <Image source={Export} style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#D3C72E"
+              title="Editar"
+              onPress={() => this.goToEditView(this.state.currentRecipe)}>
+              <Image source={Pen} style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#FF2424"
+              title="Apagar"
+              onPress={() => this.openModal()}>
+              <Image source={Garbage} style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
         </ScrollView>
 
         <Modal
@@ -838,6 +840,12 @@ const styles = StyleSheet.create({
   image: {
     marginLeft: 15,
     marginRight: 15,
+  },
+  bodyText4: {
+    fontSize: 14,
+    color: 'gray',
+    fontStyle: 'italic',
+    textAlign: 'center',
   },
 });
 
