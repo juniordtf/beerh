@@ -895,6 +895,10 @@ class EditRecipeScreen extends React.Component {
         console.log('error is: ' + err);
       });
 
+    if (window.recipesScreen !== undefined) {
+      window.recipesScreen.getRecipes();
+    }
+
     if (window.productionsScreen !== undefined) {
       window.productionsScreen
         .getRecipes()

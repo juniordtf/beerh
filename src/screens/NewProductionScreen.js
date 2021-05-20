@@ -292,6 +292,12 @@ class NewProductionScreen extends React.Component {
     this.props.navigation.navigate('Produções');
     Alert.alert('Produção salva com sucesso!');
 
+    if (window.productionsScreen !== undefined) {
+      window.productionsScreen
+        .getRecipes()
+        .then(window.productionsScreen.getProductions());
+    }
+
     if (window.brewScreen !== undefined) {
       window.brewScreen.getProductions();
     }

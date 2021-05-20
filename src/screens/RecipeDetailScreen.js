@@ -289,20 +289,39 @@ class RecipeDetailScreen extends React.Component {
     return this.state.boil.map((item) => {
       return (
         <View key={item.id}>
-          <View style={styles.rowContainer}>
-            <View style={styles.boxContainerLeft}>
-              <Image source={Bullet} />
-            </View>
-            <View style={styles.boxContainerRight}>
-              <View style={styles.rowContainer}>
-                <Text>{item.quantity} </Text>
-                <Text>{item.unit} de </Text>
-                <Text>{item.name} </Text>
-                <Text>por </Text>
-                <Text>{item.time} minutos;</Text>
+          {item.name.length > 15 ? (
+            <View style={styles.rowContainer}>
+              <View style={styles.boxContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.largeBoxContainerRight}>
+                <View style={styles.rowContainer}>
+                  <Text>{item.quantity} </Text>
+                  <Text>{item.unit} de </Text>
+                  <Text>{item.name} </Text>
+                </View>
+                <View style={styles.rowContainer}>
+                  <Text>por </Text>
+                  <Text>{item.time} minutos;</Text>
+                </View>
               </View>
             </View>
-          </View>
+          ) : (
+            <View style={styles.rowContainer}>
+              <View style={styles.boxContainerLeft}>
+                <Image source={Bullet} />
+              </View>
+              <View style={styles.boxContainerRight}>
+                <View style={styles.rowContainer}>
+                  <Text>{item.quantity} </Text>
+                  <Text>{item.unit} de </Text>
+                  <Text>{item.name} </Text>
+                  <Text>por </Text>
+                  <Text>{item.time} minutos;</Text>
+                </View>
+              </View>
+            </View>
+          )}
         </View>
       );
     });
@@ -754,8 +773,19 @@ const styles = StyleSheet.create({
     marginBottom: marginVertical,
     marginLeft: 10,
     marginRight: marginHorizontal,
-    width: 300,
+    width: 280,
     height: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    borderRadius: 5,
+  },
+  largeBoxContainerRight: {
+    marginTop: marginVertical,
+    marginBottom: marginVertical,
+    marginLeft: 10,
+    marginRight: marginHorizontal,
+    width: 280,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'flex-start',
     borderRadius: 5,
