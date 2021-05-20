@@ -360,11 +360,7 @@ class ProductionDetailScreen extends React.Component {
 
           //Filling event
           RNCalendarEvents.saveEvent(
-            'Carbonatação - "' +
-              this.state.recipe +
-              ' ' +
-              this.state.volume +
-              ' L"',
+            'Envase - "' + this.state.recipe + ' ' + this.state.volume + ' L"',
             {
               startDate: fillingDateStart.toISOString(),
               endDate: addHours(fillingDateStart, 2).toISOString(),
