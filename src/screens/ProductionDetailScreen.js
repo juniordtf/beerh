@@ -244,7 +244,7 @@ class ProductionDetailScreen extends React.Component {
           'Sucesso',
           'Arquivo com nome "' +
             'Produção_' +
-            currentProduction.title +
+            currentProduction.name +
             '_' +
             currentProduction.volume +
             'L' +
@@ -257,7 +257,7 @@ class ProductionDetailScreen extends React.Component {
           'Atençāo',
           'Erro ao gravar o arquivo. Verifique se já não existe um arquivo com nome ' +
             'Produção_' +
-            currentProduction.title +
+            currentProduction.name +
             '_' +
             currentProduction.volume +
             'L' +
@@ -376,6 +376,8 @@ class ProductionDetailScreen extends React.Component {
             })
             .catch((error) => console.log('Save Filling Event Error: ', error));
 
+          this.closeExportDatesModal();
+
           Alert.alert(
             'Sucesso',
             'Datas da produção "' +
@@ -383,7 +385,7 @@ class ProductionDetailScreen extends React.Component {
               ' ' +
               this.state.volume +
               ' L"' +
-              '" exportadas para o calendário!',
+              ' exportadas para o calendário!',
           );
         } else {
           Alert.alert(
