@@ -1,6 +1,5 @@
 package com.beerh;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,9 +13,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
-
-
-import androidx.core.content.ContextCompat;
 
 import com.beerh.service.BeerHService;
 import com.beerh.service.NotificationService;
@@ -63,6 +59,8 @@ public class MainActivity extends ReactActivity implements ServiceConnection {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Log.d(TAG, Arrays.toString(new String[]{"onRequestPermissionsResult", String.valueOf(requestCode), Arrays.toString(permissions), Arrays.toString(grantResults)}));
+//        CalendarEventsPackage.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         switch(requestCode){
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED){

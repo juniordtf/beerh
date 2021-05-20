@@ -16,6 +16,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {format} from 'date-fns';
 
 class EditProductionScreen extends React.Component {
   constructor(props) {
@@ -261,27 +262,7 @@ class EditProductionScreen extends React.Component {
 
   editProduction = async () => {
     let initialDate = this.state.selectedBrewDate;
-
-    let todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
-
-    if (todayPt.length < 10) {
-      todayPt = 0 + todayPt;
-    }
-
-    if (todayPt.length < 10) {
-      todayPt =
-        todayPt.slice(0, 2) +
-        '/' +
-        0 +
-        todayPt.slice(3, 4) +
-        '/' +
-        todayPt.slice(5, 9);
-    }
+    const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     const currentProduction = {
       id: this.state.id,

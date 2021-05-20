@@ -17,41 +17,14 @@ import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY} from '../statics/Statics';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {format} from 'date-fns';
 
 class NewProductionScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    const today =
-      new Date().getFullYear() +
-      '-' +
-      (new Date().getMonth() + 1) +
-      '-' +
-      new Date().getDate();
-
-    let todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
-
-    let thisDay = new Date().getDate();
-    let thisMonth = new Date().getMonth() + 1;
-
-    if (thisDay < 10) {
-      todayPt = 0 + todayPt;
-    }
-
-    if (thisMonth < 10) {
-      todayPt =
-        todayPt.slice(0, 2) +
-        '/' +
-        0 +
-        todayPt.slice(3, 4) +
-        '/' +
-        todayPt.slice(5, 9);
-    }
+    const today = format(new Date(), 'dd-MM-yyyy');
+    const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     this.state = {
       todaysDatePt: todayPt,

@@ -16,7 +16,6 @@ import Bullet from '../../assets/bullet.png';
 import Export from '../../assets/export.png';
 import Garbage from '../../assets/garbage.png';
 import Pen from '../../assets/pen.png';
-import Date from '../../assets/date.png';
 import {RECIPES_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
 import ActionButton from 'react-native-action-button';
 
@@ -442,14 +441,14 @@ class RecipeDetailScreen extends React.Component {
               </View>
             </View>
           </View>
-          <View marginTop={60} marginBottom={15}>
+          <View marginTop={70} marginBottom={15}>
             <View style={styles.bodyContainer}>
               <Text style={styles.bodyText4}>
                 Última atualização: {this.state.lastUpdateDate}
               </Text>
             </View>
           </View>
-          <ActionButton buttonColor="#767575">
+          <ActionButton buttonColor="#818181">
             <ActionButton.Item
               buttonColor="#1abc9c"
               title="Exportar receita"

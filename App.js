@@ -5,6 +5,7 @@ import MyTabs from './src/routes/Routes';
 import SplashScreen from 'react-native-splash-screen';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
+import RNCalendarEvents from 'react-native-calendar-events';
 
 // Must be outside of any component LifeCycle (such as `componentDidMount`).
 PushNotification.configure({
@@ -69,6 +70,8 @@ PushNotification.createChannel(
   },
   (created) => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
 );
+
+RNCalendarEvents.requestPermissions(false);
 
 export default class App extends Component {
   componentDidMount() {

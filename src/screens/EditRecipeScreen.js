@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   Image,
-  Button,
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
@@ -16,39 +15,17 @@ import {Picker} from '@react-native-community/picker';
 import SafeAreaView from 'react-native-safe-area-view';
 import Plus from '../../assets/plus.png';
 import Minus from '../../assets/minus.png';
-import UpDown from '../../assets/up-and-down.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY} from '../statics/Statics';
 import {Units} from '../statics/Statics';
 import {CarbonationMethods} from '../statics/Statics';
+import {format} from 'date-fns';
 
 class EditRecipeScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    let todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
-
-    let thisDay = new Date().getDate();
-    let thisMonth = new Date().getMonth() + 1;
-
-    if (thisDay < 10) {
-      todayPt = 0 + todayPt;
-    }
-
-    if (thisMonth < 10) {
-      todayPt =
-        todayPt.slice(0, 2) +
-        '/' +
-        0 +
-        todayPt.slice(3, 4) +
-        '/' +
-        todayPt.slice(5, 9);
-    }
+    const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     this.state = {
       todaysDatePt: todayPt,

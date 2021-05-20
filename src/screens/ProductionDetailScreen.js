@@ -14,11 +14,13 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
 import ActionButton from 'react-native-action-button';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNCalendarEvents from 'react-native-calendar-events';
 import Export from '../../assets/export.png';
 import Garbage from '../../assets/garbage.png';
 import Pen from '../../assets/pen.png';
 import Date from '../../assets/date.png';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {parseISO, addHours} from 'date-fns';
 var RNFS = require('react-native-fs');
 
 class ProductionDetailScreen extends React.Component {
@@ -50,6 +52,7 @@ class ProductionDetailScreen extends React.Component {
       lastUpdateDate: '',
       modalVisible: false,
       exportModalVisible: false,
+      exportDatesModalVisible: false,
       currentProduction: '',
       productions: [],
     };
@@ -145,6 +148,18 @@ class ProductionDetailScreen extends React.Component {
   closeExportModal = () => {
     this.setState({
       exportModalVisible: false,
+    });
+  };
+
+  openExportDatesModal = () => {
+    this.setState({
+      exportDatesModalVisible: true,
+    });
+  };
+
+  closeExportDatesModal = () => {
+    this.setState({
+      exportDatesModalVisible: false,
     });
   };
 
@@ -249,6 +264,148 @@ class ProductionDetailScreen extends React.Component {
             ' na pasta Downloads!',
         );
       });
+  };
+
+  exportProductionDatesToCaldendar = () => {
+    const brewDateISO = parseISO(this.state.brewDate);
+    const brewDateStart = addHours(brewDateISO, 9);
+    const fermentationDateISO = parseISO(this.state.fermentationDate);
+    const fermentationDateStart = addHours(fermentationDateISO, 18);
+    const ageingDateISO = parseISO(this.state.ageingDate);
+    const ageingDateStart = addHours(ageingDateISO, 18);
+    const carbonationDateISO = parseISO(this.state.carbonationDate);
+    const carbonationDateStart = addHours(carbonationDateISO, 18);
+    const fillingDateISO = parseISO(this.state.fillingDate);
+    const fillingDateStart = addHours(fillingDateISO, 20);
+
+    RNCalendarEvents.checkPermissions()
+      .then((result) => {
+        if (result === 'authorized') {
+          //Brew event
+          RNCalendarEvents.saveEvent(
+            'Brassagem "' + this.state.recipe + ' ' + this.state.volume + ' L"',
+            {
+              startDate: brewDateStart.toISOString(),
+              endDate: addHours(brewDateStart, 8).toISOString(),
+              alarm: [
+                {
+                  date: -1,
+                },
+              ],
+            },
+          )
+            .then((id) => {
+              console.log(id);
+              console.log('Brew event successfully created');
+            })
+            .catch((error) => console.log('Save Brew Event Error: ', error));
+
+          //Fermentation event
+          RNCalendarEvents.saveEvent(
+            'Fermentação - "' +
+              this.state.recipe +
+              ' ' +
+              this.state.volume +
+              ' L"',
+            {
+              startDate: fermentationDateStart.toISOString(),
+              endDate: addHours(fermentationDateStart, 2).toISOString(),
+            },
+          )
+            .then((id) => {
+              console.log(id);
+              console.log('Fermentation event successfully created');
+            })
+            .catch((error) =>
+              console.log('Save Fermentation Event Error: ', error),
+            );
+
+          //Ageing event
+          RNCalendarEvents.saveEvent(
+            'Maturação - "' +
+              this.state.recipe +
+              ' ' +
+              this.state.volume +
+              ' L"',
+            {
+              startDate: ageingDateStart.toISOString(),
+              endDate: addHours(ageingDateStart, 2).toISOString(),
+            },
+          )
+            .then((id) => {
+              console.log(id);
+              console.log('Ageing event successfully created');
+            })
+            .catch((error) => console.log('Save Ageing Event Error: ', error));
+
+          //Carbonation event
+          RNCalendarEvents.saveEvent(
+            'Carbonatação - "' +
+              this.state.recipe +
+              ' ' +
+              this.state.volume +
+              ' L"',
+            {
+              startDate: carbonationDateStart.toISOString(),
+              endDate: addHours(carbonationDateStart, 2).toISOString(),
+            },
+          )
+            .then((id) => {
+              console.log(id);
+              console.log('Carbonation event successfully created');
+            })
+            .catch((error) =>
+              console.log('Save Carbonation Event Error: ', error),
+            );
+
+          //Filling event
+          RNCalendarEvents.saveEvent(
+            'Carbonatação - "' +
+              this.state.recipe +
+              ' ' +
+              this.state.volume +
+              ' L"',
+            {
+              startDate: fillingDateStart.toISOString(),
+              endDate: addHours(fillingDateStart, 2).toISOString(),
+            },
+          )
+            .then((id) => {
+              console.log(id);
+              console.log('Filling event successfully created');
+            })
+            .catch((error) => console.log('Save Filling Event Error: ', error));
+
+          Alert.alert(
+            'Sucesso',
+            'Datas da produção "' +
+              this.state.recipe +
+              ' ' +
+              this.state.volume +
+              ' L"' +
+              '" exportadas para o calendário!',
+          );
+        } else {
+          Alert.alert(
+            'Atenção',
+            'É necessãrio conceder permissão ao aplicativo para criar eventos de calendário. Deseja conceder a permissão?',
+            [
+              {
+                text: 'Não',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {
+                text: 'Sim',
+                onPress: () => RNCalendarEvents.requestPermissions(false),
+              },
+            ],
+          );
+        }
+      })
+      .catch((error) =>
+        console.log('Calendar checkPermissions() Error: ', error),
+      );
   };
 
   render() {
@@ -469,11 +626,11 @@ class ProductionDetailScreen extends React.Component {
               </Text>
             </View>
           </View>
-          <ActionButton buttonColor="#767575">
+          <ActionButton buttonColor="#818181">
             <ActionButton.Item
               buttonColor="#3498db"
               title="Exportar datas"
-              onPress={() => Alert.alert('Added to favourite')}>
+              onPress={() => this.openExportDatesModal()}>
               <Image source={Date} style={styles.actionButtonIcon} />
             </ActionButton.Item>
             <ActionButton.Item
@@ -551,6 +708,34 @@ class ProductionDetailScreen extends React.Component {
                   onPress={() =>
                     this.saveProductionInFile(this.state.currentProduction)
                   }>
+                  <Text style={styles.textStyle}>Sim</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          name="ExportDatesModal"
+          animationType="slide"
+          transparent={true}
+          visible={this.state.exportDatesModalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Deseja exportar as datas desta produção para o seu calendário?
+              </Text>
+              <View style={styles.rowContainer}>
+                <TouchableHighlight
+                  style={styles.cancelButton}
+                  onPress={this.closeExportDatesModal}>
+                  <Text style={styles.textStyle}>Cancelar</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.confirmButton}
+                  onPress={() => this.exportProductionDatesToCaldendar()}>
                   <Text style={styles.textStyle}>Sim</Text>
                 </TouchableHighlight>
               </View>
