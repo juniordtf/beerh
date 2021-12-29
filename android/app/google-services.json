@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1030226931026",
+    "project_id": "beerh-125ac",
+    "storage_bucket": "beerh-125ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030226931026:android:011b1826f4441318cc5e8b",
+        "android_client_info": {
+          "package_name": "com.beerh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1030226931026-kr30nseak2d09jicaoc8vruefvde81sf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv9J89gmY3HVd3DAq7IpT2xxKNyusS49Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030226931026-kr30nseak2d09jicaoc8vruefvde81sf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

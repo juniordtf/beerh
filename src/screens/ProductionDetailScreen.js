@@ -372,8 +372,6 @@ class ProductionDetailScreen extends React.Component {
             })
             .catch((error) => console.log('Save Filling Event Error: ', error));
 
-          this.closeExportDatesModal();
-
           Alert.alert(
             'Sucesso',
             'Datas da produção "' +
@@ -383,6 +381,7 @@ class ProductionDetailScreen extends React.Component {
               ' L"' +
               ' exportadas para o calendário!',
           );
+          this.closeExportDatesModal();
         } else {
           Alert.alert(
             'Atenção',
