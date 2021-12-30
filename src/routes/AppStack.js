@@ -13,7 +13,7 @@ import ProductionWhiteIcon from '../../assets/ProductionWhiteIcon.png';
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+function AppStack() {
   return (
     <Tab.Navigator
       initialRouteName="Produções"
@@ -71,4 +71,4 @@ function MyTabs() {
   );
 }
 
-export default MyTabs;
+export default AppStack;

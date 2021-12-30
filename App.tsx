@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Platform} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import MyTabs from './src/routes/Routes';
+import Routes from './src/routes/Routes';
+import {AuthProvider} from './src/contexts/Auth';
 import SplashScreen from 'react-native-splash-screen';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
@@ -80,9 +80,9 @@ export default class App extends Component {
 
   render() {
     return (
-      <NavigationContainer>
-        <MyTabs />
-      </NavigationContainer>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     );
   }
 }
