@@ -1,22 +1,27 @@
 import {Alert} from 'react-native';
 import axios from 'axios';
+import api from "./api";
 
-export const signIn = async (credentials): Promise<AuthData> => {
-  await axios
+const signIn = async (credentials): Promise<AuthData> => {
+  console.log(credentials);
+
+  await api
     .request({
       method: 'post',
-      url: 'http://localhost:8001/v1/account/auth',
+      url: 'http://192.168.15.59:8001/v1/account/auth',
       data: credentials,
     })
     .then((response) => {
-      let userId = response.data.id;
       if (response.status === 200) {
-        resolve({
-          token: response.data.token,
-          email: response.data.email,
-          name: response.data.email,
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              token: response.data.token,
+              id: response.data._id,
+              name: response.data.email,
+            });
+          }, 1000);
         });
-        AsyncStorage.setItem('userId', userId);
       }
     })
     .catch(function (error) {
@@ -27,4 +32,38 @@ export const signIn = async (credentials): Promise<AuthData> => {
     });
 };
 
-export const signOut = () => AsyncStorage.removeItem('userId');
+const signOut = () => AsyncStorage.removeItem('userId');
+
+const signUp = async (userData, navigation) => {
+  console.log('------ SignUp Method -----------')
+  console.log(userData);
+  await api
+    .post("/account", {
+      name: userData.name,
+      email: userData.email,
+      password: userData.password
+    })
+    .then((response) => {
+      if (response.status === 201) {
+        navigation.navigate('Login');
+        Alert.alert(
+          'Usuário criado com sucesso!',
+        );
+        console.log('Usuário criado');
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        Alert.alert(
+          'Não foi possível criar uma conta para o seu usuário. Tente novamente mais tarde!',
+        );
+        console.log(error.response.status);
+      }
+    });
+};
+
+export const authService = {
+  signIn,
+  signOut,
+  signUp
+};

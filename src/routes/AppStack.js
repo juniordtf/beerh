@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import BrewStack from './BrewStack';
 import ProductionsStack from './ProductionsStack';
 import RecipesStack from './RecipesStack';
+import MenuStack from './MenuStack';
 import StoveGrayIcon from '../../assets/StoveGrayIcon.png';
 import StoveWhiteIcon from '../../assets/StoveWhiteIcon.png';
 import RecipeGrayIcon from '../../assets/RecipeGrayIcon.png';
@@ -57,6 +58,19 @@ function AppStack() {
       <Tab.Screen
         name="Receitas"
         component={RecipesStack}
+        options={{
+          tabBarIcon: ({color, size, focused}) => (
+            <Image
+              color={color}
+              size={size}
+              source={focused ? RecipeWhiteIcon : RecipeGrayIcon}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Menu"
+        component={MenuStack}
         options={{
           tabBarIcon: ({color, size, focused}) => (
             <Image

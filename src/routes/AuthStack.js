@@ -25,10 +25,10 @@ function AuthStack() {
         }}
       />
       <Stack.Screen
-        name="Crie uma conta"
+        name="Criar conta"
         component={CreateAccountScreen}
         options={{
-          title: 'Crie uma conta',
+          title: 'Criar conta',
           headerStyle: {
             backgroundColor: '#2F2F30',
           },

@@ -8,6 +8,7 @@ type AuthContextData = {
   loading: boolean;
   signIn(): Promise<void>;
   signOut(): void;
+  signUp(): void;
 };
 
 //Create the Auth Context with the data type specified
@@ -43,13 +44,9 @@ const AuthProvider: React.FC = ({children}) => {
     }
   }
 
-  const signIn = async () => {
+  const signIn = async (credentials) => {
     //call the service passing credential (email and password).
-    //In a real App this data will be provided by the user from some InputText components.
-    const _authData = await authService.signIn(
-      'lucasgarcez@email.com',
-      '123456',
-    );
+    const _authData = await authService.signIn(credentials);
 
     //Set the data in the context, so the App can be notified
     //and send the user to the AuthStack
@@ -70,10 +67,15 @@ const AuthProvider: React.FC = ({children}) => {
     await AsyncStorage.removeItem('@AuthData');
   };
 
+  const signUp = async (userData, navigation) => {
+    console.log(userData);
+    await authService.signUp(userData, navigation);
+  };
+
   return (
     //This component will be used to encapsulate the whole App,
     //so all components will have access to the Context
-    <AuthContext.Provider value={{authData, loading, signIn, signOut}}>
+    <AuthContext.Provider value={{authData, loading, signIn, signOut, signUp}}>
       {children}
     </AuthContext.Provider>
   );
