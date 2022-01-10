@@ -11,6 +11,8 @@ import RecipeGrayIcon from '../../assets/RecipeGrayIcon.png';
 import RecipeWhiteIcon from '../../assets/RecipeWhiteIcon.png';
 import ProductionGrayIcon from '../../assets/ProductionGrayIcon.png';
 import ProductionWhiteIcon from '../../assets/ProductionWhiteIcon.png';
+import MenuGrayIcon from '../../assets/menu_gray.png';
+import MenuWhiteIcon from '../../assets/menu_white.png';
 
 const Tab = createBottomTabNavigator();
 
@@ -76,7 +78,7 @@ function AppStack() {
             <Image
               color={color}
               size={size}
-              source={focused ? RecipeWhiteIcon : RecipeGrayIcon}
+              source={focused ? MenuWhiteIcon : MenuGrayIcon}
             />
           ),
         }}

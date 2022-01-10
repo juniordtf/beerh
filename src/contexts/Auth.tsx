@@ -6,7 +6,7 @@ import {AuthData, authService} from '../services/authService';
 type AuthContextData = {
   authData?: AuthData;
   loading: boolean;
-  signIn(): Promise<void>;
+  signIn(): Promise<AuthData>;
   signOut(): void;
   signUp(): void;
 };
@@ -48,13 +48,17 @@ const AuthProvider: React.FC = ({children}) => {
     //call the service passing credential (email and password).
     const _authData = await authService.signIn(credentials);
 
-    //Set the data in the context, so the App can be notified
-    //and send the user to the AuthStack
-    setAuthData(_authData);
+    if (_authData != null) {
+      console.log(_authData);
 
-    //Persist the data in the Async Storage
-    //to be recovered in the next user session.
-    AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+      //Set the data in the context, so the App can be notified
+      //and send the user to the AuthStack
+      setAuthData(_authData);
+
+      //Persist the data in the Async Storage
+      //to be recovered in the next user session.
+      AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+    }
   };
 
   const signOut = async () => {
