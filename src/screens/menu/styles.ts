@@ -5,11 +5,22 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#d1d1d1',
   },
-  menuHeader: {
+  centeredContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#d1d1d1',
+  },
+  menuHeader: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     height: 120,
     backgroundColor: '#d1d1d1',
+  },
+  menuHeaderText: {
+    marginLeft: 12,
+    fontSize: 18,
+    textAlignVertical: 'center',
   },
   menuItem: {
     padding: 15,
@@ -32,5 +43,9 @@ export const styles = StyleSheet.create({
   rowContainer: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  imageContainer: {
+    alignSelf: 'center',
+    marginBottom: 20,
   },
 });

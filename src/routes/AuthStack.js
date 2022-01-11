@@ -40,10 +40,10 @@ function AuthStack() {
         }}
       />
       <Stack.Screen
-        name="Recuperação de senha"
+        name="Recuperar senha"
         component={PasswordRecoverScreen}
         options={{
-          title: 'Recuperação de senha',
+          title: 'Recuperar senha',
           headerStyle: {
             backgroundColor: '#2F2F30',
           },

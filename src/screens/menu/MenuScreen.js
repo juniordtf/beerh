@@ -13,6 +13,7 @@ import {useAuth} from '../../contexts/Auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import GroupsIcon from '../../../assets/groups.png';
 import LogoutIcon from '../../../assets/logout.png';
+import UserIcon from '../../../assets/user.png';
 
 function MenuScreen({navigation}) {
   const [loading, isLoading] = useState(false);
@@ -51,7 +52,10 @@ function MenuScreen({navigation}) {
       ) : (
         <View>
           <View style={styles.menuHeader}>
-            <Text> Olá, {userName}!</Text>
+            <View style={styles.rowContainer}>
+              <Image style={styles.menuItemImage} source={UserIcon} />
+              <Text style={styles.menuHeaderText}> Olá, {userName}!</Text>
+            </View>
           </View>
           <TouchableHighlight
             style={styles.menuItem}

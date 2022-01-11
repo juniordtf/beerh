@@ -42,6 +42,7 @@ function CreateAccountScreen({navigation}) {
             value={name}
             placeholder="Name"
             underlineColorAndroid="transparent"
+            style={styles.inputField}
             width={250}
           />
           <Text>E-mail</Text>
@@ -50,6 +51,7 @@ function CreateAccountScreen({navigation}) {
             value={email}
             placeholder="E-mail"
             underlineColorAndroid="transparent"
+            style={styles.inputField}
             width={250}
           />
           <Text>Password</Text>
@@ -58,9 +60,12 @@ function CreateAccountScreen({navigation}) {
             value={password}
             placeholder="Password"
             underlineColorAndroid="transparent"
+            style={styles.inputField}
             width={250}
           />
-          <Button title="Criar conta" onPress={signUp} />
+          <View style={styles.mainButton}>
+            <Button title="Criar conta" onPress={signUp} />
+          </View>
         </View>
       )}
     </View>

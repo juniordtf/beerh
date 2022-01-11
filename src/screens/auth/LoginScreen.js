@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
   ActivityIndicator,
   Button,
+  TouchableHighlight,
   Text,
   TextInput,
   View,
@@ -20,6 +21,10 @@ function LoginScreen({navigation}) {
     isLoading(true);
     let credentials = {email, password};
     await auth.signIn(credentials);
+  };
+
+  const recoverPassword = () => {
+    navigation.navigate('Recuperar senha');
   };
 
   const signUp = () => {
@@ -42,6 +47,7 @@ function LoginScreen({navigation}) {
             value={email}
             placeholder="Email"
             underlineColorAndroid="transparent"
+            style={styles.inputField}
             width={250}
           />
           <Text>Password</Text>
@@ -49,10 +55,19 @@ function LoginScreen({navigation}) {
             onChangeText={(p) => setPassword(p)}
             value={password}
             placeholder="Password"
+            secureTextEntry={true}
             underlineColorAndroid="transparent"
+            style={styles.inputField}
             width={250}
           />
-          <Button title="Fazer login" onPress={signIn} />
+          <TouchableHighlight
+            style={styles.recoverButton}
+            onPress={recoverPassword}>
+            <Text style={styles.menuItemText}>Esqueci minha senha</Text>
+          </TouchableHighlight>
+          <View style={styles.mainButton}>
+            <Button title="Fazer login" onPress={signIn} />
+          </View>
           <View style={styles.signUpButton}>
             <Button title="Criar conta" onPress={() => signUp()} />
           </View>
