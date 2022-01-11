@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import MenuScreen from '../screens/menu/MenuScreen';
+import GroupsScreen from '../screens/menu/GroupsScreen';
 
 const Stack = createStackNavigator();
 
@@ -12,6 +13,21 @@ function AuthStack() {
         component={MenuScreen}
         options={{
           title: 'Menu',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Grupos"
+        component={GroupsScreen}
+        options={{
+          title: 'Grupos',
           headerStyle: {
             backgroundColor: '#2F2F30',
           },

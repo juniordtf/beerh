@@ -6,10 +6,13 @@ import {
   TextInput,
   View,
   Image,
+  TouchableHighlight,
 } from 'react-native';
 import {styles} from './styles';
 import {useAuth} from '../../contexts/Auth';
 import AsyncStorage from '@react-native-community/async-storage';
+import GroupsIcon from '../../../assets/groups.png';
+import LogoutIcon from '../../../assets/logout.png';
 
 function MenuScreen({navigation}) {
   const [loading, isLoading] = useState(false);
@@ -33,6 +36,10 @@ function MenuScreen({navigation}) {
     getUserData();
   }, []);
 
+  const goToGroupsScreen = () => {
+    navigation.navigate('Grupos');
+  };
+
   const signOut = async () => {
     await auth.signOut();
   };
@@ -43,8 +50,23 @@ function MenuScreen({navigation}) {
         <ActivityIndicator color={'#000'} animating={true} size="small" />
       ) : (
         <View>
-          <Text> Olá, {userName}!</Text>
-          <Button title="Sair" onPress={signOut} />
+          <View style={styles.menuHeader}>
+            <Text> Olá, {userName}!</Text>
+          </View>
+          <TouchableHighlight
+            style={styles.menuItem}
+            onPress={goToGroupsScreen}>
+            <View style={styles.rowContainer}>
+              <Image source={GroupsIcon} style={styles.menuItemImage} />
+              <Text style={styles.menuItemText}>Grupos</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.menuItem} onPress={signOut}>
+            <View style={styles.rowContainer}>
+              <Image source={LogoutIcon} style={styles.menuItemImage} />
+              <Text style={styles.menuItemText}>Sair</Text>
+            </View>
+          </TouchableHighlight>
         </View>
       )}
     </View>

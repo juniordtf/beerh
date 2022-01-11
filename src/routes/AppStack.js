@@ -24,11 +24,11 @@ function AppStack() {
         activeTintColor: '#ffff',
         labelStyle: {
           fontSize: 12,
-          marginBottom: 10,
+          marginBottom: 7,
         },
         style: {
           backgroundColor: '#232324',
-          height: 90,
+          height: 70,
         },
       }}>
       <Tab.Screen
