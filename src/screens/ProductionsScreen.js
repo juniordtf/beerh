@@ -85,6 +85,10 @@ class ProductionScreen extends React.Component {
     }
   };
 
+  goToCreateGroupScreen = () => {
+    this.props.navigation.navigate('Criar grupo');
+  };
+
   importProduction = async (production) => {
     const productions = this.state.productions;
     const recipes = this.state.recipes;

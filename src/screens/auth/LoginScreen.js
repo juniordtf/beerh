@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   Image,
+  Alert,
 } from 'react-native';
 import BeerhIcon from '../../../assets/beerhIcon.png';
 import {styles} from './styles';
@@ -17,10 +18,61 @@ function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const auth = useAuth();
+  let errors = {};
+
+  function handleValidation() {
+    let formIsValid = true;
+
+    //Email
+    if (email.trim() === '') {
+      formIsValid = false;
+      errors.email = 'O campo e-mail é obrigatório';
+    }
+
+    if (email.trim() !== '' && email !== undefined) {
+      let lastAtPos = email.lastIndexOf('@');
+      let lastDotPos = email.lastIndexOf('.');
+
+      if (
+        !(
+          lastAtPos < lastDotPos &&
+          lastAtPos > 0 &&
+          email.indexOf('@@') === -1 &&
+          lastDotPos > 2 &&
+          email.length - lastDotPos > 2
+        )
+      ) {
+        formIsValid = false;
+        errors.email = 'O e-mail fornecido não é válido';
+      }
+    }
+
+    //Password
+    if (password.trim() === '') {
+      formIsValid = false;
+      errors.password = 'O campo password é obrigatório';
+    } else if (password.length < 6) {
+      formIsValid = false;
+      errors.password = 'O password deve possuir ao menos 6 caracteres';
+    }
+
+    return formIsValid;
+  }
+
   const signIn = async () => {
-    isLoading(true);
-    let credentials = {email, password};
-    await auth.signIn(credentials);
+    if (handleValidation()) {
+      isLoading(true);
+      let credentials = {email, password};
+      await auth.signIn(credentials);
+      errors = {};
+    } else {
+      let text = '';
+
+      if (errors.email !== undefined) text = errors.email + '\n';
+      if (errors.password !== undefined) text += errors.password + '\n';
+
+      Alert.alert('Atençāo', text);
+    }
   };
 
   const recoverPassword = () => {
@@ -45,7 +97,7 @@ function LoginScreen({navigation}) {
           <TextInput
             onChangeText={(p) => setEmail(p)}
             value={email}
-            placeholder="Email"
+            placeholder="E-mail"
             underlineColorAndroid="transparent"
             style={styles.inputField}
             width={250}

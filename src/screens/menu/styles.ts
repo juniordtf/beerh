@@ -48,4 +48,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 20,
   },
+  avatarImage: {
+    width: 64,
+    height: 64,
+    borderRadius: 64 / 2,
+  },
 });

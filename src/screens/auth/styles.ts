@@ -26,10 +26,10 @@ export const styles = StyleSheet.create({
   recoverButton: {
     justifyContent: 'center',
     alignItems: 'flex-end',
-    marginTop: 10,
+    marginTop: 5,
   },
   mainButton: {
-    marginTop: 20,
+    marginTop: 22,
   },
   inputField: {
     marginTop: 5,
