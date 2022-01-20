@@ -22,17 +22,57 @@ function ChangePasswordScreen({navigation}) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const route = useRoute();
   const auth = useAuth();
+  let errors = {};
+
+  function handleValidation() {
+    let formIsValid = true;
+
+    //Password
+    if (password.trim() === '') {
+      formIsValid = false;
+      errors.password = 'O campo password é obrigatório';
+    } else if (password.length < 6) {
+      formIsValid = false;
+      errors.password = 'O password deve possuir ao menos 6 caracteres';
+    }
+
+    //Confirm Password
+    if (confirmPassword.trim() === '') {
+      formIsValid = false;
+      errors.confirmPassword = 'O campo confirmar password é obrigatório';
+    } else if (confirmPassword.length < 6) {
+      formIsValid = false;
+      errors.confirmPassword =
+        'O campo confirmar password deve possuir ao menos 6 caracteres';
+    } else if (confirmPassword !== password) {
+      formIsValid = false;
+      errors.confirmPassword =
+        'O campo confirmar password precisa ser idêntico ao campo password';
+    }
+
+    return formIsValid;
+  }
 
   const resetEmail = async () => {
-    isLoading(true);
-    await auth.resetPassword(
-      email,
-      token,
-      password,
-      confirmPassword,
-      navigation,
-    );
-    isLoading(false);
+    if (handleValidation()) {
+      isLoading(true);
+      await auth.resetPassword(
+        email,
+        token,
+        password,
+        confirmPassword,
+        navigation,
+      );
+      errors = {};
+    } else {
+      let text = '';
+
+      if (errors.password !== undefined) text = errors.password + '\n';
+      if (errors.confirmPassword !== undefined)
+        text += errors.confirmPassword + '\n';
+
+      Alert.alert('Atençāo', text);
+    }
   };
 
   useEffect((): void => {

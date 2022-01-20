@@ -63,8 +63,8 @@ function LoginScreen({navigation}) {
     if (handleValidation()) {
       isLoading(true);
       let credentials = {email, password};
-      await auth.signIn(credentials);
-      isLoading(false);
+      const loginResult = await auth.signIn(credentials);
+      isLoading(loginResult);
       errors = {};
     } else {
       let text = '';

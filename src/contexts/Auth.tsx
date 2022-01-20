@@ -50,7 +50,7 @@ const AuthProvider: React.FC = ({children}) => {
     //call the service passing credential (email and password).
     const _authData = await authService.signIn(credentials);
 
-    if (_authData != null) {
+    if (_authData !== null) {
       console.log(_authData);
 
       //Set the data in the context, so the App can be notified
@@ -61,6 +61,7 @@ const AuthProvider: React.FC = ({children}) => {
       //to be recovered in the next user session.
       AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
     }
+    return false;
   };
 
   const signOut = async () => {
@@ -75,10 +76,12 @@ const AuthProvider: React.FC = ({children}) => {
 
   const signUp = async (userData, navigation) => {
     await authService.signUp(userData, navigation);
+    return false;
   };
 
   const forgotPassword = async (email, navigation) => {
     await authService.forgotPassword(email, navigation);
+    return false;
   };
 
   const resetPassword = async (

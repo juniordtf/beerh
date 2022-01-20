@@ -31,8 +31,9 @@ const signIn = async (credentials): Promise<AuthData> => {
       })
       .catch(function (error) {
         if (error.response) {
-          Alert.alert('E-mail ou senha inválidos!');
+          Alert.alert('Atenção', 'E-mail ou senha inválidos!');
           console.log(error.response.status);
+          resolve(null);
         }
       });
   });
