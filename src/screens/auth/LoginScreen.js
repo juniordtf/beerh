@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -64,6 +64,7 @@ function LoginScreen({navigation}) {
       isLoading(true);
       let credentials = {email, password};
       await auth.signIn(credentials);
+      isLoading(false);
       errors = {};
     } else {
       let text = '';
@@ -76,7 +77,7 @@ function LoginScreen({navigation}) {
   };
 
   const recoverPassword = () => {
-    navigation.navigate('Recuperar senha');
+    navigation.navigate('Recuperar senha', {email});
   };
 
   const signUp = () => {

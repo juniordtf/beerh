@@ -9,6 +9,8 @@ type AuthContextData = {
   signIn(): Promise<AuthData>;
   signOut(): void;
   signUp(): void;
+  forgotPassword(): void;
+  resetPassword(): void;
 };
 
 //Create the Auth Context with the data type specified
@@ -72,14 +74,42 @@ const AuthProvider: React.FC = ({children}) => {
   };
 
   const signUp = async (userData, navigation) => {
-    console.log(userData);
     await authService.signUp(userData, navigation);
+  };
+
+  const forgotPassword = async (email, navigation) => {
+    await authService.forgotPassword(email, navigation);
+  };
+
+  const resetPassword = async (
+    email,
+    token,
+    password,
+    confirmPassword,
+    navigation,
+  ) => {
+    await authService.resetPassword(
+      email,
+      token,
+      password,
+      confirmPassword,
+      navigation,
+    );
   };
 
   return (
     //This component will be used to encapsulate the whole App,
     //so all components will have access to the Context
-    <AuthContext.Provider value={{authData, loading, signIn, signOut, signUp}}>
+    <AuthContext.Provider
+      value={{
+        authData,
+        loading,
+        signIn,
+        signOut,
+        signUp,
+        forgotPassword,
+        resetPassword,
+      }}>
       {children}
     </AuthContext.Provider>
   );

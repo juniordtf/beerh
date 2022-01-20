@@ -12,24 +12,34 @@ import {
 import {useRoute} from '@react-navigation/native';
 import BeerhIcon from '../../../assets/beerhIcon.png';
 import {styles} from './styles';
-import {useAuth} from '../../contexts/Auth';
 
-function PasswordRecoverScreen({navigation}) {
+function ToeknConfirmationScreen({navigation}) {
   const [loading, isLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [token, setToken] = useState('');
+  const [confirmToken, setConfirmToken] = useState('');
   const route = useRoute();
-  const auth = useAuth();
 
-  const sendToken = async () => {
+  const checkToken = async () => {
     isLoading(true);
-    await auth.forgotPassword(email, navigation);
-    isLoading(true);
+
+    if (token === confirmToken) {
+      navigation.navigate('Trocar senha', {email, token});
+    } else {
+      Alert.alert(
+        'O token inserido não confere com o que foi enviado para o email!',
+      );
+      isLoading(false);
+    }
+    isLoading(false);
   };
 
   useEffect((): void => {
-    let insertedEmail = route.params.email;
-    setEmail(insertedEmail);
-  }, [route.params.email]);
+    let receivedToken = route.params.token;
+    setToken(receivedToken);
+    let receivedEmail = route.params.email;
+    setEmail(receivedEmail);
+  }, [route.params.token, route.params.email]);
 
   return (
     <View style={styles.container}>
@@ -43,20 +53,19 @@ function PasswordRecoverScreen({navigation}) {
           </View>
           <View style={styles.bodyContainer}>
             <Text style={styles.bodyText}>
-              Insira o seu e-mail no campo abaixo para que possamos enviar um
-              token para troca de senha:
+              Insira o token de confirmação que enviamos para seu e-mail:
             </Text>
-            <Text>E-mail</Text>
+            <Text>Token</Text>
             <TextInput
-              onChangeText={(p) => setEmail(p)}
-              value={email}
-              placeholder="E-mail"
+              onChangeText={(p) => setConfirmToken(p)}
+              value={confirmToken}
+              placeholder="Token"
               underlineColorAndroid="transparent"
               style={styles.inputField}
               width={250}
             />
             <View style={styles.mainButton}>
-              <Button title="Enviar" onPress={sendToken} />
+              <Button title="Enviar" onPress={checkToken} />
             </View>
           </View>
         </View>
@@ -65,4 +74,4 @@ function PasswordRecoverScreen({navigation}) {
   );
 }
 
-export default PasswordRecoverScreen;
+export default ToeknConfirmationScreen;

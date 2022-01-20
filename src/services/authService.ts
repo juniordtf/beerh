@@ -41,8 +41,6 @@ const signIn = async (credentials): Promise<AuthData> => {
 const signOut = () => AsyncStorage.removeItem('userId');
 
 const signUp = async (userData, navigation) => {
-  console.log('------ SignUp Method -----------');
-  console.log(userData);
   await api
     .post('/account', {
       name: userData.name,
@@ -66,8 +64,65 @@ const signUp = async (userData, navigation) => {
     });
 };
 
+const forgotPassword = async (email, navigation) => {
+  await api
+    .post('/account/auth/forgot_password', {
+      email,
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        Alert.alert('Token enviado com sucesso!');
+
+        const email = response.data.email;
+        const token = response.data.token;
+        navigation.navigate('Confirmar token', {email, token});
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        Alert.alert(
+          'Atenção',
+          'Não foi possível enviar o token para o email fornecido. Tente novamente mais tarde!',
+        );
+        console.log(error.response.status);
+      }
+    });
+};
+
+const resetPassword = async (
+  email,
+  token,
+  password,
+  confirmPassword,
+  navigation,
+) => {
+  await api
+    .put('/account/auth/reset_password', {
+      email,
+      token,
+      newPassword: password,
+      verifyPassword: confirmPassword,
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        Alert.alert('Senha alterada com sucesso!');
+        navigation.navigate('Login');
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        Alert.alert(
+          'Não foi possível alterar sua senha. Tente novamente mais tarde!',
+        );
+        console.log(error.response.status);
+      }
+    });
+};
+
 export const authService = {
   signIn,
   signOut,
   signUp,
+  forgotPassword,
+  resetPassword,
 };
