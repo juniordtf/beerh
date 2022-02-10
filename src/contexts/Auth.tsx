@@ -1,5 +1,6 @@
 import React, {createContext, useState, useContext, useEffect} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
+import {AUTH_DATA_KEY} from '../statics/Statics';
 
 import {AuthData, authService} from '../services/authService';
 
@@ -33,7 +34,7 @@ const AuthProvider: React.FC = ({children}) => {
   async function loadStorageData(): Promise<void> {
     try {
       //Try get the data from Async Storage
-      const authDataSerialized = await AsyncStorage.getItem('@AuthData');
+      const authDataSerialized = await AsyncStorage.getItem(AUTH_DATA_KEY);
       if (authDataSerialized) {
         //If there are data, it's converted to an Object and the state is updated.
         const _authData: AuthData = JSON.parse(authDataSerialized);
@@ -59,7 +60,7 @@ const AuthProvider: React.FC = ({children}) => {
 
       //Persist the data in the Async Storage
       //to be recovered in the next user session.
-      AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+      AsyncStorage.setItem(AUTH_DATA_KEY, JSON.stringify(_authData));
     }
     return false;
   };
@@ -71,7 +72,7 @@ const AuthProvider: React.FC = ({children}) => {
 
     //Remove the data from Async Storage
     //to NOT be recoverede in next session.
-    await AsyncStorage.removeItem('@AuthData');
+    await AsyncStorage.removeItem(AUTH_DATA_KEY);
   };
 
   const signUp = async (userData, navigation) => {

@@ -16,6 +16,7 @@ import GroupsIcon from '../../../assets/groups.png';
 import LogoutIcon from '../../../assets/logout.png';
 import UserIcon from '../../../assets/user.png';
 import DocumentPicker from 'react-native-document-picker';
+import {AUTH_DATA_KEY} from '../../statics/Statics';
 
 function MenuScreen({navigation}) {
   window.menuScreen = this;
@@ -26,7 +27,7 @@ function MenuScreen({navigation}) {
 
   const getUserData = async () => {
     try {
-      const value = await AsyncStorage.getItem('@AuthData');
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
       if (value !== null) {
         const userData = JSON.parse(value);
         setUserName(userData.name);

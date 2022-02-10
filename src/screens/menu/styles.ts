@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d1d1d1',
+    backgroundColor: '#f9fcff',
   },
   centeredContainer: {
     flex: 1,
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     height: 120,
-    backgroundColor: '#d1d1d1',
+    backgroundColor: '#f9fcff',
   },
   menuHeaderText: {
     marginLeft: 12,
@@ -52,5 +52,40 @@ export const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 64 / 2,
+  },
+  inputField: {
+    marginTop: 5,
+    marginBottom: 10,
+    height: 40,
+    borderRadius: 5,
+    borderWidth: 1,
+    paddingLeft: 10,
+    backgroundColor: '#fff',
+  },
+  confirmButtonContainer: {
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    width: 120,
+    height: 40,
+    backgroundColor: '#65FF14',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  confirmButtonText: {
+    fontSize: 17,
+    color: 'black',
+    textAlign: 'center',
+  },
+  listContainer: {
+    marginTop: 5,
+    marginRight: 5,
+  },
+  line: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    marginTop: 2,
   },
 });

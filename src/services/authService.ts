@@ -51,13 +51,14 @@ const signUp = async (userData, navigation) => {
     .then((response) => {
       if (response.status === 201) {
         navigation.navigate('Login');
-        Alert.alert('Usuário criado com sucesso!');
+        Alert.alert('Ótimo', 'Usuário criado com sucesso!');
         console.log('Usuário criado');
       }
     })
     .catch(function (error) {
       if (error.response) {
         Alert.alert(
+          'Atenção',
           'Não foi possível criar uma conta para o seu usuário. Tente novamente mais tarde!',
         );
         console.log(error.response.status);
@@ -72,7 +73,7 @@ const forgotPassword = async (email, navigation) => {
     })
     .then((response) => {
       if (response.status === 200) {
-        Alert.alert('Token enviado com sucesso!');
+        Alert.alert('Ótimo', 'Token enviado com sucesso!');
 
         const email = response.data.email;
         const token = response.data.token;
@@ -106,13 +107,14 @@ const resetPassword = async (
     })
     .then((response) => {
       if (response.status === 200) {
-        Alert.alert('Senha alterada com sucesso!');
+        Alert.alert('Ótimo', 'Senha alterada com sucesso!');
         navigation.navigate('Login');
       }
     })
     .catch(function (error) {
       if (error.response) {
         Alert.alert(
+          'Atenção',
           'Não foi possível alterar sua senha. Tente novamente mais tarde!',
         );
         console.log(error.response.status);

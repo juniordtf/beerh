@@ -23,7 +23,7 @@ function PasswordRecoverScreen({navigation}) {
   const sendToken = async () => {
     isLoading(true);
     await auth.forgotPassword(email, navigation);
-    isLoading(true);
+    isLoading(false);
   };
 
   useEffect((): void => {

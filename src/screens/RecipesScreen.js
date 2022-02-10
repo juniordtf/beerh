@@ -38,7 +38,6 @@ class RecipesScreen extends React.Component {
       const value = await AsyncStorage.getItem(RECIPES_KEY);
       if (value !== null) {
         this.setState({recipes: JSON.parse(value)});
-        console.log(JSON.parse(value));
       }
     } catch (error) {
       console.log(error);

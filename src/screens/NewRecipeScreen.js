@@ -16,10 +16,11 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Plus from '../../assets/plus.png';
 import Minus from '../../assets/minus.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {RECIPES_KEY} from '../statics/Statics';
+import {RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
 import {Units} from '../statics/Statics';
 import {CarbonationMethods} from '../statics/Statics';
 import {format} from 'date-fns';
+import {recipeService} from '../services/recipeService';
 
 class NewRecipeScreen extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class NewRecipeScreen extends React.Component {
 
     this.state = {
       todaysDatePt: todayPt,
+      userData: [],
       title: '',
       style: '',
       volume: '',
@@ -142,6 +144,7 @@ class NewRecipeScreen extends React.Component {
 
   componentDidMount() {
     this.getRecipes();
+    this.getUserData();
   }
 
   getRecipes = async () => {
@@ -149,7 +152,18 @@ class NewRecipeScreen extends React.Component {
       const value = await AsyncStorage.getItem(RECIPES_KEY);
       if (value !== null) {
         this.setState({recipes: JSON.parse(value)});
-        console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getUserData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
+      if (value !== null) {
+        this.setState({userData: JSON.parse(value)});
       }
     } catch (error) {
       console.log(error);
@@ -738,6 +752,34 @@ class NewRecipeScreen extends React.Component {
     ).catch((err) => {
       console.log('error is: ' + err);
     });
+
+    const newRecipe = {
+      title: this.state.title,
+      volume: this.state.volume,
+      style: this.state.style,
+      og: this.state.og,
+      fg: this.state.fg,
+      ibu: this.state.ibu,
+      abv: this.state.abv,
+      color: this.state.color,
+      ingredients: ingredients,
+      ramps: ramps,
+      boil: boil,
+      fermentation: fermentation,
+      ageing: ageing,
+      carbonationMethod: this.state.carbonationMethod,
+      carbonationValue: this.state.carbonationValue,
+      carbonationUnit: this.state.carbonationUnit,
+      estimatedTime: elapsedTime,
+      annotation: this.state.annotation,
+      createdAt: this.state.todaysDatePt,
+      lastUpdateDate: this.state.todaysDatePt,
+    };
+    recipeService.createRecipe(
+      newRecipe,
+      this.state.userData,
+      this.props.navigation,
+    );
 
     Alert.alert('Receita salva com sucesso!');
 
