@@ -1,89 +1,82 @@
 import * as React from 'react';
-import {Image} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import BrewStack from './BrewStack';
-import ProductionsStack from './ProductionsStack';
-import RecipesStack from './RecipesStack';
-import MenuStack from './MenuStack';
-import StoveGrayIcon from '../../assets/StoveGrayIcon.png';
-import StoveWhiteIcon from '../../assets/StoveWhiteIcon.png';
-import RecipeGrayIcon from '../../assets/RecipeGrayIcon.png';
-import RecipeWhiteIcon from '../../assets/RecipeWhiteIcon.png';
-import ProductionGrayIcon from '../../assets/ProductionGrayIcon.png';
-import ProductionWhiteIcon from '../../assets/ProductionWhiteIcon.png';
-import MenuGrayIcon from '../../assets/menu_gray.png';
-import MenuWhiteIcon from '../../assets/menu_white.png';
+import {createStackNavigator} from '@react-navigation/stack';
+import MainViewsTabs from './MainViewsTabs';
+import NewProductionScreen from '../screens/NewProductionScreen';
+import EditProductionScreen from '../screens/EditProductionScreen';
+import NewRecipeScreen from '../screens/NewRecipeScreen';
+import EditRecipeScreen from '../screens/EditRecipeScreen';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function AppStack() {
   return (
-    <Tab.Navigator
-      initialRouteName="Produções"
-      tabBarOptions={{
-        activeTintColor: '#ffff',
-        labelStyle: {
-          fontSize: 12,
-          marginBottom: 7,
-        },
-        style: {
-          backgroundColor: '#232324',
-          height: 70,
-        },
-      }}>
-      <Tab.Screen
-        name="Brassagem"
-        component={BrewStack}
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Telas Principais"
+        component={MainViewsTabs}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Nova Produção"
+        component={NewProductionScreen}
         options={{
-          tabBarIcon: ({color, size, focused}) => (
-            <Image
-              color={color}
-              size={size}
-              source={focused ? StoveWhiteIcon : StoveGrayIcon}
-            />
-          ),
+          title: 'Nova Produção',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
         }}
       />
-      <Tab.Screen
-        name="Produções"
-        component={ProductionsStack}
+      <Stack.Screen
+        name="Editar Produção"
+        component={EditProductionScreen}
         options={{
-          tabBarIcon: ({color, size, focused}) => (
-            <Image
-              color={color}
-              size={size}
-              source={focused ? ProductionWhiteIcon : ProductionGrayIcon}
-            />
-          ),
+          title: 'Editar Produção',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
         }}
       />
-      <Tab.Screen
-        name="Receitas"
-        component={RecipesStack}
+      <Stack.Screen
+        name="Nova Receita"
+        component={NewRecipeScreen}
         options={{
-          tabBarIcon: ({color, size, focused}) => (
-            <Image
-              color={color}
-              size={size}
-              source={focused ? RecipeWhiteIcon : RecipeGrayIcon}
-            />
-          ),
+          title: 'Nova Receita',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
         }}
       />
-      <Tab.Screen
-        name="Menu"
-        component={MenuStack}
+      <Stack.Screen
+        name="Editar Receita"
+        component={EditRecipeScreen}
         options={{
-          tabBarIcon: ({color, size, focused}) => (
-            <Image
-              color={color}
-              size={size}
-              source={focused ? MenuWhiteIcon : MenuGrayIcon}
-            />
-          ),
+          title: 'Editar Receita',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
         }}
       />
-    </Tab.Navigator>
+    </Stack.Navigator>
   );
 }
 

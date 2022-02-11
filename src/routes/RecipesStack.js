@@ -2,9 +2,7 @@ import * as React from 'react';
 import {TouchableOpacity, Image, View, StyleSheet, Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import RecipesScreen from '../screens/RecipesScreen';
-import NewRecipeScreen from '../screens/NewRecipeScreen';
 import RecipeDetailScreen from '../screens/RecipeDetailScreen';
-import EditRecipeScreen from '../screens/EditRecipeScreen';
 import Add from '../../assets/add.png';
 import Import from '../../assets/import_white.png';
 import Refresh from '../../assets/refreshButton.png';
@@ -108,40 +106,10 @@ function RecipesStack() {
         })}
       />
       <Stack.Screen
-        name="Nova Receita"
-        component={NewRecipeScreen}
-        options={{
-          title: 'Nova Receita',
-          headerStyle: {
-            backgroundColor: '#2F2F30',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center',
-        }}
-      />
-      <Stack.Screen
         name="Detalhe de Receita"
         component={RecipeDetailScreen}
         options={{
           title: 'Detalhe de Receita',
-          headerStyle: {
-            backgroundColor: '#2F2F30',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center',
-        }}
-      />
-      <Stack.Screen
-        name="Editar Receita"
-        component={EditRecipeScreen}
-        options={{
-          title: 'Editar Receita',
           headerStyle: {
             backgroundColor: '#2F2F30',
           },
