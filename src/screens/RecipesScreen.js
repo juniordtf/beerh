@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Text,
+  TextInput,
   View,
   StatusBar,
   StyleSheet,
@@ -18,25 +19,72 @@ import BeerCupRed from '../../assets/beerCupRed.png';
 import BeerCupBrown from '../../assets/beerCupBrown.png';
 import BeerCupBlack from '../../assets/beerCupBlack.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {RECIPES_KEY} from '../statics/Statics';
+import {ChonseSelect} from 'react-native-chonse-select';
+import {RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
+import {recipeService} from '../services/recipeService';
+
+const RecipeSource = [
+  {
+    value: '0',
+    label: 'Compartilhadas',
+  },
+  {
+    value: '1',
+    label: 'Próprias',
+  },
+];
 
 class RecipesScreen extends React.Component {
   constructor(props) {
     super(props);
     window.recipesScreen = this;
     this.state = {
+      initialGroupRecipes: [],
       recipes: [],
+      initialUserRecipes: [],
+      userRecipes: [],
+      userData: [],
+      source: 0,
+      searchText: '',
     };
   }
 
   componentDidMount() {
+    this.getUserData();
     this.getRecipes();
   }
+
+  getUserData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
+      if (value !== null) {
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getUserRecipes(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getUserRecipes = async (data) => {
+    try {
+      const value = await recipeService.getRecipes(data);
+      if (value !== null) {
+        this.setState({initialUserRecipes: value.data});
+        this.setState({userRecipes: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   getRecipes = async () => {
     try {
       const value = await AsyncStorage.getItem(RECIPES_KEY);
       if (value !== null) {
+        this.setState({initialGroupRecipes: JSON.parse(value)});
         this.setState({recipes: JSON.parse(value)});
       }
     } catch (error) {
@@ -96,6 +144,41 @@ class RecipesScreen extends React.Component {
         window.productionsScreen
           .getRecipes()
           .then(window.productionsScreen.getProductions());
+      }
+    }
+  };
+
+  searchText = (text) => {
+    this.setState({searchText: text.e});
+    console.log(text.e);
+
+    if (this.state.source === RecipeSource[0].value) {
+      let filteredData = this.state.initialGroupRecipes.filter(function (item) {
+        return item.title.includes(text.e);
+      });
+
+      if (!text.e || text.e === '') {
+        console.log('-------');
+        this.setState({
+          recipes: this.state.initialGroupRecipes,
+        });
+      } else {
+        console.log(filteredData);
+        this.setState({recipes: filteredData});
+      }
+    } else {
+      let filteredData = this.state.initialUserRecipes.filter(function (item) {
+        return item.title.includes(text.e);
+      });
+
+      if (!text.e || text.e === '') {
+        console.log('-------');
+        this.setState({
+          userRecipes: this.state.initialUserRecipes,
+        });
+      } else {
+        console.log(filteredData);
+        this.setState({userRecipes: filteredData});
       }
     }
   };
@@ -161,39 +244,69 @@ class RecipesScreen extends React.Component {
     );
   };
 
+  renderEmptyView = () => {
+    return (
+      <View>
+        <Image source={Chefhat} style={styles.image} />
+        <View style={styles.container}>
+          <Text style={styles.bodyText}>Você ainda não possui receitas</Text>
+        </View>
+        <TouchableHighlight
+          style={styles.buttonContainer}
+          onPress={() => this.props.navigation.navigate('Nova Receita')}>
+          <Text style={styles.bodyText}>Criar uma receita</Text>
+        </TouchableHighlight>
+      </View>
+    );
+  };
+
+  renderRecipies = (recipes) => {
+    return (
+      <View style={styles.listContainer}>
+        <TextInput
+          onChangeText={(e) => this.searchText({e})}
+          value={this.state.searchText}
+          style={styles.searchField}
+          placeholder="Buscar..."
+          underlineColorAndroid="transparent"
+        />
+        <View style={styles.line} />
+        <FlatList
+          data={recipes}
+          renderItem={this.renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+    );
+  };
+
+  chooseViewToRender = () => {
+    let userRecipes = this.state.userRecipes;
+    let groupRecipes = this.state.recipes;
+
+    return (
+      <View>
+        {this.state.source.toString() === RecipeSource[0].value
+          ? this.renderRecipies(groupRecipes)
+          : this.renderRecipies(userRecipes)}
+      </View>
+    );
+  };
+
   render() {
-    let recipes = this.state.recipes;
-
-    if (recipes != null && recipes.length > 0) {
-      return (
-        <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#000000" />
-          <View style={styles.listContainer}>
-            <FlatList
-              data={recipes}
-              renderItem={this.renderItem}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
-        </SafeAreaView>
-      );
-    } else {
-      return (
-        <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#000000" />
-          <Image source={Chefhat} style={styles.image} />
-          <View style={styles.container}>
-            <Text style={styles.bodyText}>Você ainda não possui receitas</Text>
-          </View>
-
-          <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate('Nova Receita')}>
-            <Text style={styles.bodyText}>Criar uma receita</Text>
-          </TouchableHighlight>
-        </SafeAreaView>
-      );
-    }
+    return (
+      <SafeAreaView>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <ChonseSelect
+          height={35}
+          style={styles.choosenSelectContainer}
+          data={RecipeSource}
+          initValue={this.state.source}
+          onPress={(item) => this.setState({source: item.value})}
+        />
+        <View>{this.chooseViewToRender()}</View>
+      </SafeAreaView>
+    );
   }
 }
 
@@ -207,13 +320,31 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     width: 300,
   },
+  choosenSelectContainer: {
+    marginTop: 12,
+    marginBottom: 12,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+  },
+  searchField: {
+    height: 40,
+    fontSize: 16,
+    marginBottom: 12,
+    backgroundColor: '#fff',
+    textAlign: 'left',
+    borderColor: 'gray',
+    borderWidth: 0.2,
+    borderRadius: 2,
+  },
   listItemContainer: {
     marginTop: 5,
     marginBottom: 5,
   },
   listContainer: {
     marginTop: 5,
-    marginRight: 5,
+
+    marginRight: '2%',
+    marginLeft: '2%',
   },
   listItemTitle: {
     fontSize: 18,

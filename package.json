@@ -27,6 +27,7 @@
     "react-native-background-timer": "^2.4.1",
     "react-native-calendar-events": "^2.2.0",
     "react-native-calendars": "^1.403.0",
+    "react-native-chonse-select": "^1.0.5",
     "react-native-document-picker": "^5.0.3",
     "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^1.8.0",

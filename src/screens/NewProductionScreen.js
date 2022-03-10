@@ -334,9 +334,7 @@ class NewProductionScreen extends React.Component {
           </View>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>
-                Selecione uma data para a brassagem:
-              </Text>
+              <Text style={styles.titleText}>Data de brassagem:</Text>
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
@@ -352,7 +350,7 @@ class NewProductionScreen extends React.Component {
           <View marginTop={5}>
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>
-                Selecione uma data para o início da fermentação:
+                Data de início da fermentação:
               </Text>
             </View>
             <View style={styles.onePickerContainer}>
@@ -371,9 +369,7 @@ class NewProductionScreen extends React.Component {
           </View>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>
-                Selecione uma data para o início da maturação:
-              </Text>
+              <Text style={styles.titleText}>Data de início da maturação:</Text>
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
@@ -388,9 +384,7 @@ class NewProductionScreen extends React.Component {
           </View>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>
-                Selecione uma data para a carbonatação:
-              </Text>
+              <Text style={styles.titleText}>Data da carbonatação:</Text>
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
@@ -407,9 +401,7 @@ class NewProductionScreen extends React.Component {
           </View>
           <View marginTop={5}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>
-                Selecione uma data para o envase:
-              </Text>
+              <Text style={styles.titleText}>Data do envase:</Text>
             </View>
             <View style={styles.onePickerContainer}>
               <View style={styles.dateContainer}>
@@ -505,7 +497,9 @@ class NewProductionScreen extends React.Component {
             }}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Data inicial da maturação</Text>
+                <Text style={styles.modalText}>
+                  Data de início da maturação
+                </Text>
                 <View style={styles.calendarContainer}>
                   <Calendar
                     markingType="simple"
@@ -538,7 +532,7 @@ class NewProductionScreen extends React.Component {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>
-                  Data inicial da carbonatação
+                  Data de início da carbonatação
                 </Text>
                 <View style={styles.calendarContainer}>
                   <Calendar

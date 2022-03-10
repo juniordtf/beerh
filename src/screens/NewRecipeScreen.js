@@ -585,19 +585,19 @@ class NewRecipeScreen extends React.Component {
 
     let allBoils = [boil01];
 
-    if (this.state.inputSecondBoilClicked || this.state.UntBoil02 !== '') {
+    if (this.state.inputSecondBoilClicked && this.state.QteBoil02 !== '') {
       allBoils.push(boil02);
     }
 
-    if (this.state.inputThirdBoilClicked || this.state.UntBoil03 !== '') {
+    if (this.state.inputThirdBoilClicked && this.state.QteBoil03 !== '') {
       allBoils.push(boil03);
     }
 
-    if (this.state.inputFourthBoilClicked || this.state.UntBoil04 !== '') {
+    if (this.state.inputFourthBoilClicked && this.state.QteBoil04 !== '') {
       allBoils.push(boil04);
     }
 
-    if (this.state.inputFifthBoilClicked || this.state.UntBoil05 !== '') {
+    if (this.state.inputFifthBoilClicked && this.state.QteBoil05 !== '') {
       allBoils.push(boil05);
     }
 
@@ -775,9 +775,11 @@ class NewRecipeScreen extends React.Component {
       createdAt: this.state.todaysDatePt,
       lastUpdateDate: this.state.todaysDatePt,
     };
+
     recipeService.createRecipe(
       newRecipe,
       this.state.userData,
+      this.state.userData.userId,
       this.props.navigation,
     );
 

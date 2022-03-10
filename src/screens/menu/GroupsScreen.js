@@ -67,7 +67,7 @@ function GroupsScreen({navigation}) {
   };
 
   return (
-    <View style={styles.centeredContainer}>
+    <View style={styles.container}>
       {loading ? (
         <ActivityIndicator color={'#000'} animating={true} size="small" />
       ) : (

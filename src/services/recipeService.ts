@@ -2,7 +2,35 @@ import {Alert} from 'react-native';
 import axios from 'axios';
 import api from './api';
 
-const createRecipe = async (recipeData, userData, navigation) => {
+const getRecipes = async (userData): Promise<object> => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  return new Promise((resolve) => {
+    api
+      .get('/recipe', options)
+      .then((response) => {
+        if (response.status === 200 || response.status === 304) {
+          var recipes = response.data;
+          resolve(recipes);
+        } else {
+          lert.alert('Atenção', 'Não foi possível buscar suas receitas!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          Alert.alert('Atenção', 'Não foi possível buscar suas receitas!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      });
+  });
+};
+
+const createRecipe = async (recipeData, userData, ownerId, navigation) => {
   const options = {
     headers: {'x-access-token': userData.token},
   };
@@ -29,7 +57,7 @@ const createRecipe = async (recipeData, userData, navigation) => {
         carbonationUnit: recipeData.carbonationUnit,
         estimatedTime: recipeData.estimatedTime,
         annotation: recipeData.annotation,
-        userId: userData.id,
+        ownerId: ownerId,
         createdAt: recipeData.createdAt,
         lastUpdateDate: recipeData.lastUpdateDate,
       },
@@ -48,6 +76,7 @@ const createRecipe = async (recipeData, userData, navigation) => {
           'Atenção',
           'Não foi possível criar a receita. Tente novamente mais tarde!',
         );
+        console.log(error.response);
         console.log(error.response.status);
       }
     });
@@ -55,4 +84,5 @@ const createRecipe = async (recipeData, userData, navigation) => {
 
 export const recipeService = {
   createRecipe,
+  getRecipes,
 };
