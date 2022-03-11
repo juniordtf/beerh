@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 200,
     backgroundColor: '#d1d1d1',
   },
   menuHeader: {
@@ -87,5 +88,8 @@ export const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     marginTop: 2,
+  },
+  groupName: {
+    fontSize: 18,
   },
 });

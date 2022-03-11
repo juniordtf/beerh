@@ -56,9 +56,9 @@ function GroupsScreen({navigation}) {
     return (
       <View>
         <TouchableOpacity>
-          <View>
-            <Text>{item.name}</Text>
-            <Text>{creationDate}</Text>
+          <View style={styles.menuItemImage}>
+            <Text style={styles.groupName}>{item.name}</Text>
+            <Text>Desde {creationDate}</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.line} />
@@ -73,7 +73,7 @@ function GroupsScreen({navigation}) {
       ) : (
         <View>
           {groups === emptyList || groups === null ? (
-            <View>
+            <View style={styles.centeredContainer}>
               <Image source={SadFace} style={styles.imageContainer} />
               <Text>Você ainda não faz parte de nenhum grupo.</Text>
             </View>

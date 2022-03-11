@@ -280,15 +280,48 @@ class RecipesScreen extends React.Component {
     );
   };
 
-  chooseViewToRender = () => {
-    let userRecipes = this.state.userRecipes;
-    let groupRecipes = this.state.recipes;
+  decideRenderUserList = () => {
+    let userRecipes = this.state.initialUserRecipes;
 
     return (
       <View>
-        {this.state.source.toString() === RecipeSource[0].value
-          ? this.renderRecipies(groupRecipes)
+        {userRecipes === null || userRecipes === '' || userRecipes.length === 0
+          ? this.renderEmptyView()
           : this.renderRecipies(userRecipes)}
+      </View>
+    );
+  };
+
+  decideRenderGroupList = () => {
+    let groupRecipes = this.state.initialGroupRecipes;
+
+    return (
+      <View>
+        {groupRecipes === null ||
+        groupRecipes === '' ||
+        groupRecipes.length === 0
+          ? this.renderEmptyView()
+          : this.renderRecipies(groupRecipes)}
+      </View>
+    );
+  };
+
+  handleViewToRender = (source) => {
+    return (
+      <View>
+        {source === 'group'
+          ? this.decideRenderGroupList()
+          : this.decideRenderUserList()}
+      </View>
+    );
+  };
+
+  chooseViewToRender = () => {
+    return (
+      <View>
+        {this.state.source.toString() === RecipeSource[0].value
+          ? this.handleViewToRender('group')
+          : this.handleViewToRender('user')}
       </View>
     );
   };
