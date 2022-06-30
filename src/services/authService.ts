@@ -1,11 +1,11 @@
 import {Alert} from 'react-native';
-import axios from 'axios';
 import api from './api';
 
 export type AuthData = {
   token: string;
   id: string;
   name: string;
+  avatar: string;
 };
 
 const signIn = async (credentials): Promise<AuthData> => {
@@ -22,6 +22,7 @@ const signIn = async (credentials): Promise<AuthData> => {
             token: response.data.token,
             id: response.data._id,
             name: response.data.name,
+            avatar: response.avatar,
           };
 
           resolve(userData);
@@ -38,8 +39,6 @@ const signIn = async (credentials): Promise<AuthData> => {
       });
   });
 };
-
-const signOut = () => AsyncStorage.removeItem('userId');
 
 const signUp = async (userData, navigation) => {
   await api
@@ -124,7 +123,6 @@ const resetPassword = async (
 
 export const authService = {
   signIn,
-  signOut,
   signUp,
   forgotPassword,
   resetPassword,

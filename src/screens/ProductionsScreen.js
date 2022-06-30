@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   FlatList,
+  TextInput,
   TouchableOpacity,
   TouchableHighlight,
 } from 'react-native';
@@ -16,20 +17,43 @@ import EmptyBox from '../../assets/EmptyBox.png';
 import GoldCircle from '../../assets/goldCircle.png';
 import GreenCircle from '../../assets/greenCircle.png';
 import GreyCircle from '../../assets/greyCircle.png';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
-import {RECIPES_KEY} from '../statics/Statics';
+import {ChonseSelect} from 'react-native-chonse-select';
+import {PRODUCTIONS_KEY, RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
+import {recipeService} from '../services/recipeService';
+import {productionService} from '../services/productionService';
+
+const ProductionSource = [
+  {
+    value: '0',
+    label: 'Compartilhadas',
+  },
+  {
+    value: '1',
+    label: 'Próprias',
+  },
+];
 
 class ProductionScreen extends React.Component {
   constructor(props) {
     super(props);
     window.productionsScreen = this;
     this.state = {
+      initialGroupRecipes: [],
+      initialGroupProductions: [],
+      initialUserRecipes: [],
+      initialUserProductions: [],
       productions: [],
       recipes: [],
+      userProductions: [],
+      userRecipes: [],
+      userData: [],
+      source: 0,
+      searchText: '',
     };
   }
 
   componentDidMount() {
+    this.getUserData();
     this.getRecipes().then(this.getProductions());
   }
 
@@ -38,6 +62,7 @@ class ProductionScreen extends React.Component {
       const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
       if (value !== null) {
         this.setState({productions: JSON.parse(value)});
+        this.setState({initialGroupProductions: JSON.parse(value)});
         console.log(JSON.parse(value));
       }
     } catch (error) {
@@ -55,6 +80,86 @@ class ProductionScreen extends React.Component {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  getUserData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
+      if (value !== null) {
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getUserRecipes(data);
+        this.getUserProductions(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getUserRecipes = async (data) => {
+    try {
+      const value = await recipeService.getRecipes(data);
+      if (value !== null) {
+        this.setState({initialUserRecipes: value.data});
+        this.setState({userRecipes: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getUserProductions = async (data) => {
+    try {
+      const value = await productionService.getProductions(data);
+      if (value !== null) {
+        this.setState({initialUserProductions: value.data});
+        this.setState({userProductions: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  searchText = (text) => {
+    this.setState({searchText: text.e});
+    console.log(text.e);
+
+    if (this.state.source.toString() === ProductionSource[0].value) {
+      let filteredData = this.state.initialGroupProductions.filter(function (
+        item,
+      ) {
+        return item.name.includes(text.e);
+      });
+
+      if (!text.e || text.e === '') {
+        console.log('-------');
+        this.setState({
+          productions: this.state.initialGroupProductions,
+        });
+      } else {
+        console.log('---[][][][][][][]----');
+        console.log(filteredData);
+        this.setState({productions: filteredData});
+      }
+    } else {
+      let filteredData = this.state.initialUserProductions.filter(function (
+        item,
+      ) {
+        return item.name.includes(text.e);
+      });
+
+      if (!text.e || text.e === '') {
+        console.log('-------');
+        this.setState({
+          userRecipes: this.state.initialUserProductions,
+        });
+      } else {
+        console.log('---================----');
+        console.log(filteredData);
+        this.setState({userProductions: filteredData});
+      }
     }
   };
 
@@ -143,6 +248,86 @@ class ProductionScreen extends React.Component {
     }
   };
 
+  renderEmptyView = () => {
+    return (
+      <View>
+        <Image source={EmptyBox} style={styles.image} />
+        <View style={styles.container}>
+          <Text style={styles.bodyText}>
+            Nenhuma produção em andamento ou finalizada...
+          </Text>
+        </View>
+
+        <TouchableHighlight
+          style={styles.buttonContainer}
+          onPress={() => this.goToCreationView()}>
+          <Text style={styles.bodyText}>Começar uma produção</Text>
+        </TouchableHighlight>
+      </View>
+    );
+  };
+
+  renderProductions = (productions) => {
+    return (
+      <View style={styles.listContainer}>
+        <FlatList
+          data={productions}
+          renderItem={this.renderItem}
+          keyExtractor={(item) => item.id}
+          style={styles.flatList}
+        />
+      </View>
+    );
+  };
+
+  decideRenderUserList = () => {
+    let userProductions = this.state.userProductions;
+
+    return (
+      <View>
+        {userProductions === null ||
+        userProductions === '' ||
+        userProductions.length === 0
+          ? this.renderEmptyView()
+          : this.renderProductions(userProductions)}
+      </View>
+    );
+  };
+
+  decideRenderGroupList = () => {
+    let groupProductions = this.state.productions;
+
+    return (
+      <View>
+        {groupProductions === null ||
+        groupProductions === '' ||
+        groupProductions.length === 0
+          ? this.renderEmptyView()
+          : this.renderProductions(groupProductions)}
+      </View>
+    );
+  };
+
+  handleViewToRender = (source) => {
+    return (
+      <View>
+        {source === 'group'
+          ? this.decideRenderGroupList()
+          : this.decideRenderUserList()}
+      </View>
+    );
+  };
+
+  chooseViewToRender = () => {
+    return (
+      <View>
+        {this.state.source.toString() === ProductionSource[0].value
+          ? this.handleViewToRender('group')
+          : this.handleViewToRender('user')}
+      </View>
+    );
+  };
+
   renderItem = ({item}) => {
     return (
       <View>
@@ -174,40 +359,27 @@ class ProductionScreen extends React.Component {
   };
 
   render() {
-    let productions = this.state.productions;
-
-    if (productions != null && productions.length > 0) {
-      return (
-        <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#000000" />
-          <View style={styles.listContainer}>
-            <FlatList
-              data={productions}
-              renderItem={this.renderItem}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
-        </SafeAreaView>
-      );
-    } else {
-      return (
-        <SafeAreaView>
-          <StatusBar barStyle="light-content" backgroundColor="#000000" />
-          <Image source={EmptyBox} style={styles.image} />
-          <View style={styles.container}>
-            <Text style={styles.bodyText}>
-              Nenhuma produção em andamento ou finalizada...
-            </Text>
-          </View>
-
-          <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.goToCreationView()}>
-            <Text style={styles.bodyText}>Começar uma produção</Text>
-          </TouchableHighlight>
-        </SafeAreaView>
-      );
-    }
+    return (
+      <View style={styles.mainContainer}>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <ChonseSelect
+          height={35}
+          style={styles.choosenSelectContainer}
+          data={ProductionSource}
+          initValue={this.state.source}
+          onPress={(item) => this.setState({source: item.value})}
+        />
+        <TextInput
+          onChangeText={(e) => this.searchText({e})}
+          value={this.state.searchText}
+          style={styles.searchField}
+          placeholder="Buscar..."
+          underlineColorAndroid="transparent"
+        />
+        <View style={styles.line} />
+        <View>{this.chooseViewToRender()}</View>
+      </View>
+    );
   }
 }
 
@@ -215,11 +387,35 @@ const marginHorizontal = 1;
 const marginVertical = 1;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
   container: {
     marginTop: 30,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 300,
+  },
+  flatList: {
+    marginBottom: 50,
+  },
+  choosenSelectContainer: {
+    marginTop: 12,
+    marginBottom: 12,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+  },
+  searchField: {
+    height: 40,
+    fontSize: 16,
+    marginBottom: 12,
+    backgroundColor: '#fff',
+    textAlign: 'left',
+    borderColor: 'gray',
+    borderWidth: 0.2,
+    borderRadius: 2,
   },
   image: {
     marginRight: 'auto',

@@ -152,7 +152,7 @@ class RecipesScreen extends React.Component {
     this.setState({searchText: text.e});
     console.log(text.e);
 
-    if (this.state.source === RecipeSource[0].value) {
+    if (this.state.source.toString() === RecipeSource[0].value) {
       let filteredData = this.state.initialGroupRecipes.filter(function (item) {
         return item.title.includes(text.e);
       });
@@ -263,25 +263,18 @@ class RecipesScreen extends React.Component {
   renderRecipies = (recipes) => {
     return (
       <View style={styles.listContainer}>
-        <TextInput
-          onChangeText={(e) => this.searchText({e})}
-          value={this.state.searchText}
-          style={styles.searchField}
-          placeholder="Buscar..."
-          underlineColorAndroid="transparent"
-        />
-        <View style={styles.line} />
         <FlatList
           data={recipes}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
+          style={styles.flatList}
         />
       </View>
     );
   };
 
   decideRenderUserList = () => {
-    let userRecipes = this.state.initialUserRecipes;
+    let userRecipes = this.state.userRecipes;
 
     return (
       <View>
@@ -293,7 +286,7 @@ class RecipesScreen extends React.Component {
   };
 
   decideRenderGroupList = () => {
-    let groupRecipes = this.state.initialGroupRecipes;
+    let groupRecipes = this.state.recipes;
 
     return (
       <View>
@@ -328,7 +321,7 @@ class RecipesScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView>
+      <View style={styles.mainContainer}>
         <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <ChonseSelect
           height={35}
@@ -337,8 +330,16 @@ class RecipesScreen extends React.Component {
           initValue={this.state.source}
           onPress={(item) => this.setState({source: item.value})}
         />
+        <TextInput
+          onChangeText={(e) => this.searchText({e})}
+          value={this.state.searchText}
+          style={styles.searchField}
+          placeholder="Buscar..."
+          underlineColorAndroid="transparent"
+        />
+        <View style={styles.line} />
         <View>{this.chooseViewToRender()}</View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -347,6 +348,11 @@ const marginHorizontal = 2;
 const marginVertical = 2;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
   container: {
     marginTop: 30,
     marginRight: 'auto',
@@ -358,6 +364,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     marginRight: 'auto',
     marginLeft: 'auto',
+  },
+  flatList: {
+    marginBottom: 50,
   },
   searchField: {
     height: 40,

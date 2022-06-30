@@ -1,5 +1,4 @@
 import {Alert} from 'react-native';
-import axios from 'axios';
 import api from './api';
 
 const getRecipes = async (userData): Promise<object> => {
@@ -15,8 +14,8 @@ const getRecipes = async (userData): Promise<object> => {
           var recipes = response.data;
           resolve(recipes);
         } else {
-          lert.alert('Atenção', 'Não foi possível buscar suas receitas!');
-          console.log(error.response.status);
+          Alert.alert('Atenção', 'Não foi possível buscar suas receitas!');
+          console.log(response.status);
           resolve(null);
         }
       })
@@ -30,7 +29,7 @@ const getRecipes = async (userData): Promise<object> => {
   });
 };
 
-const createRecipe = async (recipeData, userData, ownerId, navigation) => {
+const createRecipe = async (recipeData, userData, ownerId) => {
   const options = {
     headers: {'x-access-token': userData.token},
   };
@@ -65,7 +64,6 @@ const createRecipe = async (recipeData, userData, ownerId, navigation) => {
     )
     .then((response) => {
       if (response.status === 201) {
-        //navigation.navigate('Login');
         Alert.alert('Ótimo', 'Receita criada com sucesso!');
         console.log('Receita criada');
       }

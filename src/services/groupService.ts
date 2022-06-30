@@ -2,7 +2,7 @@ import {Alert} from 'react-native';
 import axios from 'axios';
 import api from './api';
 
-const getGroups = async (userData): Promise<> => {
+const getGroups = async (userData): Promise<object> => {
   const options = {
     headers: {'x-access-token': userData.token},
   };

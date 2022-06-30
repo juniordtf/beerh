@@ -87,7 +87,7 @@ function LoginScreen({navigation}) {
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator color={'#000'} animating={true} size="small" />
+        <ActivityIndicator color={'#000'} animating={true} size="large" />
       ) : (
         <View>
           <View style={styles.imageContainer}>

@@ -15,9 +15,9 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
 import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {RECIPES_KEY} from '../statics/Statics';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {RECIPES_KEY, AUTH_DATA_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
 import {format} from 'date-fns';
+import {productionService} from '../services/productionService';
 
 class NewProductionScreen extends React.Component {
   constructor(props) {
@@ -27,6 +27,7 @@ class NewProductionScreen extends React.Component {
     const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     this.state = {
+      userData: [],
       todaysDatePt: todayPt,
       selectedRecipe: '',
       selectedBrewDate: today,
@@ -53,6 +54,7 @@ class NewProductionScreen extends React.Component {
 
   componentDidMount() {
     this.getRecipes().then(this.getProductions());
+    this.getUserData();
   }
 
   getProductions = async () => {
@@ -77,6 +79,18 @@ class NewProductionScreen extends React.Component {
           selectedRecipe: retrievedRecipes[0].title,
         });
         console.log(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getUserData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
+      if (value !== null) {
+        this.setState({userData: JSON.parse(value)});
       }
     } catch (error) {
       console.log(error);
@@ -231,15 +245,16 @@ class NewProductionScreen extends React.Component {
 
     const production = {
       id: Date.now() + this.state.selectedRecipe,
+      recipeId: currentRecipe.id,
       name: this.state.selectedRecipe,
       volume: currentRecipe.volume,
-      realVolume: '',
+      realVolume: 0,
       og: currentRecipe.og,
-      realOg: '',
+      realOg: 0,
       fg: currentRecipe.fg,
-      realFg: '',
+      realFg: 0,
       abv: currentRecipe.abv,
-      realAbv: '',
+      realAbv: 0,
       style: currentRecipe.style,
       estimatedTime: totalEstimatedTime,
       status: this.state.status,
@@ -259,6 +274,13 @@ class NewProductionScreen extends React.Component {
       lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: '',
     };
+
+    productionService.createProduction(
+      production,
+      this.state.userData,
+      this.state.userData.userId,
+      this.props.navigation,
+    );
 
     const productions = this.state.productions;
     let allProductions = [];
