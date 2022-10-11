@@ -92,4 +92,8 @@ export const styles = StyleSheet.create({
   groupName: {
     fontSize: 18,
   },
+  detailsBody: {
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
 });

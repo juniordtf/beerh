@@ -1,5 +1,4 @@
 import {Alert} from 'react-native';
-import axios from 'axios';
 import api from './api';
 
 const getGroups = async (userData): Promise<object> => {
@@ -14,8 +13,7 @@ const getGroups = async (userData): Promise<object> => {
         if (response.status === 200 || response.status === 304) {
           resolve(response.data);
         } else {
-          lert.alert('Atenção', 'Não foi possível buscar seus grupos!');
-          console.log(error.response.status);
+          Alert.alert('Atenção', 'Não foi possível buscar seus grupos!');
           resolve(null);
         }
       })
@@ -66,5 +64,5 @@ const createGroup = async (groupData, userData, navigation) => {
 
 export const groupService = {
   createGroup,
-  getGroups
+  getGroups,
 };

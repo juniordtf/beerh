@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import MenuScreen from '../screens/menu/MenuScreen';
 import GroupsScreen from '../screens/menu/GroupsScreen';
 import CreateGroupScreen from '../screens/menu/CreateGroupScreen';
+import GroupDetailsScreen from '../screens/menu/GroupDetailsScreen';
 import Add from '../../assets/add.png';
 
 const Stack = createStackNavigator();
@@ -54,6 +55,21 @@ function AuthStack() {
         component={CreateGroupScreen}
         options={{
           title: 'Criar grupo',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Detalhes do grupo"
+        component={GroupDetailsScreen}
+        options={{
+          title: 'Detalhes do grupo',
           headerStyle: {
             backgroundColor: '#2F2F30',
           },

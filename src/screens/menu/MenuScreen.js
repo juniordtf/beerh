@@ -42,6 +42,10 @@ function MenuScreen({navigation}) {
 
         if (userData.avatar != null && userData.avatar !== undefined) {
           setImageUri(api + '/public/uploads' + userData.avatar);
+
+          console.log('//////////////////////////////////');
+          console.log(api);
+          console.log('//////////////////////////////////');
         }
         console.log('-------- Menu View ---------');
         console.log(JSON.parse(value));

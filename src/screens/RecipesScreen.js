@@ -338,7 +338,7 @@ class RecipesScreen extends React.Component {
           underlineColorAndroid="transparent"
         />
         <View style={styles.line} />
-        <View>{this.chooseViewToRender()}</View>
+        <View style={styles.listContainer}>{this.chooseViewToRender()}</View>
       </View>
     );
   }
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   flatList: {
-    marginBottom: 50,
+    marginBottom: 100,
   },
   searchField: {
     height: 40,
@@ -383,10 +383,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   listContainer: {
-    marginTop: 5,
-
-    marginRight: '2%',
-    marginLeft: '2%',
+    marginRight: 5,
+    marginLeft: 5,
+    marginBottom: 12,
   },
   listItemTitle: {
     fontSize: 18,

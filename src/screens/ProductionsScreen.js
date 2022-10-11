@@ -377,7 +377,7 @@ class ProductionScreen extends React.Component {
           underlineColorAndroid="transparent"
         />
         <View style={styles.line} />
-        <View>{this.chooseViewToRender()}</View>
+        <View style={styles.listContainer}>{this.chooseViewToRender()}</View>
       </View>
     );
   }
@@ -399,11 +399,12 @@ const styles = StyleSheet.create({
     width: 300,
   },
   flatList: {
-    marginBottom: 50,
+    marginBottom: 100,
   },
   choosenSelectContainer: {
     marginTop: 12,
     marginBottom: 12,
+    height: 35,
     marginRight: 'auto',
     marginLeft: 'auto',
   },
@@ -452,6 +453,7 @@ const styles = StyleSheet.create({
   listContainer: {
     marginRight: 5,
     marginLeft: 5,
+    marginBottom: 12,
   },
   listItemTitle: {
     fontSize: 18,

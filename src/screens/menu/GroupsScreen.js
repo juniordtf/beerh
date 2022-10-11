@@ -55,7 +55,7 @@ function GroupsScreen({navigation}) {
 
     return (
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => goToDetailsView(item)}>
           <View style={styles.menuItemImage}>
             <Text style={styles.groupName}>{item.name}</Text>
             <Text>Desde {creationDate}</Text>
@@ -64,6 +64,12 @@ function GroupsScreen({navigation}) {
         <View style={styles.line} />
       </View>
     );
+  };
+
+  const goToDetailsView = (currentGroup) => {
+    navigation.navigate('Detalhes do grupo', {
+      group: currentGroup,
+    });
   };
 
   return (

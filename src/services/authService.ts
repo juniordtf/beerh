@@ -11,10 +11,9 @@ export type AuthData = {
 const signIn = async (credentials): Promise<AuthData> => {
   return new Promise((resolve) => {
     api
-      .request({
-        method: 'post',
-        url: 'http://192.168.15.59:8001/v1/account/auth',
-        data: credentials,
+      .post('/account/auth', {
+        email: credentials.email,
+        password: credentials.password,
       })
       .then((response) => {
         if (response.status === 200) {
@@ -22,7 +21,7 @@ const signIn = async (credentials): Promise<AuthData> => {
             token: response.data.token,
             id: response.data._id,
             name: response.data.name,
-            avatar: response.avatar,
+            avatar: response.data.avatar,
           };
 
           resolve(userData);
