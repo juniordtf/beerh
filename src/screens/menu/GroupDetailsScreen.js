@@ -47,31 +47,46 @@ function GroupDetailsScreen({navigation, route}) {
     }
   }, [route.params?.group]);
 
+  const goToAddMember = (currentGroup) => {
+    navigation.navigate('Adicionar membro', {
+      group: currentGroup,
+    });
+  };
+
+  const goToEditGroup = (currentGroup) => {
+    navigation.navigate('Editar grupo', {
+      group: currentGroup,
+    });
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator color={'#000'} animating={true} size="small" />
       ) : (
-        <View style={styles.detailsBody}>
-          <Text style={styles.groupName}>{group.name}</Text>
-          <Text>Desde {group.creationDate}</Text>
-          <Text>Membros</Text>
+        <View style={styles.detailsPage}>
+          <View style={styles.detailsBody}>
+            <Text style={styles.title}>{group.name}</Text>
+            <Text style={styles.bodyText}>{group.description}</Text>
+            <Text style={styles.bodyText}>Desde: {group.creationDate}</Text>
+            <Text style={styles.bodyText}>Membros:</Text>
+          </View>
           <ActionButton buttonColor="#818181">
             <ActionButton.Item
               buttonColor="#1abc9c"
-              title="Exportar receita"
-              onPress={() => this.openExportModal()}>
+              title="Adicionar membro"
+              onPress={() => goToAddMember(group)}>
               <Image source={SadFace} style={styles.actionButtonIcon} />
             </ActionButton.Item>
             <ActionButton.Item
               buttonColor="#D3C72E"
               title="Editar"
-              onPress={() => this.goToEditView(this.state.currentRecipe)}>
+              onPress={() => goToEditGroup(group)}>
               <Image source={SadFace} style={styles.actionButtonIcon} />
             </ActionButton.Item>
             <ActionButton.Item
               buttonColor="#FF2424"
-              title="Apagar"
+              title="Excluir"
               onPress={() => this.openModal()}>
               <Image source={SadFace} style={styles.actionButtonIcon} />
             </ActionButton.Item>

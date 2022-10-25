@@ -5,6 +5,8 @@ import MenuScreen from '../screens/menu/MenuScreen';
 import GroupsScreen from '../screens/menu/GroupsScreen';
 import CreateGroupScreen from '../screens/menu/CreateGroupScreen';
 import GroupDetailsScreen from '../screens/menu/GroupDetailsScreen';
+import EditGroupScreen from '../screens/menu/EditGroupScreen';
+import AddGroupMemberScreen from '../screens/menu/AddGroupMemberScreen';
 import Add from '../../assets/add.png';
 
 const Stack = createStackNavigator();
@@ -70,6 +72,36 @@ function AuthStack() {
         component={GroupDetailsScreen}
         options={{
           title: 'Detalhes do grupo',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Editar grupo"
+        component={EditGroupScreen}
+        options={{
+          title: 'Editar grupo',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Adicionar membro"
+        component={AddGroupMemberScreen}
+        options={{
+          title: 'Adicionar membro',
           headerStyle: {
             backgroundColor: '#2F2F30',
           },

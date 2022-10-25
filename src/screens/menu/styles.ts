@@ -96,4 +96,21 @@ export const styles = StyleSheet.create({
     marginLeft: '5%',
     marginRight: '5%',
   },
+  detailsPage: {
+    height: '100%',
+  },
+  title: {
+    fontSize: 22,
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  bodyText: {
+    fontSize: 14,
+    marginTop: 10,
+  },
+  formTitle: {
+    fontSize: 16,
+    marginTop: 15,
+    marginBottom: 7,
+  },
 });
