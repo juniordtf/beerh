@@ -9,19 +9,20 @@ const uploadAvatar = async (userData) => {
       Accept: 'application/json',
     },
   };
-
   const avatarImage = userData.avatar;
 
+  console.log('@@@@@@@@@@@@@@@@@@@@@');
+  console.log(avatarImage);
+  console.log('@@@@@@@@@@@@@@@@@@@@@');
+
+  const formData = new FormData();
+
+  formData.append('avatarForm', {
+    avatarImage,
+  });
+
   await api
-    .put(
-      `account/avatar/${userData.userId}`,
-      {
-        name: avatarImage.name,
-        type: avatarImage.type,
-        uri: avatarImage.uri,
-      },
-      options,
-    )
+    .put(`account/avatar/${userData.userId}`, avatarImage, options)
     .then((response) => {
       if (response.status === 200) {
         Alert.alert('Ótimo', 'Avatar atualizado com sucesso!');
