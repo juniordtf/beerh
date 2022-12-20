@@ -1,14 +1,14 @@
 import {Alert} from 'react-native';
 import api from './api';
 
-const getGroups = async (userData): Promise<object> => {
+const getAllowedGroups = async (userData): Promise<object> => {
   const options = {
     headers: {'x-access-token': userData.token},
   };
 
   return new Promise((resolve) => {
     api
-      .get('/group', options)
+      .get(`/group/allowedGroups/${userData.id}`, options)
       .then((response) => {
         if (response.status === 200 || response.status === 304) {
           resolve(response.data);
@@ -39,8 +39,11 @@ const createGroup = async (groupData, userData, navigation) => {
         name: groupData.name,
         avatar: groupData.avatar,
         ownerId: groupData.ownerId,
-        memberIds: [groupData.memberIds],
-        creationDate: groupData.creationDate,
+        members: {
+          id: userData.id,
+          name: userData.name,
+          avatar: userData.avatar,
+        },
       },
       options,
     )
@@ -62,7 +65,92 @@ const createGroup = async (groupData, userData, navigation) => {
     });
 };
 
+const sendInvitation = async (memberEmail, userData, group) => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  await api
+    .post(
+      '/group/send_invitation',
+      {
+        groupId: group.id,
+        email: memberEmail,
+      },
+      options,
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        Alert.alert('Ótimo', 'E-mail enviado com sucesso!');
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        Alert.alert(
+          'Atenção',
+          'Não foi possível enviar o token para o email fornecido. Tente novamente mais tarde!',
+        );
+        console.log(error.response.status);
+      }
+    });
+};
+
+const enterGroup = async (userData, groupToken) => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+  await api
+    .post(
+      '/group/add_member',
+      {
+        memberId: userData.id,
+        groupToken,
+      },
+      options,
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        Alert.alert('Ótimo', 'Token validado com sucesso!');
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        Alert.alert(
+          'Atenção',
+          'Não foi possível validar o token. Certifique-se de que os digitos inseridos estão corretos e tente novamente!',
+        );
+        console.log(error.response.status);
+      }
+    });
+};
+
+const deleteGroup = async (userData, groupId) => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  await api
+    .delete(`/group/${groupId}`, options)
+    .then((response) => {
+      if (response.status === 200) {
+        Alert.alert('Ótimo', 'Grupo excluído com sucesso!');
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        Alert.alert(
+          'Atenção',
+          'Não foi possível excluir o grupo. Tente novamente mais tarde!',
+        );
+        console.log(error.response.status);
+      }
+    });
+};
+
 export const groupService = {
   createGroup,
-  getGroups,
+  getAllowedGroups,
+  sendInvitation,
+  enterGroup,
+  deleteGroup,
 };

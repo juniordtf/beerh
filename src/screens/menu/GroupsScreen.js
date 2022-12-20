@@ -40,9 +40,9 @@ function GroupsScreen({navigation}) {
   };
 
   const getGroups = async (data) => {
-    const _groupsData = await groupService.getGroups(data);
+    const _groupsData = await groupService.getAllowedGroups(data);
     setGroups(_groupsData.data);
-    console.log(_groupsData);
+    console.log(_groupsData.data);
   };
 
   useEffect((): void => {
@@ -51,14 +51,14 @@ function GroupsScreen({navigation}) {
   }, []);
 
   const renderGroupData = ({item}) => {
-    const creationDate = format(parseISO(item.creationDate), 'dd/MM/yyyy');
+    const createdAt = format(parseISO(item.createdAt), 'dd/MM/yyyy');
 
     return (
       <View>
         <TouchableOpacity onPress={() => goToDetailsView(item)}>
           <View style={styles.menuItemImage}>
             <Text style={styles.groupName}>{item.name}</Text>
-            <Text>Desde {creationDate}</Text>
+            <Text>Desde {createdAt}</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.line} />

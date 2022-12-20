@@ -14,25 +14,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {AUTH_DATA_KEY} from '../../statics/Statics';
 import {styles} from './styles';
 
-const emptyList: Object = [];
-
-function AddGroupMemberScreen({navigation, route}) {
+function EnterGroupScreen({navigation, route}) {
   const [loading, isLoading] = useState(false);
-  const [group, setGroup] = useState(emptyList);
   const [userData, setUserData] = useState('');
-  const [memberEmail, setMemberEmail] = useState('');
-
-  React.useEffect(() => {
-    if (route.params?.group) {
-      setGroup(route.params.group);
-    }
-  }, [route.params?.group]);
+  const [groupToken, setGroupToken] = useState('');
 
   const getUserData = async () => {
     try {
       const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
       if (value !== null) {
         const data = JSON.parse(value);
+
         setUserData(data);
       }
     } catch (error) {
@@ -44,9 +36,9 @@ function AddGroupMemberScreen({navigation, route}) {
     getUserData();
   }, []);
 
-  const sendInvitation = async () => {
+  const enterGroup = async () => {
     isLoading(true);
-    await groupService.sendInvitation(memberEmail, userData, group);
+    await groupService.enterGroup(userData, groupToken);
     isLoading(false);
   };
 
@@ -58,13 +50,12 @@ function AddGroupMemberScreen({navigation, route}) {
         <View style={styles.detailsPage}>
           <View style={styles.detailsBody}>
             <Text style={styles.formTitle}>
-              Informe abaixo o e-mail da pessoa que você deseja convidar para o
-              grupo:{' '}
+              Informe abaixo o token que você recebeu por e-mail
             </Text>
             <TextInput
-              onChangeText={(p) => setMemberEmail(p)}
-              value={memberEmail}
-              placeholder="E-mail"
+              onChangeText={(p) => setGroupToken(p)}
+              value={groupToken}
+              placeholder="Token"
               underlineColorAndroid="transparent"
               style={styles.inputField}
               width={250}
@@ -72,8 +63,8 @@ function AddGroupMemberScreen({navigation, route}) {
           </View>
           <TouchableHighlight
             style={styles.confirmButtonContainer}
-            onPress={() => sendInvitation()}>
-            <Text style={styles.confirmButtonText}>Enviar convite</Text>
+            onPress={() => enterGroup()}>
+            <Text style={styles.confirmButtonText}>Enviar</Text>
           </TouchableHighlight>
         </View>
       )}
@@ -81,4 +72,4 @@ function AddGroupMemberScreen({navigation, route}) {
   );
 }
 
-export default AddGroupMemberScreen;
+export default EnterGroupScreen;

@@ -97,6 +97,10 @@ function MenuScreen({navigation}) {
     navigation.navigate('Grupos');
   };
 
+  const enterGroup = () => {
+    navigation.navigate('Ingressar em um grupo');
+  };
+
   const signOut = async () => {
     await auth.signOut();
   };
@@ -127,6 +131,12 @@ function MenuScreen({navigation}) {
             <View style={styles.rowContainer}>
               <Image source={GroupsIcon} style={styles.menuItemImage} />
               <Text style={styles.menuItemText}>Grupos</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.menuItem} onPress={enterGroup}>
+            <View style={styles.rowContainer}>
+              <Image source={GroupsIcon} style={styles.menuItemImage} />
+              <Text style={styles.menuItemText}>Ingressar em um grupo</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight style={styles.menuItem} onPress={signOut}>

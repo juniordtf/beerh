@@ -59,6 +59,26 @@ function GroupDetailsScreen({navigation, route}) {
     });
   };
 
+  const deleteGroup = async (currentGroup) => {
+    if (userData.id === currentGroup.ownerId) {
+      isLoading(true);
+      await groupService.deleteGroup(userData, currentGroup.id);
+      isLoading(false);
+    }
+  };
+
+  const renderMembersData = ({item}) => {
+    console.log(item);
+    return (
+      <View>
+        <View style={styles.menuItemImage}>
+          <Text style={styles.groupName}>{item.name}</Text>
+        </View>
+        <View style={styles.line} />
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -70,6 +90,13 @@ function GroupDetailsScreen({navigation, route}) {
             <Text style={styles.bodyText}>{group.description}</Text>
             <Text style={styles.bodyText}>Desde: {group.creationDate}</Text>
             <Text style={styles.bodyText}>Membros:</Text>
+            <View style={styles.listContainer}>
+              <FlatList
+                data={group.members}
+                renderItem={renderMembersData}
+                keyExtractor={(item) => item.id}
+              />
+            </View>
           </View>
           <ActionButton buttonColor="#818181">
             <ActionButton.Item
@@ -87,7 +114,7 @@ function GroupDetailsScreen({navigation, route}) {
             <ActionButton.Item
               buttonColor="#FF2424"
               title="Excluir"
-              onPress={() => this.openModal()}>
+              onPress={() => deleteGroup(group)}>
               <Image source={SadFace} style={styles.actionButtonIcon} />
             </ActionButton.Item>
           </ActionButton>

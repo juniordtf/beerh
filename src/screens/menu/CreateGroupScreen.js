@@ -67,8 +67,6 @@ function CreateGroupScreen({navigation}) {
       name,
       avatar: setImageUri,
       ownerId: userData.id,
-      memberIds: [userData.id],
-      creationDate: timeStamp,
     };
     groupService.createGroup(groupData, userData, navigation);
   };
