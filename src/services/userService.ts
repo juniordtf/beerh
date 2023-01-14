@@ -1,4 +1,5 @@
 import {Alert} from 'react-native';
+import axios from 'axios';
 import api from './api';
 
 const uploadAvatar = async (userData) => {
@@ -7,6 +8,9 @@ const uploadAvatar = async (userData) => {
       'x-access-token': userData.userToken,
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'PUT',
+      'Access-Control-Allow-Credentials': 'true',
     },
   };
   const avatarImage = userData.avatar;
@@ -14,12 +18,6 @@ const uploadAvatar = async (userData) => {
   console.log('@@@@@@@@@@@@@@@@@@@@@');
   console.log(avatarImage);
   console.log('@@@@@@@@@@@@@@@@@@@@@');
-
-  const formData = new FormData();
-
-  formData.append('avatarForm', {
-    avatarImage,
-  });
 
   await api
     .put(`account/avatar/${userData.userId}`, avatarImage, options)

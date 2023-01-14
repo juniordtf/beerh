@@ -72,11 +72,13 @@ function CreateGroupScreen({navigation}) {
   };
 
   return (
-    <View style={styles.centeredContainer}>
+    <View>
       {loading ? (
-        <ActivityIndicator color={'#000'} animating={true} size="small" />
+        <View style={styles.centeredContainer}>
+          <ActivityIndicator color={'#000'} animating={true} size="small" />
+        </View>
       ) : (
-        <View style={styles.contaier}>
+        <View style={styles.bodyContainer}>
           <View style={styles.imageContainer}>
             <TouchableHighlight
               style={styles.menuItemImage}
@@ -88,20 +90,22 @@ function CreateGroupScreen({navigation}) {
               )}
             </TouchableHighlight>
           </View>
-          <Text>Nome</Text>
-          <TextInput
-            onChangeText={(p) => setName(p)}
-            value={name}
-            placeholder="Nome"
-            underlineColorAndroid="transparent"
-            style={styles.inputField}
-            width={250}
-          />
-          <TouchableHighlight
-            style={styles.confirmButtonContainer}
-            onPress={() => createGroup()}>
-            <Text style={styles.confirmButtonText}>Criar grupo</Text>
-          </TouchableHighlight>
+          <View style={styles.bodyContainer}>
+            <Text>Nome</Text>
+            <TextInput
+              onChangeText={(p) => setName(p)}
+              value={name}
+              placeholder="Nome"
+              underlineColorAndroid="transparent"
+              style={styles.inputField}
+              width={250}
+            />
+            <TouchableHighlight
+              style={styles.confirmButtonContainer}
+              onPress={() => createGroup()}>
+              <Text style={styles.confirmButtonText}>Criar grupo</Text>
+            </TouchableHighlight>
+          </View>
         </View>
       )}
     </View>

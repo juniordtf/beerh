@@ -19,7 +19,6 @@ import UserIcon from '../../../assets/user.png';
 import DocumentPicker from 'react-native-document-picker';
 import {userService} from '../../services/userService';
 import {AUTH_DATA_KEY} from '../../statics/Statics';
-import api from '../../services/api';
 
 function MenuScreen({navigation}) {
   window.menuScreen = this;
@@ -41,15 +40,8 @@ function MenuScreen({navigation}) {
         setUserToken(userData.token);
 
         if (userData.avatar != null && userData.avatar !== undefined) {
-          setImageUri(api + '/public/uploads' + userData.avatar);
-
-          console.log('//////////////////////////////////');
-          console.log(api);
-          console.log('//////////////////////////////////');
+          setImageUri('http://192.168.15.5:8001/v1/uploads/' + userData.avatar);
         }
-        console.log('-------- Menu View ---------');
-        console.log(JSON.parse(value));
-        console.log('----------------------------');
       }
     } catch (error) {
       console.log(error);
@@ -73,9 +65,12 @@ function MenuScreen({navigation}) {
           Platform.OS === 'android' ? res.uri : res.uri.replace('file://', ''),
       };
 
+      const form = new FormData();
+      form.append('file', imageData);
+
       setImageUri(res.uri);
 
-      const userData = {userId, userToken, avatar: imageData};
+      const userData = {userId, userToken, avatar: form};
       uploadAvatar(userData);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {

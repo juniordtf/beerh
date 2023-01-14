@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   },
   imageContainer: {
     alignSelf: 'center',
-    marginBottom: 20,
+    marginTop: 100,
   },
   avatarImage: {
     width: 64,
@@ -64,6 +64,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   confirmButtonContainer: {
+    marginTop: 5,
     marginRight: 'auto',
     marginLeft: 'auto',
     width: 120,
@@ -112,5 +113,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 15,
     marginBottom: 7,
+  },
+  bodyContainer: {
+    marginTop: 10,
+    marginLeft: '10%',
+    marginRight: '10%',
   },
 });
