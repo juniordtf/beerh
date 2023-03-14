@@ -40,7 +40,7 @@ class RecipesScreen extends React.Component {
     window.recipesScreen = this;
     this.state = {
       initialGroupRecipes: [],
-      recipes: [],
+      sharedRecipes: [],
       initialUserRecipes: [],
       userRecipes: [],
       userData: [],
@@ -51,7 +51,7 @@ class RecipesScreen extends React.Component {
 
   componentDidMount() {
     this.getUserData();
-    this.getRecipes();
+    //this.getRecipes();
   }
 
   getUserData = async () => {
@@ -62,6 +62,7 @@ class RecipesScreen extends React.Component {
         const data = JSON.parse(value);
         this.setState({userData: data});
         this.getUserRecipes(data);
+        this.getSharedRecipes(data);
       }
     } catch (error) {
       console.log(error);
@@ -70,10 +71,22 @@ class RecipesScreen extends React.Component {
 
   getUserRecipes = async (data) => {
     try {
-      const value = await recipeService.getRecipes(data);
+      const value = await recipeService.getOwnRecipes(data);
       if (value !== null) {
         this.setState({initialUserRecipes: value.data});
         this.setState({userRecipes: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getSharedRecipes = async (data) => {
+    try {
+      const value = await recipeService.getSharedRecipes(data);
+      if (value !== null) {
+        this.setState({initialGroupRecipes: value.data});
+        this.setState({sharedRecipes: value.data});
       }
     } catch (error) {
       console.log(error);
@@ -85,7 +98,7 @@ class RecipesScreen extends React.Component {
       const value = await AsyncStorage.getItem(RECIPES_KEY);
       if (value !== null) {
         this.setState({initialGroupRecipes: JSON.parse(value)});
-        this.setState({recipes: JSON.parse(value)});
+        this.setState({sharedRecipes: JSON.parse(value)});
       }
     } catch (error) {
       console.log(error);
@@ -99,53 +112,53 @@ class RecipesScreen extends React.Component {
   };
 
   importRecipe = async (recipe) => {
-    const recipes = this.state.recipes;
+    const sharedRecipes = this.state.sharedRecipes;
     let allRecipes = [];
     let isNotDuplicated = true;
 
-    if (recipes != null) {
-      if (recipes.length === 0) {
+    if (sharedRecipes != null) {
+      if (sharedRecipes.length === 0) {
         allRecipes = [recipe];
       } else {
-        if (recipes.some((x) => x.id === recipe.id)) {
+        if (sharedRecipes.some((x) => x.id === recipe.id)) {
           isNotDuplicated = false;
           Alert.alert(
             'Atençāo',
             'A receita não pôde ser importada, pois já existe outra idêntica à ela!',
           );
         } else {
-          allRecipes = recipes.concat(recipe);
+          allRecipes = sharedRecipes.concat(recipe);
         }
       }
     }
 
-    if (isNotDuplicated) {
-      await AsyncStorage.setItem(
-        RECIPES_KEY,
-        JSON.stringify(allRecipes),
-        (err) => {
-          if (err) {
-            console.log('an error occured');
-            throw err;
-          }
-          console.log('Success. Recipe added');
-        },
-      ).catch((err) => {
-        console.log('error is: ' + err);
-      });
+    // if (isNotDuplicated) {
+    //   await AsyncStorage.setItem(
+    //     RECIPES_KEY,
+    //     JSON.stringify(allRecipes),
+    //     (err) => {
+    //       if (err) {
+    //         console.log('an error occured');
+    //         throw err;
+    //       }
+    //       console.log('Success. Recipe added');
+    //     },
+    //   ).catch((err) => {
+    //     console.log('error is: ' + err);
+    //   });
 
-      Alert.alert('Receita importada com sucesso!');
+    //   Alert.alert('Receita importada com sucesso!');
 
-      if (window.recipesScreen !== undefined) {
-        window.recipesScreen.getRecipes();
-      }
+    //   if (window.recipesScreen !== undefined) {
+    //     window.recipesScreen.getRecipes();
+    //   }
 
-      if (window.productionsScreen !== undefined) {
-        window.productionsScreen
-          .getRecipes()
-          .then(window.productionsScreen.getProductions());
-      }
-    }
+    //   if (window.productionsScreen !== undefined) {
+    //     window.productionsScreen
+    //       .getRecipes()
+    //       .then(window.productionsScreen.getProductions());
+    //   }
+    // }
   };
 
   searchText = (text) => {
@@ -160,11 +173,11 @@ class RecipesScreen extends React.Component {
       if (!text.e || text.e === '') {
         console.log('-------');
         this.setState({
-          recipes: this.state.initialGroupRecipes,
+          sharedRecipes: this.state.initialGroupRecipes,
         });
       } else {
         console.log(filteredData);
-        this.setState({recipes: filteredData});
+        this.setState({sharedRecipes: filteredData});
       }
     } else {
       let filteredData = this.state.initialUserRecipes.filter(function (item) {
@@ -260,11 +273,11 @@ class RecipesScreen extends React.Component {
     );
   };
 
-  renderRecipies = (recipes) => {
+  renderRecipies = (sharedRecipes) => {
     return (
       <View style={styles.listContainer}>
         <FlatList
-          data={recipes}
+          data={sharedRecipes}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           style={styles.flatList}
@@ -286,7 +299,7 @@ class RecipesScreen extends React.Component {
   };
 
   decideRenderGroupList = () => {
-    let groupRecipes = this.state.recipes;
+    let groupRecipes = this.state.sharedRecipes;
 
     return (
       <View>

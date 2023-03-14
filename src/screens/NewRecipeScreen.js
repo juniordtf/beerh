@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
+  Switch,
   TextInput,
   Alert,
 } from 'react-native';
@@ -21,6 +22,7 @@ import {Units} from '../statics/Statics';
 import {CarbonationMethods} from '../statics/Statics';
 import {format} from 'date-fns';
 import {recipeService} from '../services/recipeService';
+import {groupService} from '../services/groupService';
 
 class NewRecipeScreen extends React.Component {
   constructor(props) {
@@ -29,6 +31,7 @@ class NewRecipeScreen extends React.Component {
     const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     this.state = {
+      sharedRecipe: false,
       todaysDatePt: todayPt,
       userData: [],
       title: '',
@@ -42,6 +45,9 @@ class NewRecipeScreen extends React.Component {
       carbonationValue: '',
       annotation: '',
       recipes: [],
+      groups: [],
+      selectedGroupId: '',
+      selectedGroup: '',
       units: Units,
       carbonationUnit: CarbonationMethods[0].unit,
       carbonationMethod: CarbonationMethods[0].method,
@@ -163,11 +169,27 @@ class NewRecipeScreen extends React.Component {
       const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
 
       if (value !== null) {
-        this.setState({userData: JSON.parse(value)});
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getGroups(data);
       }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  getGroups = async (data) => {
+    const _groupsData = await groupService.getAllowedGroups(data);
+    if (_groupsData !== null) {
+      this.setState({groups: _groupsData.data});
+    }
+    console.log(_groupsData.data);
+  };
+
+  handleSelectedGroupChange = (value) => {
+    const group = this.state.groups.find((x) => x.id === value);
+    this.setState({selectedGroupId: value});
+    this.setState({selectedGroup: group});
   };
 
   handleAddIngridientInput = (value) => {
@@ -376,6 +398,12 @@ class NewRecipeScreen extends React.Component {
         inputThirdAgeingClicked: false,
       });
     }
+  };
+
+  toggleSharingSwitch = () => {
+    this.setState({
+      sharedRecipe: !this.state.sharedRecipe,
+    });
   };
 
   setIngridients = () => {
@@ -704,54 +732,54 @@ class NewRecipeScreen extends React.Component {
       elapsedTime += parseFloat(this.state.TimeBoil01);
     }
 
-    const recipe = {
-      id: Date.now() + this.state.title,
-      title: this.state.title,
-      volume: this.state.volume,
-      style: this.state.style,
-      og: this.state.og,
-      fg: this.state.fg,
-      ibu: this.state.ibu,
-      abv: this.state.abv,
-      color: this.state.color,
-      ingredients: ingredients,
-      ramps: ramps,
-      boil: boil,
-      fermentation: fermentation,
-      ageing: ageing,
-      carbonationMethod: this.state.carbonationMethod,
-      carbonationValue: this.state.carbonationValue,
-      carbonationUnit: this.state.carbonationUnit,
-      estimatedTime: elapsedTime,
-      annotation: this.state.annotation,
-      createdAt: this.state.todaysDatePt,
-      lastUpdateDate: this.state.todaysDatePt,
-    };
+    // const recipe = {
+    //   id: Date.now() + this.state.title,
+    //   title: this.state.title,
+    //   volume: this.state.volume,
+    //   style: this.state.style,
+    //   og: this.state.og,
+    //   fg: this.state.fg,
+    //   ibu: this.state.ibu,
+    //   abv: this.state.abv,
+    //   color: this.state.color,
+    //   ingredients: ingredients,
+    //   ramps: ramps,
+    //   boil: boil,
+    //   fermentation: fermentation,
+    //   ageing: ageing,
+    //   carbonationMethod: this.state.carbonationMethod,
+    //   carbonationValue: this.state.carbonationValue,
+    //   carbonationUnit: this.state.carbonationUnit,
+    //   estimatedTime: elapsedTime,
+    //   annotation: this.state.annotation,
+    //   createdAt: this.state.todaysDatePt,
+    //   lastUpdateDate: this.state.todaysDatePt,
+    // };
 
-    const recipes = this.state.recipes;
-    let allRecipes = [this.state.recipes, recipe];
+    // const recipes = this.state.recipes;
+    // let allRecipes = [this.state.recipes, recipe];
 
-    if (recipes != null) {
-      if (recipes.length === 0) {
-        allRecipes = [recipe];
-      } else {
-        allRecipes = recipes.concat(recipe);
-      }
-    }
+    // if (recipes != null) {
+    //   if (recipes.length === 0) {
+    //     allRecipes = [recipe];
+    //   } else {
+    //     allRecipes = recipes.concat(recipe);
+    //   }
+    // }
 
-    await AsyncStorage.setItem(
-      RECIPES_KEY,
-      JSON.stringify(allRecipes),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Recipe added');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    // await AsyncStorage.setItem(
+    //   RECIPES_KEY,
+    //   JSON.stringify(allRecipes),
+    //   (err) => {
+    //     if (err) {
+    //       console.log('an error occured');
+    //       throw err;
+    //     }
+    //     console.log('Success. Recipe added');
+    //   },
+    // ).catch((err) => {
+    //   console.log('error is: ' + err);
+    // });
 
     const newRecipe = {
       title: this.state.title,
@@ -772,14 +800,18 @@ class NewRecipeScreen extends React.Component {
       carbonationUnit: this.state.carbonationUnit,
       estimatedTime: elapsedTime,
       annotation: this.state.annotation,
-      createdAt: this.state.todaysDatePt,
-      lastUpdateDate: this.state.todaysDatePt,
+      ownerName: this.state.sharedRecipe
+        ? this.state.selectedGroup.name
+        : this.state.userData.name,
+      ownerId: this.state.sharedRecipe
+        ? this.state.selectedGroup.id
+        : this.state.userData.id,
     };
 
     recipeService.createRecipe(
       newRecipe,
       this.state.userData,
-      this.state.userData.userId,
+      this.state.userData.id,
       this.props.navigation,
     );
 
@@ -2428,6 +2460,44 @@ class NewRecipeScreen extends React.Component {
               underlineColorAndroid="transparent"
             />
           </View>
+          <View style={styles.parametersRow}>
+            <Text style={styles.sectionText}>Receita compartilhada?</Text>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={this.state.sharedRecipe ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={() => this.toggleSharingSwitch()}
+              value={this.state.sharedRecipe}
+            />
+          </View>
+          {this.state.sharedRecipe ? (
+            <View style={styles.parametersRow}>
+              <View style={styles.centeredBodyTextContainer}>
+                <Text style={styles.smallBodyText}>Grupo: </Text>
+              </View>
+              <View style={styles.onePickerContainerLarge}>
+                <Picker
+                  style={styles.onePickerLarge}
+                  itemStyle={styles.onePickerItem}
+                  selectedValue={this.state.selectedGroupId}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.handleSelectedGroupChange(itemValue)
+                  }>
+                  {this.state.groups.map((item, value) => {
+                    return (
+                      <Picker.Item
+                        label={item.name}
+                        value={item.id}
+                        key={item.id}
+                      />
+                    );
+                  })}
+                </Picker>
+              </View>
+            </View>
+          ) : (
+            <View />
+          )}
           <View marginTop={5}>
             <View backgroundColor={'#000000'} height={1} marginBottom={5} />
           </View>

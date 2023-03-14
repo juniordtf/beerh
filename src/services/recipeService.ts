@@ -29,6 +29,65 @@ const getRecipes = async (userData): Promise<object> => {
   });
 };
 
+const getOwnRecipes = async (userData): Promise<object> => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  return new Promise((resolve) => {
+    api
+      .get(`/recipe/ownRecipes/${userData.id}`, options)
+      .then((response) => {
+        if (response.status === 200 || response.status === 304) {
+          var recipes = response.data;
+          resolve(recipes);
+        } else {
+          Alert.alert('Atenção', 'Não foi possível buscar suas receitas!');
+          console.log(response.status);
+          resolve(null);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          Alert.alert('Atenção', 'Não foi possível buscar suas receitas!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      });
+  });
+};
+
+const getSharedRecipes = async (userData): Promise<object> => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  return new Promise((resolve) => {
+    api
+      .get(`/recipe/sharedRecipes/${userData.id}`, options)
+      .then((response) => {
+        if (response.status === 200 || response.status === 304) {
+          var recipes = response.data;
+          console.log('-----------------|||--------------');
+          console.log(recipes);
+          console.log('-----------------|||--------------');
+          resolve(recipes);
+        } else {
+          Alert.alert('Atenção', 'Não foi possível buscar suas receitas!');
+          console.log(response.status);
+          resolve(null);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          Alert.alert('Atenção', 'Não foi possível buscar suas receitas!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      });
+  });
+};
+
 const createRecipe = async (recipeData, userData, ownerId) => {
   const options = {
     headers: {'x-access-token': userData.token},
@@ -56,9 +115,8 @@ const createRecipe = async (recipeData, userData, ownerId) => {
         carbonationUnit: recipeData.carbonationUnit,
         estimatedTime: recipeData.estimatedTime,
         annotation: recipeData.annotation,
-        ownerId: ownerId,
-        createdAt: recipeData.createdAt,
-        lastUpdateDate: recipeData.lastUpdateDate,
+        ownerId: recipeData.ownerId,
+        ownerName: recipeData.ownerName,
       },
       options,
     )
@@ -83,4 +141,6 @@ const createRecipe = async (recipeData, userData, ownerId) => {
 export const recipeService = {
   createRecipe,
   getRecipes,
+  getOwnRecipes,
+  getSharedRecipes,
 };

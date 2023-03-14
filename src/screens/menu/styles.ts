@@ -54,6 +54,11 @@ export const styles = StyleSheet.create({
     height: 64,
     borderRadius: 64 / 2,
   },
+  groupAvatarImage: {
+    width: 128,
+    height: 128,
+    borderRadius: 128 / 2,
+  },
   inputField: {
     marginTop: 5,
     marginBottom: 10,

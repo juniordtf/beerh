@@ -49,6 +49,7 @@ class RecipeDetailScreen extends React.Component {
       recipes: [],
       currentRecipe: '',
       productions: [],
+      ownerName: '',
     };
   }
 
@@ -80,6 +81,7 @@ class RecipeDetailScreen extends React.Component {
       carbonationUnit: recipe.carbonationUnit,
       annotation: recipe.annotation,
       lastUpdateDate: recipe.lastUpdateDate,
+      ownerName: recipe.ownerName,
     });
   };
 
@@ -457,6 +459,12 @@ class RecipeDetailScreen extends React.Component {
                 <View style={styles.listContainer}>
                   <Text>{this.state.annotation}</Text>
                 </View>
+              </View>
+            </View>
+            <View style={styles.bodyContainer}>
+              <Text style={styles.bodyText}>Autor:</Text>
+              <View style={styles.listContainer}>
+                <Text>{this.state.ownerName}</Text>
               </View>
             </View>
           </View>

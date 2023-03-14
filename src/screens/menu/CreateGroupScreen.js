@@ -84,9 +84,12 @@ function CreateGroupScreen({navigation}) {
               style={styles.menuItemImage}
               onPress={selectGroupAvatar}>
               {imageUri !== '' ? (
-                <Image style={styles.avatarImage} source={{uri: imageUri}} />
+                <Image
+                  style={styles.groupAvatarImage}
+                  source={{uri: imageUri}}
+                />
               ) : (
-                <Image style={styles.avatarImage} source={GroupIcon} />
+                <Image style={styles.groupAvatarImage} source={GroupIcon} />
               )}
             </TouchableHighlight>
           </View>

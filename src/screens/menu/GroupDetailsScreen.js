@@ -16,7 +16,9 @@ import {groupService} from '../../services/groupService';
 import AsyncStorage from '@react-native-community/async-storage';
 import {AUTH_DATA_KEY} from '../../statics/Statics';
 import {format, parseISO} from 'date-fns';
-import SadFace from '../../../assets/sad.png';
+import Add from '../../../assets/add.png';
+import Garbage from '../../../assets/garbage.png';
+import Pen from '../../../assets/pen.png';
 
 const emptyList: Object = [];
 
@@ -24,6 +26,7 @@ function GroupDetailsScreen({navigation, route}) {
   const [loading, isLoading] = useState(false);
   const [userData, setUserData] = useState('');
   const [group, setGroup] = useState(emptyList);
+  const [createdAt, setCreatedAt] = useState('');
 
   const getUserData = async () => {
     try {
@@ -44,6 +47,9 @@ function GroupDetailsScreen({navigation, route}) {
   React.useEffect(() => {
     if (route.params?.group) {
       setGroup(route.params.group);
+      const date = format(parseISO(route.params.group.createdAt), 'dd/MM/yyyy');
+
+      setCreatedAt(date);
     }
   }, [route.params?.group]);
 
@@ -88,7 +94,7 @@ function GroupDetailsScreen({navigation, route}) {
           <View style={styles.detailsBody}>
             <Text style={styles.title}>{group.name}</Text>
             <Text style={styles.bodyText}>{group.description}</Text>
-            <Text style={styles.bodyText}>Desde: {group.creationDate}</Text>
+            <Text style={styles.bodyText}>Desde: {createdAt}</Text>
             <Text style={styles.bodyText}>Membros:</Text>
             <View style={styles.listContainer}>
               <FlatList
@@ -98,26 +104,33 @@ function GroupDetailsScreen({navigation, route}) {
               />
             </View>
           </View>
-          <ActionButton buttonColor="#818181">
-            <ActionButton.Item
-              buttonColor="#1abc9c"
-              title="Adicionar membro"
-              onPress={() => goToAddMember(group)}>
-              <Image source={SadFace} style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item
-              buttonColor="#D3C72E"
-              title="Editar"
-              onPress={() => goToEditGroup(group)}>
-              <Image source={SadFace} style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item
-              buttonColor="#FF2424"
-              title="Excluir"
-              onPress={() => deleteGroup(group)}>
-              <Image source={SadFace} style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-          </ActionButton>
+
+          {group.ownerId === userData.id ? (
+            <View>
+              <ActionButton buttonColor="#818181">
+                <ActionButton.Item
+                  buttonColor="#1abc9c"
+                  title="Adicionar membro"
+                  onPress={() => goToAddMember(group)}>
+                  <Image source={Add} style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item
+                  buttonColor="#D3C72E"
+                  title="Editar"
+                  onPress={() => goToEditGroup(group)}>
+                  <Image source={Pen} style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item
+                  buttonColor="#FF2424"
+                  title="Excluir"
+                  onPress={() => deleteGroup(group)}>
+                  <Image source={Garbage} style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+              </ActionButton>
+            </View>
+          ) : (
+            <View />
+          )}
         </View>
       )}
     </View>
