@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Text,
+  Switch,
   View,
   StatusBar,
   StyleSheet,
@@ -18,6 +19,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {RECIPES_KEY, AUTH_DATA_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
 import {format} from 'date-fns';
 import {productionService} from '../services/productionService';
+import {groupService} from '../services/groupService';
+import {recipeService} from '../services/recipeService';
 
 class NewProductionScreen extends React.Component {
   constructor(props) {
@@ -48,12 +51,18 @@ class NewProductionScreen extends React.Component {
       modalFillingCalendarVisible: false,
       status: 'not started',
       recipes: [],
+      ownRecipes: [],
+      sharedRecipes: [],
       productions: [],
+      groups: [],
+      sharedProduction: false,
+      selectedGroupId: '',
+      selectedGroup: '',
     };
   }
 
   componentDidMount() {
-    this.getRecipes().then(this.getProductions());
+    //this.getRecipes().then(this.getProductions());
     this.getUserData();
   }
 
@@ -69,32 +78,126 @@ class NewProductionScreen extends React.Component {
     }
   };
 
-  getRecipes = async () => {
-    try {
-      const value = await AsyncStorage.getItem(RECIPES_KEY);
-      if (value !== null) {
-        const retrievedRecipes = JSON.parse(value);
-        this.setState({
-          recipes: retrievedRecipes,
-          selectedRecipe: retrievedRecipes[0].title,
-        });
-        console.log(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // getRecipes = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem(RECIPES_KEY);
+  //     if (value !== null) {
+  //       const retrievedRecipes = JSON.parse(value);
+  //       this.setState({
+  //         recipes: retrievedRecipes,
+  //         selectedRecipe: retrievedRecipes[0].title,
+  //       });
+  //       console.log(JSON.parse(value));
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   getUserData = async () => {
     try {
       const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
 
       if (value !== null) {
-        this.setState({userData: JSON.parse(value)});
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getGroups(data);
+        this.getUserRecipes(data);
+        this.getSharedRecipes(data);
       }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  getGroups = async (data) => {
+    const _groupsData = await groupService.getAllowedGroups(data);
+    if (_groupsData !== null) {
+      this.setState({groups: _groupsData.data});
+    }
+    console.log(_groupsData.data);
+  };
+
+  getUserRecipes = async (data) => {
+    try {
+      const value = await recipeService.getOwnRecipes(data);
+      if (value !== null) {
+        this.setState({ownRecipes: value.data});
+        this.setState({
+          recipes: value.data,
+          selectedRecipe: value.data[0].title,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getSharedRecipes = async (data) => {
+    try {
+      const value = await recipeService.getSharedRecipes(data);
+      if (value !== null) {
+        this.setState({
+          sharedRecipes: value.data,
+          selectedGroupId: value.data[0].id,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  toggleSharingSwitch = () => {
+    this.setState(
+      {
+        sharedProduction: !this.state.sharedProduction,
+      },
+      () => {
+        if (this.state.sharedProduction) {
+          var groupRecipes = this.state.sharedRecipes.filter(
+            (x) => x.ownerId === this.state.selectedGroupId,
+          );
+
+          if (groupRecipes !== undefined && groupRecipes.length > 0) {
+            this.setState({
+              recipes: groupRecipes,
+              selectedRecipe: groupRecipes[0].title,
+            });
+          } else {
+            this.setState({
+              recipes: [],
+              selectedRecipe: '',
+            });
+          }
+        } else {
+          this.setState({
+            recipes: this.state.ownRecipes,
+            selectedRecipe: this.state.ownRecipes[0].title,
+          });
+        }
+      },
+    );
+  };
+
+  handleSelectedGroupChange = (value) => {
+    const group = this.state.groups.find((x) => x.id === value);
+    this.setState({selectedGroupId: value}, () => {
+      var groupRecipes = this.state.sharedRecipes.filter(
+        (x) => x.ownerId === this.state.selectedGroupId,
+      );
+      if (groupRecipes !== undefined && groupRecipes.length > 0) {
+        this.setState({
+          recipes: groupRecipes,
+          selectedRecipe: groupRecipes[0].title,
+        });
+      } else {
+        this.setState({
+          recipes: [],
+          selectedRecipe: '',
+        });
+      }
+    });
+    this.setState({selectedGroup: group});
   };
 
   openModalBrewCalendar = () => {
@@ -272,6 +375,12 @@ class NewProductionScreen extends React.Component {
       duration: '',
       createdAt: this.state.todaysDatePt,
       lastUpdateDate: this.state.todaysDatePt,
+      ownerName: this.state.sharedProduction
+        ? this.state.selectedGroup.name
+        : this.state.userData.name,
+      ownerId: this.state.sharedProduction
+        ? this.state.selectedGroup.id
+        : this.state.userData.id,
       viewToRestore: '',
     };
 
@@ -282,35 +391,37 @@ class NewProductionScreen extends React.Component {
       this.props.navigation,
     );
 
-    const productions = this.state.productions;
-    let allProductions = [];
+    // const productions = this.state.productions;
+    // let allProductions = [];
 
-    if (productions != null) {
-      if (productions.length === 0) {
-        allProductions = [production];
-      } else {
-        allProductions = productions.concat(production);
-      }
-    }
+    // if (productions != null) {
+    //   if (productions.length === 0) {
+    //     allProductions = [production];
+    //   } else {
+    //     allProductions = productions.concat(production);
+    //   }
+    // }
 
-    await AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production added');
-      },
-    )
-      .then(this.returnToPreviousView(allProductions))
-      .catch((err) => {
-        console.log('error is: ' + err);
-      });
+    // await AsyncStorage.setItem(
+    //   PRODUCTIONS_KEY,
+    //   JSON.stringify(allProductions),
+    //   (err) => {
+    //     if (err) {
+    //       console.log('an error occured');
+    //       throw err;
+    //     }
+    //     console.log('Success. Production added');
+    //   },
+    // )
+    //   .then(this.returnToPreviousView(allProductions))
+    //   .catch((err) => {
+    //     console.log('error is: ' + err);
+    //   });
+
+    this.returnToPreviousView();
   };
 
-  returnToPreviousView = (allProductions) => {
+  returnToPreviousView = () => {
     this.props.navigation.navigate('Produções');
     Alert.alert('Produção salva com sucesso!');
 
@@ -330,6 +441,49 @@ class NewProductionScreen extends React.Component {
       <SafeAreaView>
         <StatusBar barStyle="light-content" backgroundColor="#000000" />
         <ScrollView>
+          <View style={styles.centeredContainer}>
+            <View style={styles.row}>
+              <Text style={styles.switchTitleContainer}>
+                Produção compartilhada?
+              </Text>
+              <Switch
+                trackColor={{false: '#767577', true: '#81b0ff'}}
+                thumbColor={this.state.sharedproduction ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={() => this.toggleSharingSwitch()}
+                value={this.state.sharedProduction}
+              />
+            </View>
+          </View>
+
+          {this.state.sharedProduction ? (
+            <View style={styles.row}>
+              <View style={styles.centeredBodyTextContainer}>
+                <Text style={styles.smallBodyText}>Grupo: </Text>
+              </View>
+              <View style={styles.onePickerContainer}>
+                <Picker
+                  style={styles.onePicker}
+                  itemStyle={styles.onePickerItem}
+                  selectedValue={this.state.selectedGroupId}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.handleSelectedGroupChange(itemValue)
+                  }>
+                  {this.state.groups.map((item, value) => {
+                    return (
+                      <Picker.Item
+                        label={item.name}
+                        value={item.id}
+                        key={item.id}
+                      />
+                    );
+                  })}
+                </Picker>
+              </View>
+            </View>
+          ) : (
+            <View />
+          )}
           <View marginTop={5}>
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>Selecione uma receita:</Text>
@@ -436,6 +590,7 @@ class NewProductionScreen extends React.Component {
               </View>
             </View>
           </View>
+
           <View marginTop={10} marginBottom={10}>
             <TouchableHighlight
               style={styles.buttonContainer}
@@ -622,6 +777,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     width: 320,
   },
+  switchTitleContainer: {
+    marginTop: 10,
+    marginBottom: 5,
+    marginLeft: 15,
+  },
   titleText: {
     fontSize: 17,
     color: 'black',
@@ -672,6 +832,21 @@ const styles = StyleSheet.create({
   twoPickerItems: {
     height: 88,
     color: 'red',
+  },
+  onePickerContainerLarge: {
+    backgroundColor: '#fff',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 147,
+    height: 36,
+    marginLeft: 5,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  onePickerLarge: {
+    width: 160,
+    height: 36,
   },
   calendarContainer: {
     marginTop: 10,
@@ -745,6 +920,18 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'black',
     textAlign: 'center',
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 5,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+  },
+  centeredContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 220,
   },
 });
 

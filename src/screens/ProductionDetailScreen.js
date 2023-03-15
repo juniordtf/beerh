@@ -55,12 +55,12 @@ class ProductionDetailScreen extends React.Component {
       exportDatesModalVisible: false,
       currentProduction: '',
       productions: [],
+      ownerName: '',
     };
   }
 
   componentDidMount() {
     this.getCurrentProduction();
-    this.getProductions();
   }
 
   getCurrentProduction = () => {
@@ -111,6 +111,7 @@ class ProductionDetailScreen extends React.Component {
       status: production.state,
       initialCalendarDate: production.initialCalendarDate,
       lastUpdateDate: production.lastUpdateDate,
+      ownerName: production.ownerName,
     });
   };
 
@@ -198,13 +199,7 @@ class ProductionDetailScreen extends React.Component {
     Alert.alert('Produção removida com sucesso!');
 
     if (window.productionsScreen !== undefined) {
-      window.productionsScreen
-        .getRecipes()
-        .then(window.productionsScreen.getProductions());
-    }
-
-    if (window.brewScreen !== undefined) {
-      window.brewScreen.getProductions();
+      window.productionsScreen.getRecipes();
     }
   };
 
@@ -613,6 +608,16 @@ class ProductionDetailScreen extends React.Component {
                 <Text>
                   {formattedDuration} / {formattedEstimatedTime} hrs
                 </Text>
+              </View>
+            </View>
+          </View>
+          <View marginTop={5}>
+            <View style={styles.rowContainer}>
+              <View style={styles.singleTextContainerLeft}>
+                <Text style={styles.bodyText}>Autor:{'   '}</Text>
+              </View>
+              <View style={styles.singleTextContainerRight}>
+                <Text style={styles.bodyText}>{this.state.ownerName}</Text>
               </View>
             </View>
           </View>

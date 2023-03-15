@@ -29,6 +29,62 @@ const getProductions = async (userData): Promise<object> => {
   });
 };
 
+const getOwnProductions = async (userData): Promise<object> => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  return new Promise((resolve) => {
+    api
+      .get(`/production/ownProductions/${userData.id}`, options)
+      .then((response) => {
+        if (response.status === 200 || response.status === 304) {
+          var productions = response.data;
+          resolve(productions);
+        } else {
+          Alert.alert('Atenção', 'Não foi possível buscar suas produções!');
+          console.log(response.status);
+          resolve(null);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          Alert.alert('Atenção', 'Não foi possível buscar suas produções!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      });
+  });
+};
+
+const getSharedProductions = async (userData): Promise<object> => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  return new Promise((resolve) => {
+    api
+      .get(`/production/sharedProductions/${userData.id}`, options)
+      .then((response) => {
+        if (response.status === 200 || response.status === 304) {
+          var productions = response.data;
+          resolve(productions);
+        } else {
+          Alert.alert('Atenção', 'Não foi possível buscar suas produções compartilhadas!');
+          console.log(response.status);
+          resolve(null);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          Alert.alert('Atenção', 'Não foi possível buscar suas produções compartilhadas!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      });
+  });
+};
+
 const createProduction = async (productionData, userData, ownerId) => {
   const options = {
     headers: {'x-access-token': userData.token},
@@ -58,10 +114,9 @@ const createProduction = async (productionData, userData, ownerId) => {
         fillingDate: productionData.fillingDate,
         initialCalendarDate: productionData.initialCalendarDate,
         duration: productionData.duration,
-        createdAt: productionData.createdAt,
-        lastUpdateDate: productionData.lastUpdateDate,
         viewToRestore: productionData.viewToRestore,
-        ownerId: ownerId,
+        ownerId: productionData.ownerId,
+        ownerName: productionData.ownerName
       },
       options,
     )
@@ -112,10 +167,9 @@ const editProduction = async (productionData, userData) => {
         fillingDate: productionData.fillingDate,
         initialCalendarDate: productionData.initialCalendarDate,
         duration: productionData.duration,
-        createdAt: productionData.createdAt,
-        lastUpdateDate: productionData.lastUpdateDate,
         viewToRestore: productionData.viewToRestore,
         ownerId: productionData.ownerId,
+        ownerName: productionData.ownerName,
       },
       options,
     )
@@ -141,4 +195,6 @@ export const productionService = {
   createProduction,
   getProductions,
   editProduction,
+  getOwnProductions,
+  getSharedProductions
 };

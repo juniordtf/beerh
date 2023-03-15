@@ -68,9 +68,6 @@ const getSharedRecipes = async (userData): Promise<object> => {
       .then((response) => {
         if (response.status === 200 || response.status === 304) {
           var recipes = response.data;
-          console.log('-----------------|||--------------');
-          console.log(recipes);
-          console.log('-----------------|||--------------');
           resolve(recipes);
         } else {
           Alert.alert('Atenção', 'Não foi possível buscar suas receitas!');
