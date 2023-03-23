@@ -9,6 +9,7 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableHighlight,
+  ScrollView,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import {styles} from './styles';
@@ -19,6 +20,7 @@ import {format, parseISO} from 'date-fns';
 import Add from '../../../assets/add.png';
 import Garbage from '../../../assets/garbage.png';
 import Pen from '../../../assets/pen.png';
+import GroupIcon from '../../../assets/people.png';
 
 const emptyList: Object = [];
 
@@ -27,6 +29,7 @@ function GroupDetailsScreen({navigation, route}) {
   const [userData, setUserData] = useState('');
   const [group, setGroup] = useState(emptyList);
   const [createdAt, setCreatedAt] = useState('');
+  const [imageUri, setImageUri] = useState('');
 
   const getUserData = async () => {
     try {
@@ -91,8 +94,15 @@ function GroupDetailsScreen({navigation, route}) {
         <ActivityIndicator color={'#000'} animating={true} size="small" />
       ) : (
         <View style={styles.detailsPage}>
+          <View style={styles.centeredTitleContainer}>
+            {imageUri !== '' ? (
+              <Image style={styles.groupAvatarImage} source={{uri: imageUri}} />
+            ) : (
+              <Image style={styles.groupAvatarImage} source={GroupIcon} />
+            )}
+            <Text style={styles.detailsTitle}>{group.name}</Text>
+          </View>
           <View style={styles.detailsBody}>
-            <Text style={styles.title}>{group.name}</Text>
             <Text style={styles.bodyText}>{group.description}</Text>
             <Text style={styles.bodyText}>Desde: {createdAt}</Text>
             <Text style={styles.bodyText}>Membros:</Text>
@@ -106,28 +116,26 @@ function GroupDetailsScreen({navigation, route}) {
           </View>
 
           {group.ownerId === userData.id ? (
-            <View>
-              <ActionButton buttonColor="#818181">
-                <ActionButton.Item
-                  buttonColor="#1abc9c"
-                  title="Adicionar membro"
-                  onPress={() => goToAddMember(group)}>
-                  <Image source={Add} style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-                <ActionButton.Item
-                  buttonColor="#D3C72E"
-                  title="Editar"
-                  onPress={() => goToEditGroup(group)}>
-                  <Image source={Pen} style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-                <ActionButton.Item
-                  buttonColor="#FF2424"
-                  title="Excluir"
-                  onPress={() => deleteGroup(group)}>
-                  <Image source={Garbage} style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-              </ActionButton>
-            </View>
+            <ActionButton buttonColor="#818181">
+              <ActionButton.Item
+                buttonColor="#1abc9c"
+                title="Adicionar membro"
+                onPress={() => goToAddMember(group)}>
+                <Image source={Add} style={styles.actionButtonIcon} />
+              </ActionButton.Item>
+              <ActionButton.Item
+                buttonColor="#D3C72E"
+                title="Editar"
+                onPress={() => goToEditGroup(group)}>
+                <Image source={Pen} style={styles.actionButtonIcon} />
+              </ActionButton.Item>
+              <ActionButton.Item
+                buttonColor="#FF2424"
+                title="Excluir"
+                onPress={() => deleteGroup(group)}>
+                <Image source={Garbage} style={styles.actionButtonIcon} />
+              </ActionButton.Item>
+            </ActionButton>
           ) : (
             <View />
           )}

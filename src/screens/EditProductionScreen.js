@@ -15,7 +15,8 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
 import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {PRODUCTIONS_KEY, AUTH_DATA_KEY} from '../statics/Statics';
+import {productionService} from '../services/productionService';
 import {format} from 'date-fns';
 
 class EditProductionScreen extends React.Component {
@@ -23,8 +24,11 @@ class EditProductionScreen extends React.Component {
     super(props);
 
     this.state = {
+      userData: [],
       id: '',
       name: '',
+      recipeId: '',
+      recipeName: '',
       volume: '',
       realVolume: '',
       og: '',
@@ -36,6 +40,7 @@ class EditProductionScreen extends React.Component {
       style: '',
       estimatedTime: '',
       status: '',
+      initialBrewDate: '',
       brewDate: '',
       fermentationDate: '',
       carbonationDate: '',
@@ -43,6 +48,8 @@ class EditProductionScreen extends React.Component {
       fillingDate: '',
       duration: '',
       createdAt: '',
+      ownerId: '',
+      ownerName: '',
       selectedRecipe: '',
       selectedBrewDate: '',
       selectedFermentationDate: '',
@@ -60,9 +67,26 @@ class EditProductionScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.getUserData();
     this.getCurrentProduction();
-    this.getProductions();
+    //this.getProductions();
   }
+
+  getUserData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
+      if (value !== null) {
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        // this.getGroups(data);
+        // this.getUserRecipes(data);
+        // this.getSharedRecipes(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   getProductions = async () => {
     try {
@@ -81,6 +105,8 @@ class EditProductionScreen extends React.Component {
     this.setState({
       id: production.id,
       name: production.name,
+      recipeId: production.recipeId,
+      recipeName: production.recipeName,
       volume: production.volume,
       realVolume: production.realVolume,
       og: production.og,
@@ -130,6 +156,8 @@ class EditProductionScreen extends React.Component {
         '-' +
         production.fillingDate.slice(0, 2),
       viewToRestore: production.viewToRestore,
+      ownerId: production.ownerId,
+      ownerName: production.ownerName,
     });
   };
 
@@ -262,11 +290,12 @@ class EditProductionScreen extends React.Component {
 
   editProduction = async () => {
     let initialDate = this.state.selectedBrewDate;
-    const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     const currentProduction = {
       id: this.state.id,
       name: this.state.name,
+      recipeId: this.state.id,
+      recipeName: this.state.title,
       volume: this.state.volume,
       realVolume: this.state.realVolume,
       og: this.state.og,
@@ -290,39 +319,44 @@ class EditProductionScreen extends React.Component {
         '-' +
         initialDate.slice(8, 10),
       duration: this.state.duration,
-      createdAt: this.state.createdAt,
-      lastUpdateDate: todayPt,
+      ownerName: this.state.ownerName,
+      ownerId: this.state.ownerId,
       viewToRestore: this.state.viewToRestore,
+      initialBrewDate: this.state.initialBrewDate,
     };
 
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
+    productionService.editProduction(currentProduction, this.state.userData);
 
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
+    // let allProductions = this.state.productions;
+    // const production = allProductions.find(
+    //   (x) => x.id === currentProduction.id,
+    // );
+    // const index = allProductions.indexOf(production);
 
-    await AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    )
-      .then(this.returnToPreviousView(allProductions))
-      .catch((err) => {
-        console.log('error is: ' + err);
-      });
+    // if (index !== -1) {
+    //   allProductions[index] = currentProduction;
+    // }
+
+    // await AsyncStorage.setItem(
+    //   PRODUCTIONS_KEY,
+    //   JSON.stringify(allProductions),
+    //   (err) => {
+    //     if (err) {
+    //       console.log('an error occured');
+    //       throw err;
+    //     }
+    //     console.log('Success. Production updated');
+    //   },
+    // )
+    //   .then(this.returnToPreviousView(allProductions))
+    //   .catch((err) => {
+    //     console.log('error is: ' + err);
+    //   });
+
+    this.returnToPreviousView();
   };
 
-  returnToPreviousView = (allProductions) => {
+  returnToPreviousView = () => {
     this.props.navigation.navigate('Produções');
     Alert.alert('Produção alterada com sucesso!');
 

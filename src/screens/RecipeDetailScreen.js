@@ -18,6 +18,7 @@ import Garbage from '../../assets/garbage.png';
 import Pen from '../../assets/pen.png';
 import {RECIPES_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
 import ActionButton from 'react-native-action-button';
+import {format, parseISO} from 'date-fns';
 
 var RNFS = require('react-native-fs');
 
@@ -80,7 +81,7 @@ class RecipeDetailScreen extends React.Component {
       carbonationValue: recipe.carbonationValue,
       carbonationUnit: recipe.carbonationUnit,
       annotation: recipe.annotation,
-      lastUpdateDate: recipe.lastUpdateDate,
+      lastUpdateDate: format(parseISO(recipe.updatedAt), 'dd/MM/yyyy'),
       ownerName: recipe.ownerName,
     });
   };

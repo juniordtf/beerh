@@ -85,7 +85,7 @@ const getSharedProductions = async (userData): Promise<object> => {
   });
 };
 
-const createProduction = async (productionData, userData, ownerId) => {
+const createProduction = async (productionData, userData) => {
   const options = {
     headers: {'x-access-token': userData.token},
   };
@@ -107,6 +107,7 @@ const createProduction = async (productionData, userData, ownerId) => {
         style: productionData.style,
         estimatedTime: productionData.estimatedTime,
         status: productionData.status,
+        initialBrewDate: productionData.initialBrewDate,
         brewDate: productionData.brewDate,
         fermentationDate: productionData.fermentationDate,
         carbonationDate: productionData.carbonationDate,
@@ -149,6 +150,8 @@ const editProduction = async (productionData, userData) => {
       {
         id: productionData.id,
         name: productionData.name,
+        recipeId: productionData.recipeId,
+        recipeName: productionData.recipeName,
         volume: productionData.volume,
         realVolume: productionData.realVolume,
         og: productionData.og,
@@ -160,6 +163,7 @@ const editProduction = async (productionData, userData) => {
         style: productionData.style,
         estimatedTime: productionData.estimatedTime,
         status: productionData.status,
+        initialBrewDate: productionData.initialBrewDate,
         brewDate: productionData.brewDate,
         fermentationDate: productionData.fermentationDate,
         carbonationDate: productionData.carbonationDate,

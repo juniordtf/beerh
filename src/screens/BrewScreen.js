@@ -10,53 +10,101 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import Beach from '../../assets/beach.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY, RECIPES_KEY} from '../statics/Statics';
+import {format} from 'date-fns';
+import {PRODUCTIONS_KEY, RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
+import {productionService} from '../services/productionService';
 
 class BrewScreen extends React.Component {
   constructor(props) {
-    const todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
+    const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     super(props);
     window.brewScreen = this;
     this.state = {
       todaysDatePt: todayPt,
+      userData: [],
       productions: [],
       recipes: [],
+      initialGroupProductions: [],
+      sharedProductions: [],
+      initialUserRecipes: [],
+      initialUserProductions: [],
     };
   }
 
   componentDidMount() {
-    this.getRecipes().then(this.getProductions());
+    this.getUserData();
+
+    //this.getRecipes().then(this.getProductions());
   }
 
-  getProductions = async () => {
+  getUserData = async () => {
     try {
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
       if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getUserProductions(data).then(this.getSharedProductions(data));
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  getRecipes = async () => {
+  getUserProductions = async (data) => {
     try {
-      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      const value = await productionService.getOwnProductions(data);
       if (value !== null) {
-        this.setState({recipes: JSON.parse(value)});
-        console.log(JSON.parse(value));
+        this.setState({initialUserProductions: value.data});
+        this.setState({userProductions: value.data});
+        this.setState({productions: value.data});
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  getSharedProductions = async (data) => {
+    try {
+      const value = await productionService.getSharedProductions(data);
+      if (value !== null) {
+        this.setState({initialGroupProductions: value.data});
+        this.setState({sharedProductions: value.data});
+        var allProductions = this.state.productions;
+        allProductions = allProductions.concat(value.data);
+        console.log('------------All Productions----------');
+        console.log(value.data);
+        this.setState({productions: allProductions});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // getProductions = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+  //     if (value !== null) {
+  //       this.setState({productions: JSON.parse(value)});
+  //       console.log(JSON.parse(value));
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // getRecipes = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem(RECIPES_KEY);
+  //     if (value !== null) {
+  //       this.setState({recipes: JSON.parse(value)});
+  //       console.log(JSON.parse(value));
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   startBrewing = (todaysProduction) => {
     const currentRecipe = this.state.recipes.find(
@@ -85,6 +133,7 @@ class BrewScreen extends React.Component {
       createdAt: todaysProduction.createdAt,
       lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: '',
+      initialBrewDate: new Date(),
     };
 
     this.updateProduction(currentProduction).then(
@@ -123,6 +172,7 @@ class BrewScreen extends React.Component {
       createdAt: todaysProduction.createdAt,
       lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: todaysProduction.viewToRestore,
+      initialBrewDate: todaysProduction.initialBrewDate,
     };
 
     this.updateProduction(currentProduction).then(
@@ -168,22 +218,7 @@ class BrewScreen extends React.Component {
   render() {
     let productions = this.state.productions;
     let currentDate = this.state.todaysDatePt;
-    let thisDay = new Date().getDate();
-    let thisMonth = new Date().getMonth() + 1;
-
-    if (thisDay < 10) {
-      currentDate = 0 + currentDate;
-    }
-
-    if (thisMonth < 10) {
-      currentDate =
-        currentDate.slice(0, 2) +
-        '/' +
-        0 +
-        currentDate.slice(3, 4) +
-        '/' +
-        currentDate.slice(5, 9);
-    }
+    console.log(currentDate);
 
     let todaysProductions = null;
 
@@ -193,6 +228,8 @@ class BrewScreen extends React.Component {
       );
     }
 
+    console.log(todaysProductions);
+
     if (todaysProductions != null) {
       const todaysInProgressProduction = productions.find(
         (x) => x.brewDate === currentDate && x.status === 'in progress',
@@ -201,6 +238,8 @@ class BrewScreen extends React.Component {
       const todaysNewProduction = productions.find(
         (x) => x.brewDate === currentDate && x.status === 'not started',
       );
+
+      console.log(todaysProductions);
 
       if (todaysInProgressProduction != null) {
         const duration = (

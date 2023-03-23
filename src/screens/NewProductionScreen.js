@@ -32,7 +32,8 @@ class NewProductionScreen extends React.Component {
     this.state = {
       userData: [],
       todaysDatePt: todayPt,
-      selectedRecipe: '',
+      selectedRecipeId: '',
+      selectedRecipeName: '',
       selectedBrewDate: today,
       selectedFermentationDate: today,
       selectedAgeingDate: today,
@@ -85,7 +86,7 @@ class NewProductionScreen extends React.Component {
   //       const retrievedRecipes = JSON.parse(value);
   //       this.setState({
   //         recipes: retrievedRecipes,
-  //         selectedRecipe: retrievedRecipes[0].title,
+  //         selectedRecipeName: retrievedRecipes[0].title,
   //       });
   //       console.log(JSON.parse(value));
   //     }
@@ -125,7 +126,8 @@ class NewProductionScreen extends React.Component {
         this.setState({ownRecipes: value.data});
         this.setState({
           recipes: value.data,
-          selectedRecipe: value.data[0].title,
+          selectedRecipeName: value.data[0].title,
+          selectedRecipeId: value.data[0].id,
         });
       }
     } catch (error) {
@@ -161,18 +163,21 @@ class NewProductionScreen extends React.Component {
           if (groupRecipes !== undefined && groupRecipes.length > 0) {
             this.setState({
               recipes: groupRecipes,
-              selectedRecipe: groupRecipes[0].title,
+              selectedRecipeName: groupRecipes[0].title,
+              selectedRecipeId: groupRecipes[0].id,
             });
           } else {
             this.setState({
               recipes: [],
-              selectedRecipe: '',
+              selectedRecipeName: '',
+              selectedRecipeId: '',
             });
           }
         } else {
           this.setState({
             recipes: this.state.ownRecipes,
-            selectedRecipe: this.state.ownRecipes[0].title,
+            selectedRecipeName: this.state.ownRecipes[0].title,
+            selectedRecipeId: this.state.ownRecipes[0].id,
           });
         }
       },
@@ -188,12 +193,14 @@ class NewProductionScreen extends React.Component {
       if (groupRecipes !== undefined && groupRecipes.length > 0) {
         this.setState({
           recipes: groupRecipes,
-          selectedRecipe: groupRecipes[0].title,
+          selectedRecipeName: groupRecipes[0].title,
+          selectedRecipeId: groupRecipes[0].id,
         });
       } else {
         this.setState({
           recipes: [],
-          selectedRecipe: '',
+          selectedRecipeName: '',
+          selectedRecipeId: '',
         });
       }
     });
@@ -340,16 +347,16 @@ class NewProductionScreen extends React.Component {
 
   addProduction = async () => {
     const currentRecipe = this.state.recipes.find(
-      (x) => x.title === this.state.selectedRecipe,
+      (x) => x.id === this.state.id,
     );
 
     let initialDate = this.state.selectedBrewDate;
     const totalEstimatedTime = parseFloat(currentRecipe.estimatedTime) + 360;
 
     const production = {
-      id: Date.now() + this.state.selectedRecipe,
+      name: this.state.selectedRecipeName,
       recipeId: currentRecipe.id,
-      name: this.state.selectedRecipe,
+      recipeName: currentRecipe.title,
       volume: currentRecipe.volume,
       realVolume: 0,
       og: currentRecipe.og,
@@ -373,8 +380,6 @@ class NewProductionScreen extends React.Component {
         '-' +
         initialDate.slice(8, 10),
       duration: '',
-      createdAt: this.state.todaysDatePt,
-      lastUpdateDate: this.state.todaysDatePt,
       ownerName: this.state.sharedProduction
         ? this.state.selectedGroup.name
         : this.state.userData.name,
@@ -382,14 +387,10 @@ class NewProductionScreen extends React.Component {
         ? this.state.selectedGroup.id
         : this.state.userData.id,
       viewToRestore: '',
+      initialBrewDate: this.state.brewDate,
     };
 
-    productionService.createProduction(
-      production,
-      this.state.userData,
-      this.state.userData.userId,
-      this.props.navigation,
-    );
+    productionService.createProduction(production, this.state.userData);
 
     // const productions = this.state.productions;
     // let allProductions = [];
@@ -457,8 +458,8 @@ class NewProductionScreen extends React.Component {
           </View>
 
           {this.state.sharedProduction ? (
-            <View style={styles.row}>
-              <View style={styles.centeredBodyTextContainer}>
+            <View>
+              <View style={styles.titleContainer}>
                 <Text style={styles.smallBodyText}>Grupo: </Text>
               </View>
               <View style={styles.onePickerContainer}>
@@ -486,15 +487,15 @@ class NewProductionScreen extends React.Component {
           )}
           <View marginTop={5}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>Selecione uma receita:</Text>
+              <Text style={styles.titleText}>Receita:</Text>
             </View>
             <View style={styles.onePickerContainer}>
               <Picker
                 style={styles.onePicker}
                 itemStyle={styles.onePickerItem}
-                selectedValue={this.state.selectedRecipe}
+                selectedValue={this.state.selectedRecipeName}
                 onValueChange={(itemValue, itemIndex) =>
-                  this.setState({selectedRecipe: itemValue})
+                  this.setState({selectedRecipeName: itemValue})
                 }>
                 {this.state.recipes.map((item, index) => {
                   return (

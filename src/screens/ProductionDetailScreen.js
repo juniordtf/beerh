@@ -20,7 +20,8 @@ import Garbage from '../../assets/garbage.png';
 import Pen from '../../assets/pen.png';
 import Date from '../../assets/date.png';
 import {PRODUCTIONS_KEY} from '../statics/Statics';
-import {parseISO, addHours} from 'date-fns';
+import {format, parseISO, addHours} from 'date-fns';
+
 var RNFS = require('react-native-fs');
 
 class ProductionDetailScreen extends React.Component {
@@ -110,7 +111,7 @@ class ProductionDetailScreen extends React.Component {
       duration: production.duration,
       status: production.state,
       initialCalendarDate: production.initialCalendarDate,
-      lastUpdateDate: production.lastUpdateDate,
+      lastUpdateDate: format(parseISO(production.updatedAt), 'dd/MM/yyyy'),
       ownerName: production.ownerName,
     });
   };

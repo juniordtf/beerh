@@ -58,6 +58,7 @@ export const styles = StyleSheet.create({
     width: 128,
     height: 128,
     borderRadius: 128 / 2,
+    marginTop: 5
   },
   inputField: {
     marginTop: 5,
@@ -110,6 +111,12 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 10,
   },
+  detailsTitle: {
+    fontSize: 22,
+    marginTop: 15,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
   bodyText: {
     fontSize: 14,
     marginTop: 10,
@@ -123,5 +130,9 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: '10%',
     marginRight: '10%',
+  },
+  centeredTitleContainer: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 });

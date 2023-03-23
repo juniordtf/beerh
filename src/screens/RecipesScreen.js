@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {ChonseSelect} from 'react-native-chonse-select';
 import {RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
 import {recipeService} from '../services/recipeService';
+import {format, parseISO} from 'date-fns';
 
 const RecipeSource = [
   {
@@ -214,6 +215,8 @@ class RecipesScreen extends React.Component {
   }
 
   renderItem = ({item}) => {
+    const createdAt = format(parseISO(item.createdAt), 'dd/MM/yyyy');
+
     return (
       <View>
         <TouchableOpacity onPress={() => this.goToDetailView(item)}>
@@ -246,7 +249,7 @@ class RecipesScreen extends React.Component {
                   <Text style={styles.listItemBodyField}>
                     Data de criação:{' '}
                   </Text>
-                  <Text style={styles.listItemBody}>{item.createdAt}</Text>
+                  <Text style={styles.listItemBody}>{createdAt}</Text>
                 </View>
               </View>
             </View>
