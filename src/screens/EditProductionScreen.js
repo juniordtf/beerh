@@ -69,7 +69,6 @@ class EditProductionScreen extends React.Component {
   componentDidMount() {
     this.getUserData();
     this.getCurrentProduction();
-    //this.getProductions();
   }
 
   getUserData = async () => {
@@ -294,7 +293,7 @@ class EditProductionScreen extends React.Component {
     const currentProduction = {
       id: this.state.id,
       name: this.state.name,
-      recipeId: this.state.id,
+      recipeId: '641091f8ac0ceaf6d4c0b4f4',
       recipeName: this.state.title,
       volume: this.state.volume,
       realVolume: this.state.realVolume,
@@ -326,49 +325,20 @@ class EditProductionScreen extends React.Component {
     };
 
     productionService.editProduction(currentProduction, this.state.userData);
-
-    // let allProductions = this.state.productions;
-    // const production = allProductions.find(
-    //   (x) => x.id === currentProduction.id,
-    // );
-    // const index = allProductions.indexOf(production);
-
-    // if (index !== -1) {
-    //   allProductions[index] = currentProduction;
-    // }
-
-    // await AsyncStorage.setItem(
-    //   PRODUCTIONS_KEY,
-    //   JSON.stringify(allProductions),
-    //   (err) => {
-    //     if (err) {
-    //       console.log('an error occured');
-    //       throw err;
-    //     }
-    //     console.log('Success. Production updated');
-    //   },
-    // )
-    //   .then(this.returnToPreviousView(allProductions))
-    //   .catch((err) => {
-    //     console.log('error is: ' + err);
-    //   });
-
     this.returnToPreviousView();
   };
 
   returnToPreviousView = () => {
-    this.props.navigation.navigate('Produções');
-    Alert.alert('Produção alterada com sucesso!');
-
     if (window.productionsScreen !== undefined) {
-      window.productionsScreen
-        .getRecipes()
-        .then(window.productionsScreen.getProductions());
+      window.productionsScreen.getUserData();
     }
 
     if (window.brewScreen !== undefined) {
-      window.brewScreen.getProductions();
+      window.brewScreen.getUserData();
     }
+
+    this.props.navigation.navigate('Produções');
+    Alert.alert('Produção alterada com sucesso!');
   };
 
   render() {

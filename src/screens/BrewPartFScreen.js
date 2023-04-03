@@ -16,7 +16,10 @@ import Stopwatch from '../Utils/Stopwatch';
 import Timer from '../Utils/Timer';
 import BrewBoiler from '../../assets/brewBoiler.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
+import {format} from 'date-fns';
+import {recipeService} from '../services/recipeService';
+import {productionService} from '../services/productionService';
 const Sound = require('react-native-sound');
 
 Sound.setCategory('Playback');
@@ -28,18 +31,13 @@ const sleep = (milliseconds) => {
 class BrewPartFScreen extends Component {
   constructor(props) {
     super(props);
-    const todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
+    const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     this.state = {
-      productions: [],
+      userData: [],
       todaysProduction: [],
-      todaysDatePt: todayPt,
       todaysRecipe: [],
+      todaysDatePt: todayPt,
       modalVisible: false,
       isThisViewOnDisplay: true,
     };
@@ -47,36 +45,61 @@ class BrewPartFScreen extends Component {
 
   componentDidMount() {
     this.preloadSound();
-    this.keepStopwatchGoing();
-    this.startTimer();
-    this.getProductions();
+    this.getUserData().then(this.startTimer());
   }
 
-  getProductions = async () => {
+  getUserData = async () => {
     try {
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
       if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getProduction(data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  keepStopwatchGoing = () => {
-    let currentProduction = this.props.route.params?.currentProduction;
-    this.setState({todaysProduction: currentProduction});
+  getProduction = async (data) => {
+    try {
+      let currentProduction = this.props.route.params?.currentProduction;
+      const value = await productionService.getProduction(
+        data,
+        currentProduction.id,
+      );
+      if (value !== null) {
+        this.setState({todaysProduction: value.data});
+        this.getRecipe(data, currentProduction.recipeId);
+        this.keepStopwatchGoing(currentProduction.duration);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getRecipe = async (data, recipeId) => {
+    try {
+      const value = await recipeService.getRecipe(data, recipeId);
+      if (value !== null) {
+        this.setState({todaysRecipe: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  keepStopwatchGoing = (duration) => {
     window.stopwatchComponent.startStopwatch();
-    window.stopwatchComponent.continueStopwatch(currentProduction.duration);
+    window.stopwatchComponent.continueStopwatch(duration);
   };
 
   startTimer() {
-    const currentRecipe = this.props.route.params?.currentRecipe;
-    this.setState({todaysRecipe: currentRecipe});
+    const currentRecipe = this.state.todaysRecipe;
 
     let rampDuration = 59;
-    if (currentRecipe != null) {
+    if (currentRecipe != null && currentRecipe.ramps !== undefined) {
       console.log(currentRecipe.ramps[0].time);
       rampDuration = parseInt(currentRecipe.ramps[4].time, 10) - 1;
     }
@@ -131,9 +154,9 @@ class BrewPartFScreen extends Component {
   }
 
   getInitialTemperature() {
-    let currentRecipe = this.props.route.params?.currentRecipe;
+    let currentRecipe = this.state.todaysRecipe;
 
-    if (currentRecipe != null) {
+    if (currentRecipe != null && currentRecipe.ramps !== undefined) {
       return parseFloat(currentRecipe.ramps[4].temperature, 10).toFixed(1);
     }
 
@@ -141,9 +164,9 @@ class BrewPartFScreen extends Component {
   }
 
   getStepsTotal() {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-
-    return currentRecipe.ramps.length + 1;
+    let currentRecipe = this.state.todaysRecipe;
+    let rampsLength = currentRecipe.ramps ? currentRecipe.ramps.length + 1 : 1;
+    return rampsLength;
   }
 
   goToNextView = () => {
@@ -156,7 +179,10 @@ class BrewPartFScreen extends Component {
     const productionUpdated = {
       id: this.state.todaysProduction.id,
       name: this.state.todaysProduction.name,
+      recipeId: this.state.todaysProduction.recipeId,
+      recipeName: this.state.todaysProduction.recipeName,
       volume: this.state.todaysProduction.volume,
+      realVolume: this.state.todaysProduction.realVolume,
       og: this.state.todaysProduction.og,
       realOg: this.state.todaysProduction.realOg,
       fg: this.state.todaysProduction.fg,
@@ -166,6 +192,7 @@ class BrewPartFScreen extends Component {
       style: this.state.todaysProduction.style,
       estimatedTime: this.state.todaysProduction.estimatedTime,
       status: this.state.todaysProduction.status,
+      initialBrewDate: this.state.todaysProduction.initialBrewDate,
       brewDate: this.state.todaysProduction.brewDate,
       fermentationDate: this.state.todaysProduction.fermentationDate,
       carbonationDate: this.state.todaysProduction.carbonationDate,
@@ -173,15 +200,14 @@ class BrewPartFScreen extends Component {
       fillingDate: this.state.todaysProduction.fillingDate,
       initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
       duration: window.stopwatchComponent.showDisplay(),
-      createdAt: this.state.todaysProduction.createdAt,
-      lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: 'Brassagem Parte F',
+      ownerId: this.state.todaysProduction.ownerId,
+      ownerName: this.state.todaysProduction.ownerName,
     };
 
     this.updateProduction(productionUpdated).then(
       this.props.navigation.navigate('Lavagem', {
         currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
       }),
     );
 
@@ -190,29 +216,7 @@ class BrewPartFScreen extends Component {
   };
 
   updateProduction = async (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    await AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    productionService.editProduction(currentProduction, this.state.userData);
   };
 
   canGoToNextView = () => {

@@ -147,10 +147,45 @@ const deleteGroup = async (userData, groupId) => {
     });
 };
 
+const uploadAvatar = async (groupData, userData) => {
+  const options = {
+    headers: {
+      'x-access-token': userData.token,
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'PUT',
+      'Access-Control-Allow-Credentials': 'true',
+    },
+  };
+  const avatarImage = groupData.avatar;
+  const group = groupData.group;
+
+  await api
+    .put(`group/avatar/${group.id}`, avatarImage, options)
+    .then((response) => {
+      if (response.status === 200) {
+        Alert.alert('Ótimo', 'Avatar atualizado com sucesso!');
+        console.log('Avatar atualizado');
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        Alert.alert(
+          'Atenção',
+          'Não foi possível atualizar o avatar. Tente novamente mais tarde!',
+        );
+        console.log(error.response);
+        console.log(error.response.status);
+      }
+    });
+};
+
 export const groupService = {
   createGroup,
   getAllowedGroups,
   sendInvitation,
   enterGroup,
+  uploadAvatar,
   deleteGroup,
 };

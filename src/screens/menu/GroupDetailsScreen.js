@@ -3,12 +3,10 @@ import {
   ActivityIndicator,
   Button,
   Text,
-  TextInput,
   View,
   Image,
-  FlatList,
-  TouchableOpacity,
   TouchableHighlight,
+  FlatList,
   ScrollView,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
@@ -49,10 +47,16 @@ function GroupDetailsScreen({navigation, route}) {
 
   React.useEffect(() => {
     if (route.params?.group) {
-      setGroup(route.params.group);
-      const date = format(parseISO(route.params.group.createdAt), 'dd/MM/yyyy');
-
+      const groupData = route.params.group;
+      setGroup(groupData);
+      const date = format(parseISO(groupData.createdAt), 'dd/MM/yyyy');
       setCreatedAt(date);
+
+      console.log(groupData.avatar);
+
+      if (groupData.avatar !== null && groupData.avatar !== undefined) {
+        setImageUri('http://192.168.15.5:8001/v1/uploads/' + groupData.avatar);
+      }
     }
   }, [route.params?.group]);
 

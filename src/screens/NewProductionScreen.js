@@ -16,7 +16,7 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import SafeAreaView from 'react-native-safe-area-view';
 import CalendarIcon from '../../assets/calendar.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {RECIPES_KEY, AUTH_DATA_KEY, PRODUCTIONS_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
 import {format} from 'date-fns';
 import {productionService} from '../services/productionService';
 import {groupService} from '../services/groupService';
@@ -63,37 +63,8 @@ class NewProductionScreen extends React.Component {
   }
 
   componentDidMount() {
-    //this.getRecipes().then(this.getProductions());
     this.getUserData();
   }
-
-  getProductions = async () => {
-    try {
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
-      if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // getRecipes = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem(RECIPES_KEY);
-  //     if (value !== null) {
-  //       const retrievedRecipes = JSON.parse(value);
-  //       this.setState({
-  //         recipes: retrievedRecipes,
-  //         selectedRecipeName: retrievedRecipes[0].title,
-  //       });
-  //       console.log(JSON.parse(value));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   getUserData = async () => {
     try {
@@ -347,7 +318,7 @@ class NewProductionScreen extends React.Component {
 
   addProduction = async () => {
     const currentRecipe = this.state.recipes.find(
-      (x) => x.id === this.state.id,
+      (x) => x.id === this.state.selectedRecipeId,
     );
 
     let initialDate = this.state.selectedBrewDate;
@@ -391,34 +362,6 @@ class NewProductionScreen extends React.Component {
     };
 
     productionService.createProduction(production, this.state.userData);
-
-    // const productions = this.state.productions;
-    // let allProductions = [];
-
-    // if (productions != null) {
-    //   if (productions.length === 0) {
-    //     allProductions = [production];
-    //   } else {
-    //     allProductions = productions.concat(production);
-    //   }
-    // }
-
-    // await AsyncStorage.setItem(
-    //   PRODUCTIONS_KEY,
-    //   JSON.stringify(allProductions),
-    //   (err) => {
-    //     if (err) {
-    //       console.log('an error occured');
-    //       throw err;
-    //     }
-    //     console.log('Success. Production added');
-    //   },
-    // )
-    //   .then(this.returnToPreviousView(allProductions))
-    //   .catch((err) => {
-    //     console.log('error is: ' + err);
-    //   });
-
     this.returnToPreviousView();
   };
 
@@ -427,13 +370,11 @@ class NewProductionScreen extends React.Component {
     Alert.alert('Produção salva com sucesso!');
 
     if (window.productionsScreen !== undefined) {
-      window.productionsScreen
-        .getRecipes()
-        .then(window.productionsScreen.getProductions());
+      window.productionsScreen.getUserData();
     }
 
     if (window.brewScreen !== undefined) {
-      window.brewScreen.getProductions();
+      window.brewScreen.getUserData();
     }
   };
 

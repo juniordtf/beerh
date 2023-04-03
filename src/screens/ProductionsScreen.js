@@ -54,21 +54,7 @@ class ProductionScreen extends React.Component {
 
   componentDidMount() {
     this.getUserData();
-    //this.getRecipes().then(this.getProductions());
   }
-
-  // getProductions = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
-  //     if (value !== null) {
-  //       this.setState({sharedProductions: JSON.parse(value)});
-  //       this.setState({initialGroupProductions: JSON.parse(value)});
-  //       console.log(JSON.parse(value));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   getUserData = async () => {
     try {
@@ -103,36 +89,12 @@ class ProductionScreen extends React.Component {
       if (value !== null) {
         this.setState({initialGroupProductions: value.data});
         this.setState({sharedProductions: value.data});
+        console.log(value.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  // getRecipes = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem(RECIPES_KEY);
-  //     if (value !== null) {
-  //       this.setState({
-  //         sharedRecipes: JSON.parse(value),
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // getUserRecipes = async (data) => {
-  //   try {
-  //     const value = await recipeService.getRecipes(data);
-  //     if (value !== null) {
-  //       this.setState({initialUserRecipes: value.data});
-  //       this.setState({userRecipes: value.data});
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   searchText = (text) => {
     this.setState({searchText: text.e});

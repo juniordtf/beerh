@@ -1,6 +1,34 @@
 import {Alert} from 'react-native';
 import api from './api';
 
+const getProduction = async (userData, productionId): Promise<object> => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  return new Promise((resolve) => {
+    api
+      .get(`/production/${productionId}`, options)
+      .then((response) => {
+        if (response.status === 200 || response.status === 304) {
+          var production = response.data;
+          resolve(production);
+        } else {
+          Alert.alert('Atenção', 'Não foi possível buscar sua produção!');
+          console.log(response.status);
+          resolve(null);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          Alert.alert('Atenção', 'Não foi possível buscar sua produção!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      });
+  });
+};
+
 const getProductions = async (userData): Promise<object> => {
   const options = {
     headers: {'x-access-token': userData.token},
@@ -96,6 +124,7 @@ const createProduction = async (productionData, userData) => {
       {
         name: productionData.name,
         recipeId: productionData.recipeId,
+        recipeName: productionData.recipeName,
         volume: productionData.volume,
         realVolume: productionData.realVolume,
         og: productionData.og,
@@ -179,7 +208,7 @@ const editProduction = async (productionData, userData) => {
     )
     .then((response) => {
       if (response.status === 200) {
-        Alert.alert('Ótimo', 'Produção editada com sucesso!');
+        //Alert.alert('Ótimo', 'Produção editada com sucesso!');
         console.log('Produção editada');
       }
     })
@@ -197,6 +226,7 @@ const editProduction = async (productionData, userData) => {
 
 export const productionService = {
   createProduction,
+  getProduction,
   getProductions,
   editProduction,
   getOwnProductions,

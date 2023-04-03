@@ -10,49 +10,67 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import Cheers from '../../assets/cheers.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
+import {format} from 'date-fns';
+import {recipeService} from '../services/recipeService';
+import {productionService} from '../services/productionService';
 
 class SuccessfulScreen extends Component {
   constructor(props) {
     super(props);
-    const todayPt =
-      new Date().getDate() +
-      '/' +
-      (new Date().getMonth() + 1) +
-      '/' +
-      new Date().getFullYear();
+    const todayPt = format(new Date(), 'dd/MM/yyyy');
 
     this.state = {
-      productions: [],
+      userData: [],
       todaysProduction: [],
-      todaysDatePt: todayPt,
       todaysRecipe: [],
+      todaysDatePt: todayPt,
     };
   }
 
   componentDidMount() {
-    this.getProductions();
-    this.getCurrentRecipe();
+    this.getUserData();
   }
 
-  getProductions = async () => {
+  getUserData = async () => {
     try {
-      let currentProduction = this.props.route.params?.currentProduction;
-      this.setState({todaysProduction: currentProduction});
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
 
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
       if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getProduction(data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  getCurrentRecipe = () => {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-    this.setState({todaysRecipe: currentRecipe});
+  getProduction = async (data) => {
+    try {
+      let currentProduction = this.props.route.params?.currentProduction;
+      const value = await productionService.getProduction(
+        data,
+        currentProduction.id,
+      );
+      if (value !== null) {
+        this.setState({todaysProduction: value.data});
+        this.getRecipe(data, currentProduction.recipeId);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getRecipe = async (data, recipeId) => {
+    try {
+      const value = await recipeService.getRecipe(data, recipeId);
+      if (value !== null) {
+        this.setState({todaysRecipe: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   goToNextView = () => {
@@ -61,7 +79,10 @@ class SuccessfulScreen extends Component {
     const productionUpdated = {
       id: this.state.todaysProduction.id,
       name: this.state.todaysProduction.name,
+      recipeId: this.state.todaysProduction.recipeId,
+      recipeName: this.state.todaysProduction.recipeName,
       volume: this.state.todaysProduction.volume,
+      realVolume: this.state.todaysProduction.realVolume,
       og: this.state.todaysProduction.og,
       realOg: this.state.todaysProduction.realOg,
       fg: this.state.todaysProduction.fg,
@@ -71,6 +92,7 @@ class SuccessfulScreen extends Component {
       style: this.state.todaysProduction.style,
       estimatedTime: this.state.todaysProduction.estimatedTime,
       status: 'finished',
+      initialBrewDate: this.state.todaysProduction.initialBrewDate,
       brewDate: this.state.todaysProduction.brewDate,
       fermentationDate: this.state.todaysProduction.fermentationDate,
       carbonationDate: this.state.todaysProduction.carbonationDate,
@@ -78,42 +100,20 @@ class SuccessfulScreen extends Component {
       fillingDate: this.state.todaysProduction.fillingDate,
       initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
       duration: this.state.todaysProduction.duration,
-      createdAt: this.state.todaysProduction.createdAt,
-      lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: 'Sucesso',
+      ownerId: this.state.todaysProduction.ownerId,
+      ownerName: this.state.todaysProduction.ownerName,
     };
 
     this.updateProduction(productionUpdated).then(
       this.props.navigation.navigate('Brassagem'),
-      window.productionsScreen.getProductions(),
-      window.brewScreen.getProductions(),
+      window.productionsScreen.getUserData(),
+      window.brewScreen.getUserData(),
     );
   };
 
   updateProduction = async (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    await AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    productionService.editProduction(currentProduction, this.state.userData);
   };
 
   render() {

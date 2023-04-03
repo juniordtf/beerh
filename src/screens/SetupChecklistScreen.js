@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
-  Button,
   ScrollView,
 } from 'react-native';
 import ChecklistIcon from '../../assets/checklistIcon.png';
@@ -15,13 +14,16 @@ import CircleUnchecked from '../../assets/CircleUnchecked.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
+import {format} from 'date-fns';
+import {recipeService} from '../services/recipeService';
+import {productionService} from '../services/productionService';
 
 class SetupChecklistScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      productions: [],
+      userData: [],
       todaysProduction: [],
       todaysRecipe: [],
       checklistItemOneDone: false,
@@ -33,36 +35,56 @@ class SetupChecklistScreen extends Component {
   }
 
   componentDidMount() {
-    this.keepStopwatchGoing();
-    this.getCurrentRecipe();
-    this.getProductions();
+    this.getUserData();
   }
 
-  getProductions = async () => {
+  getUserData = async () => {
     try {
-      let currentProduction = this.props.route.params?.currentProduction;
-      this.setState({todaysProduction: currentProduction});
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
 
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
       if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getProduction(data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  keepStopwatchGoing = () => {
-    let currentProduction = this.props.route.params?.currentProduction;
-    this.setState({todaysProduction: currentProduction});
-    window.stopwatchComponent.startStopwatch();
-    window.stopwatchComponent.continueStopwatch(currentProduction.duration);
+  getProduction = async (data) => {
+    try {
+      let currentProduction = this.props.route.params?.currentProduction;
+      const value = await productionService.getProduction(
+        data,
+        currentProduction.id,
+      );
+      if (value !== null) {
+        console.log(value);
+        this.setState({todaysProduction: value.data});
+        this.getRecipe(data, currentProduction.recipeId);
+        this.keepStopwatchGoing(currentProduction.duration);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  getCurrentRecipe = () => {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-    this.setState({todaysRecipe: currentRecipe});
+  getRecipe = async (data, recipeId) => {
+    try {
+      const value = await recipeService.getRecipe(data, recipeId);
+      if (value !== null) {
+        console.log(value);
+        this.setState({todaysRecipe: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  keepStopwatchGoing = (duration) => {
+    window.stopwatchComponent.startStopwatch();
+    window.stopwatchComponent.continueStopwatch(duration);
   };
 
   renderCheckImage01 = () => {
@@ -100,36 +122,41 @@ class SetupChecklistScreen extends Component {
     return <Image source={imgSource} />;
   };
 
-  goToNextView = (currentProduction) => {
+  goToNextView = () => {
     window.stopwatchComponent.stopStopwatch();
 
     const productionUpdated = {
-      id: currentProduction.id,
-      name: currentProduction.name,
-      volume: currentProduction.volume,
+      id: this.state.todaysProduction.id,
+      name: this.state.todaysProduction.name,
+      recipeId: this.state.todaysProduction.recipeId,
+      recipeName: this.state.todaysProduction.recipeName,
+      volume: this.state.todaysProduction.volume,
+      realVolume: this.state.todaysProduction.realVolume,
       og: this.state.todaysProduction.og,
       realOg: this.state.todaysProduction.realOg,
       fg: this.state.todaysProduction.fg,
       realFg: this.state.todaysProduction.realFg,
       abv: this.state.todaysProduction.abv,
       realAbv: this.state.todaysProduction.realAbv,
-      style: currentProduction.style,
-      estimatedTime: currentProduction.estimatedTime,
-      status: currentProduction.status,
-      brewDate: currentProduction.brewDate,
-      fermentationDate: currentProduction.fermentationDate,
-      carbonationDate: currentProduction.carbonationDate,
-      ageingDate: currentProduction.ageingDate,
-      fillingDate: currentProduction.fillingDate,
+      style: this.state.todaysProduction.style,
+      estimatedTime: this.state.todaysProduction.estimatedTime,
+      status: this.state.todaysProduction.status,
+      initialBrewDate: this.state.todaysProduction.initialBrewDate,
+      brewDate: this.state.todaysProduction.brewDate,
+      fermentationDate: this.state.todaysProduction.fermentationDate,
+      carbonationDate: this.state.todaysProduction.carbonationDate,
+      ageingDate: this.state.todaysProduction.ageingDate,
+      fillingDate: this.state.todaysProduction.fillingDate,
+      initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
       duration: window.stopwatchComponent.showDisplay(),
-      createdAt: currentProduction.createdAt,
       viewToRestore: 'Checklist de Montagem',
+      ownerId: this.state.todaysProduction.ownerId,
+      ownerName: this.state.todaysProduction.ownerName,
     };
 
     this.updateProduction(productionUpdated).then(
       this.props.navigation.navigate('Brassagem Parte A', {
         currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
       }),
     );
 
@@ -137,29 +164,7 @@ class SetupChecklistScreen extends Component {
   };
 
   updateProduction = async (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    await AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    productionService.editProduction(currentProduction, this.state.userData);
   };
 
   render() {
@@ -271,7 +276,7 @@ class SetupChecklistScreen extends Component {
               !this.state.checklistItemThreeDone &&
               !this.state.checklistItemFourDone
             }
-            onPress={() => this.goToNextView(this.state.todaysProduction)}>
+            onPress={() => this.goToNextView()}>
             <Text style={styles.bodyText2}>Avançar</Text>
           </TouchableHighlight>
         </ScrollView>

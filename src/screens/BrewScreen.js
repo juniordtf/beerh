@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {format} from 'date-fns';
 import {PRODUCTIONS_KEY, RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
 import {productionService} from '../services/productionService';
+import {recipeService} from '../services/recipeService';
 
 class BrewScreen extends React.Component {
   constructor(props) {
@@ -24,18 +25,14 @@ class BrewScreen extends React.Component {
       todaysDatePt: todayPt,
       userData: [],
       productions: [],
-      recipes: [],
-      initialGroupProductions: [],
       sharedProductions: [],
-      initialUserRecipes: [],
-      initialUserProductions: [],
+      recipes: [],
+      sharedRecipes: [],
     };
   }
 
   componentDidMount() {
     this.getUserData();
-
-    //this.getRecipes().then(this.getProductions());
   }
 
   getUserData = async () => {
@@ -46,6 +43,7 @@ class BrewScreen extends React.Component {
         const data = JSON.parse(value);
         this.setState({userData: data});
         this.getUserProductions(data).then(this.getSharedProductions(data));
+        this.getUserRecipes(data).then(this.getSharedRecipes(data));
       }
     } catch (error) {
       console.log(error);
@@ -56,8 +54,6 @@ class BrewScreen extends React.Component {
     try {
       const value = await productionService.getOwnProductions(data);
       if (value !== null) {
-        this.setState({initialUserProductions: value.data});
-        this.setState({userProductions: value.data});
         this.setState({productions: value.data});
       }
     } catch (error) {
@@ -69,13 +65,39 @@ class BrewScreen extends React.Component {
     try {
       const value = await productionService.getSharedProductions(data);
       if (value !== null) {
-        this.setState({initialGroupProductions: value.data});
         this.setState({sharedProductions: value.data});
         var allProductions = this.state.productions;
         allProductions = allProductions.concat(value.data);
         console.log('------------All Productions----------');
         console.log(value.data);
         this.setState({productions: allProductions});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getUserRecipes = async (data) => {
+    try {
+      const value = await recipeService.getOwnRecipes(data);
+      if (value !== null) {
+        this.setState({recipes: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getSharedRecipes = async (data) => {
+    try {
+      const value = await recipeService.getSharedRecipes(data);
+      if (value !== null) {
+        this.setState({sharedRecipes: value.data});
+        var allRecipes = this.state.recipes;
+        allRecipes = allRecipes.concat(value.data);
+        console.log('------------All Recipes----------');
+        console.log(value.data);
+        this.setState({recipes: allRecipes});
       }
     } catch (error) {
       console.log(error);
@@ -107,22 +129,23 @@ class BrewScreen extends React.Component {
   // };
 
   startBrewing = (todaysProduction) => {
-    const currentRecipe = this.state.recipes.find(
-      (x) => x.title === todaysProduction.name,
-    );
-
     const currentProduction = {
       id: todaysProduction.id,
       name: todaysProduction.name,
+      recipeId: todaysProduction.recipeId,
+      recipeName: todaysProduction.recipeName,
       volume: todaysProduction.volume,
+      realVolume: todaysProduction.realVolume,
       og: todaysProduction.og,
       realOg: todaysProduction.realOg,
       fg: todaysProduction.fg,
       realFg: todaysProduction.realFg,
       abv: todaysProduction.abv,
+      realAbv: todaysProduction.realAbv,
       style: todaysProduction.style,
       estimatedTime: todaysProduction.estimatedTime,
       status: 'in progress',
+      initialBrewDate: format(new Date(), 'dd/MM/yyyy HH:mm:ss'),
       brewDate: todaysProduction.brewDate,
       fermentationDate: todaysProduction.fermentationDate,
       carbonationDate: todaysProduction.carbonationDate,
@@ -130,38 +153,36 @@ class BrewScreen extends React.Component {
       fillingDate: todaysProduction.fillingDate,
       initialCalendarDate: todaysProduction.initialCalendarDate,
       duration: todaysProduction.duration,
-      createdAt: todaysProduction.createdAt,
-      lastUpdateDate: this.state.todaysDatePt,
-      viewToRestore: '',
-      initialBrewDate: new Date(),
+      viewToRestore: 'Checklist de Limpeza',
+      ownerId: todaysProduction.ownerId,
+      ownerName: todaysProduction.ownerName,
     };
 
     this.updateProduction(currentProduction).then(
       this.props.navigation.navigate('Checklist de Limpeza', {
         currentProduction: currentProduction,
-        currentRecipe: currentRecipe,
       }),
-      window.productionsScreen.getProductions(),
     );
   };
 
   continueBrewing = (todaysProduction) => {
-    const currentRecipe = this.state.recipes.find(
-      (x) => x.title === todaysProduction.name,
-    );
-
     const currentProduction = {
       id: todaysProduction.id,
       name: todaysProduction.name,
+      recipeId: todaysProduction.recipeId,
+      recipeName: todaysProduction.recipeName,
       volume: todaysProduction.volume,
+      realVolume: todaysProduction.realVolume,
       og: todaysProduction.og,
       realOg: todaysProduction.realOg,
       fg: todaysProduction.fg,
       realFg: todaysProduction.realFg,
       abv: todaysProduction.abv,
+      realAbv: todaysProduction.realAbv,
       style: todaysProduction.style,
       estimatedTime: todaysProduction.estimatedTime,
-      status: 'in progress',
+      status: todaysProduction.status,
+      initialBrewDate: todaysProduction.initialBrewDate,
       brewDate: todaysProduction.brewDate,
       fermentationDate: todaysProduction.fermentationDate,
       carbonationDate: todaysProduction.carbonationDate,
@@ -169,50 +190,20 @@ class BrewScreen extends React.Component {
       fillingDate: todaysProduction.fillingDate,
       initialCalendarDate: todaysProduction.initialCalendarDate,
       duration: todaysProduction.duration,
-      createdAt: todaysProduction.createdAt,
-      lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: todaysProduction.viewToRestore,
-      initialBrewDate: todaysProduction.initialBrewDate,
+      ownerId: todaysProduction.ownerId,
+      ownerName: todaysProduction.ownerName,
     };
 
     this.updateProduction(currentProduction).then(
       this.props.navigation.navigate(todaysProduction.viewToRestore, {
         currentProduction: currentProduction,
-        currentRecipe: currentRecipe,
       }),
     );
-
-    if (window.productionsScreen !== undefined) {
-      window.productionsScreen
-        .getRecipes()
-        .then(window.productionsScreen.getProductions());
-    }
   };
 
   updateProduction = async (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    await AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    productionService.editProduction(currentProduction, this.state.userData);
   };
 
   render() {

@@ -1,6 +1,36 @@
 import {Alert} from 'react-native';
 import api from './api';
 
+const getRecipe = async (userData, recipeId): Promise<object> => {
+  const options = {
+    headers: {'x-access-token': userData.token},
+  };
+
+  console.log('RecipeId: ' + recipeId);
+
+  return new Promise((resolve) => {
+    api
+      .get(`/recipe/${recipeId}`, options)
+      .then((response) => {
+        if (response.status === 200 || response.status === 304) {
+          var currentRecipe = response.data;
+          resolve(currentRecipe);
+        } else {
+          Alert.alert('Atenção', 'Não foi possível buscar a receita!');
+          console.log(response.status);
+          resolve(null);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          Alert.alert('Atenção', 'Não foi possível buscar a receita!');
+          console.log(error.response.status);
+          resolve(null);
+        }
+      });
+  });
+};
+
 const getRecipes = async (userData): Promise<object> => {
   const options = {
     headers: {'x-access-token': userData.token},
@@ -137,6 +167,7 @@ const createRecipe = async (recipeData, userData, ownerId) => {
 
 export const recipeService = {
   createRecipe,
+  getRecipe,
   getRecipes,
   getOwnRecipes,
   getSharedRecipes,

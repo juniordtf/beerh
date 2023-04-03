@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
     width: 128,
     height: 128,
     borderRadius: 128 / 2,
-    marginTop: 5
+    marginTop: 5,
   },
   inputField: {
     marginTop: 5,
@@ -135,4 +135,9 @@ export const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+  centeredBottomButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 30
+  }
 });

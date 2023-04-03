@@ -14,15 +14,21 @@ import CircleUnchecked from '../../assets/CircleUnchecked.png';
 import SafeAreaView from 'react-native-safe-area-view';
 import Stopwatch from '../Utils/Stopwatch';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PRODUCTIONS_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
+import {format} from 'date-fns';
+import {recipeService} from '../services/recipeService';
+import {productionService} from '../services/productionService';
 
 class DisassembleChecklistScreen extends Component {
   constructor(props) {
     super(props);
+    const todayPt = format(new Date(), 'dd/MM/yyyy');
+
     this.state = {
-      productions: [],
+      userData: [],
       todaysProduction: [],
       todaysRecipe: [],
+      todaysDatePt: todayPt,
       checklistItemOneDone: false,
       checklistItemTwoDone: false,
       checklistItemThreeDone: false,
@@ -32,36 +38,54 @@ class DisassembleChecklistScreen extends Component {
   }
 
   componentDidMount() {
-    this.keepStopwatchGoing();
-    this.getCurrentRecipe();
-    this.getProductions();
+    this.getUserData();
   }
 
-  getProductions = async () => {
+  getUserData = async () => {
     try {
-      let currentProduction = this.props.route.params?.currentProduction;
-      this.setState({todaysProduction: currentProduction});
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
 
-      const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
       if (value !== null) {
-        this.setState({productions: JSON.parse(value)});
-        console.log(JSON.parse(value));
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getProduction(data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  keepStopwatchGoing = () => {
-    let currentProduction = this.props.route.params?.currentProduction;
-    this.setState({todaysProduction: currentProduction});
-    window.stopwatchComponent.startStopwatch();
-    window.stopwatchComponent.continueStopwatch(currentProduction.duration);
+  getProduction = async (data) => {
+    try {
+      let currentProduction = this.props.route.params?.currentProduction;
+      const value = await productionService.getProduction(
+        data,
+        currentProduction.id,
+      );
+      if (value !== null) {
+        this.setState({todaysProduction: value.data});
+        this.getRecipe(data, currentProduction.recipeId);
+        this.keepStopwatchGoing(currentProduction.duration);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  getCurrentRecipe = () => {
-    let currentRecipe = this.props.route.params?.currentRecipe;
-    this.setState({todaysRecipe: currentRecipe});
+  getRecipe = async (data, recipeId) => {
+    try {
+      const value = await recipeService.getRecipe(data, recipeId);
+      if (value !== null) {
+        this.setState({todaysRecipe: value.data});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  keepStopwatchGoing = (duration) => {
+    window.stopwatchComponent.startStopwatch();
+    window.stopwatchComponent.continueStopwatch(duration);
   };
 
   renderCheckImage01 = () => {
@@ -105,7 +129,10 @@ class DisassembleChecklistScreen extends Component {
     const productionUpdated = {
       id: this.state.todaysProduction.id,
       name: this.state.todaysProduction.name,
+      recipeId: this.state.todaysProduction.recipeId,
+      recipeName: this.state.todaysProduction.recipeName,
       volume: this.state.todaysProduction.volume,
+      realVolume: this.state.todaysProduction.realVolume,
       og: this.state.todaysProduction.og,
       realOg: this.state.todaysProduction.realOg,
       fg: this.state.todaysProduction.fg,
@@ -115,6 +142,7 @@ class DisassembleChecklistScreen extends Component {
       style: this.state.todaysProduction.style,
       estimatedTime: this.state.todaysProduction.estimatedTime,
       status: this.state.todaysProduction.status,
+      initialBrewDate: this.state.todaysProduction.initialBrewDate,
       brewDate: this.state.todaysProduction.brewDate,
       fermentationDate: this.state.todaysProduction.fermentationDate,
       carbonationDate: this.state.todaysProduction.carbonationDate,
@@ -122,15 +150,14 @@ class DisassembleChecklistScreen extends Component {
       fillingDate: this.state.todaysProduction.fillingDate,
       initialCalendarDate: this.state.todaysProduction.initialCalendarDate,
       duration: window.stopwatchComponent.showDisplay(),
-      createdAt: this.state.todaysProduction.createdAt,
-      lastUpdateDate: this.state.todaysDatePt,
       viewToRestore: 'Checklist de Desmontagem',
+      ownerId: this.state.todaysProduction.ownerId,
+      ownerName: this.state.todaysProduction.ownerName,
     };
 
     this.updateProduction(productionUpdated).then(
       this.props.navigation.navigate('Sucesso', {
         currentProduction: productionUpdated,
-        currentRecipe: this.state.todaysRecipe,
       }),
     );
 
@@ -138,29 +165,7 @@ class DisassembleChecklistScreen extends Component {
   };
 
   updateProduction = async (currentProduction) => {
-    let allProductions = this.state.productions;
-    const production = allProductions.find(
-      (x) => x.id === currentProduction.id,
-    );
-    const index = allProductions.indexOf(production);
-
-    if (index !== -1) {
-      allProductions[index] = currentProduction;
-    }
-
-    await AsyncStorage.setItem(
-      PRODUCTIONS_KEY,
-      JSON.stringify(allProductions),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Production updated');
-      },
-    ).catch((err) => {
-      console.log('error is: ' + err);
-    });
+    productionService.editProduction(currentProduction, this.state.userData);
   };
 
   render() {

@@ -15,10 +15,6 @@ const uploadAvatar = async (userData) => {
   };
   const avatarImage = userData.avatar;
 
-  console.log('@@@@@@@@@@@@@@@@@@@@@');
-  console.log(avatarImage);
-  console.log('@@@@@@@@@@@@@@@@@@@@@');
-
   await api
     .put(`account/avatar/${userData.userId}`, avatarImage, options)
     .then((response) => {
