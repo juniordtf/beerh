@@ -8,6 +8,7 @@ import GroupDetailsScreen from '../screens/menu/GroupDetailsScreen';
 import EditGroupScreen from '../screens/menu/EditGroupScreen';
 import AddGroupMemberScreen from '../screens/menu/AddGroupMemberScreen';
 import EnterGroupScreen from '../screens/menu/EnterGroupScreen';
+import PreferencesScreen from '../screens/menu/PreferencesScreen';
 import Add from '../../assets/add.png';
 
 const Stack = createStackNavigator();
@@ -118,6 +119,21 @@ function AuthStack() {
         component={EnterGroupScreen}
         options={{
           title: 'Ingressar em um grupo',
+          headerStyle: {
+            backgroundColor: '#2F2F30',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Configurações"
+        component={PreferencesScreen}
+        options={{
+          title: 'Configurações',
           headerStyle: {
             backgroundColor: '#2F2F30',
           },

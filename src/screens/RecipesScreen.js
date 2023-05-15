@@ -47,6 +47,7 @@ class RecipesScreen extends React.Component {
       userData: [],
       source: 0,
       searchText: '',
+      isFetching: false,
     };
   }
 
@@ -64,6 +65,7 @@ class RecipesScreen extends React.Component {
         this.setState({userData: data});
         this.getUserRecipes(data);
         this.getSharedRecipes(data);
+        this.setState({isFetching: false});
       }
     } catch (error) {
       console.log(error);
@@ -94,17 +96,12 @@ class RecipesScreen extends React.Component {
     }
   };
 
-  getRecipes = async () => {
-    try {
-      const value = await AsyncStorage.getItem(RECIPES_KEY);
-      if (value !== null) {
-        this.setState({initialGroupRecipes: JSON.parse(value)});
-        this.setState({sharedRecipes: JSON.parse(value)});
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  onRefresh() {
+    this.setState({isFetching: true}, () => {
+      this.getUserData();
+      this.setState({searchText: ''});
+    });
+  }
 
   goToDetailView = (currentRecipe) => {
     this.props.navigation.navigate('Detalhe de Receita', {
@@ -283,6 +280,8 @@ class RecipesScreen extends React.Component {
           data={sharedRecipes}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
+          onRefresh={() => this.onRefresh()}
+          refreshing={this.state.isFetching}
           style={styles.flatList}
         />
       </View>

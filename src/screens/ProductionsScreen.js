@@ -49,6 +49,7 @@ class ProductionScreen extends React.Component {
       userData: [],
       source: 0,
       searchText: '',
+      isFetching: false,
     };
   }
 
@@ -65,6 +66,7 @@ class ProductionScreen extends React.Component {
         this.setState({userData: data});
         this.getUserProductions(data);
         this.getSharedProductions(data);
+        this.setState({isFetching: false});
       }
     } catch (error) {
       console.log(error);
@@ -95,6 +97,13 @@ class ProductionScreen extends React.Component {
       console.log(error);
     }
   };
+
+  onRefresh() {
+    this.setState({isFetching: true}, () => {
+      this.getUserData();
+      this.setState({searchText: ''});
+    });
+  }
 
   searchText = (text) => {
     this.setState({searchText: text.e});
@@ -244,6 +253,8 @@ class ProductionScreen extends React.Component {
           data={sharedProductions}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
+          onRefresh={() => this.onRefresh()}
+          refreshing={this.state.isFetching}
           style={styles.flatList}
         />
       </View>

@@ -97,7 +97,8 @@ function RecipesStack() {
             </View>
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => window.recipesScreen.getRecipes()}>
+            <TouchableOpacity
+              onPress={() => window.recipesScreen.getUserData()}>
               <View marginLeft={20}>
                 <Image source={Refresh} />
               </View>

@@ -367,7 +367,6 @@ class NewProductionScreen extends React.Component {
 
   returnToPreviousView = () => {
     this.props.navigation.navigate('Produções');
-    Alert.alert('Produção salva com sucesso!');
 
     if (window.productionsScreen !== undefined) {
       window.productionsScreen.getUserData();

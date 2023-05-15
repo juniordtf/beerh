@@ -887,22 +887,17 @@ class EditRecipeScreen extends React.Component {
         console.log('Success. Recipe updated');
       },
     )
-      .then(
-        this.props.navigation.navigate('Receitas'),
-        Alert.alert('Receita alterada com sucesso!'),
-      )
+      .then(this.props.navigation.navigate('Receitas'))
       .catch((err) => {
         console.log('error is: ' + err);
       });
 
-    if (window.recipesScreen !== undefined) {
-      window.recipesScreen.getRecipes();
+    if (window.productionsScreen !== undefined) {
+      window.productionsScreen.getUserData();
     }
 
-    if (window.productionsScreen !== undefined) {
-      window.productionsScreen
-        .getRecipes()
-        .then(window.productionsScreen.getProductions());
+    if (window.brewScreen !== undefined) {
+      window.brewScreen.getUserData();
     }
   };
 

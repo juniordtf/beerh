@@ -815,16 +815,12 @@ class NewRecipeScreen extends React.Component {
       this.props.navigation,
     );
 
-    Alert.alert('Receita salva com sucesso!');
-
-    if (window.recipesScreen !== undefined) {
-      window.recipesScreen.getRecipes();
+    if (window.productionsScreen !== undefined) {
+      window.productionsScreen.getUserData();
     }
 
-    if (window.productionsScreen !== undefined) {
-      window.productionsScreen
-        .getRecipes()
-        .then(window.productionsScreen.getProductions());
+    if (window.brewScreen !== undefined) {
+      window.brewScreen.getUserData();
     }
 
     this.props.navigation.navigate('Receitas');

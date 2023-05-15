@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
     width: 128,
     height: 128,
     borderRadius: 128 / 2,
-    marginTop: 5,
+    marginTop: 10,
   },
   inputField: {
     marginTop: 5,

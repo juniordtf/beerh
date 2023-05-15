@@ -338,7 +338,6 @@ class EditProductionScreen extends React.Component {
     }
 
     this.props.navigation.navigate('Produções');
-    Alert.alert('Produção alterada com sucesso!');
   };
 
   render() {

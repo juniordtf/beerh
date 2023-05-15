@@ -43,22 +43,26 @@ function GroupDetailsScreen({navigation, route}) {
 
   useEffect((): void => {
     getUserData();
-  }, []);
 
-  React.useEffect(() => {
-    if (route.params?.group) {
-      const groupData = route.params.group;
-      setGroup(groupData);
-      const date = format(parseISO(groupData.createdAt), 'dd/MM/yyyy');
+    const getGroupData = async () => {
+      if (route.params?.group) {
+        const groupData = route.params.group;
+        setGroup(groupData);
+      }
+    };
+
+    getGroupData();
+
+    if (group !== undefined && group.length > 0) {
+      const date = format(parseISO(group.createdAt), 'dd/MM/yyyy');
       setCreatedAt(date);
 
-      console.log(groupData.avatar);
-
-      if (groupData.avatar !== null && groupData.avatar !== undefined) {
-        setImageUri('http://192.168.15.5:8001/v1/uploads/' + groupData.avatar);
+      if (group.avatar !== null && group.avatar !== undefined) {
+        console.log('http://192.168.15.5:8001/v1/uploads/' + group.avatar);
+        setImageUri('http://192.168.15.5:8001/v1/uploads/' + group.avatar);
       }
     }
-  }, [route.params?.group]);
+  }, [route.params?.group, group]);
 
   const goToAddMember = (currentGroup) => {
     navigation.navigate('Adicionar membro', {
@@ -92,32 +96,54 @@ function GroupDetailsScreen({navigation, route}) {
     );
   };
 
+  const renderGroupData = () => {
+    var date = '';
+    if (group.createdAt !== null && group.createdAt !== undefined) {
+      date = format(parseISO(group.createdAt), 'dd/MM/yyyy');
+      console.log(date);
+      //setCreatedAt(date);
+    }
+    var imgUri = '';
+    if (group.avatar !== null && group.avatar !== undefined) {
+      console.log('http://192.168.15.5:8001/v1/uploads/' + group.avatar);
+      imgUri = 'http://192.168.15.5:8001/v1/uploads/' + group.avatar;
+    }
+
+    console.log('Img Uri: ' + imgUri);
+
+    return (
+      <View>
+        <View style={styles.centeredTitleContainer}>
+          {imgUri !== '' ? (
+            <Image style={styles.groupAvatarImage} source={{uri: imgUri}} />
+          ) : (
+            <Image style={styles.groupAvatarImage} source={GroupIcon} />
+          )}
+          <Text style={styles.detailsTitle}>{group.name}</Text>
+        </View>
+        <View style={styles.detailsBody}>
+          <Text style={styles.bodyText}>{group.description}</Text>
+          <Text style={styles.bodyText}>Desde: {date}</Text>
+          <Text style={styles.bodyText}>Membros:</Text>
+          <View style={styles.listContainer}>
+            <FlatList
+              data={group.members}
+              renderItem={renderMembersData}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator color={'#000'} animating={true} size="small" />
       ) : (
         <View style={styles.detailsPage}>
-          <View style={styles.centeredTitleContainer}>
-            {imageUri !== '' ? (
-              <Image style={styles.groupAvatarImage} source={{uri: imageUri}} />
-            ) : (
-              <Image style={styles.groupAvatarImage} source={GroupIcon} />
-            )}
-            <Text style={styles.detailsTitle}>{group.name}</Text>
-          </View>
-          <View style={styles.detailsBody}>
-            <Text style={styles.bodyText}>{group.description}</Text>
-            <Text style={styles.bodyText}>Desde: {createdAt}</Text>
-            <Text style={styles.bodyText}>Membros:</Text>
-            <View style={styles.listContainer}>
-              <FlatList
-                data={group.members}
-                renderItem={renderMembersData}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
-          </View>
+          {renderGroupData()}
 
           {group.ownerId === userData.id ? (
             <ActionButton buttonColor="#818181">

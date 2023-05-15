@@ -14,6 +14,8 @@ import {styles} from './styles';
 import {useAuth} from '../../contexts/Auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import GroupsIcon from '../../../assets/groups.png';
+import AddToGroupIcon from '../../../assets/addNewUser.png';
+import EngineIcon from '../../../assets/configurations.png';
 import LogoutIcon from '../../../assets/logout.png';
 import UserIcon from '../../../assets/user.png';
 import DocumentPicker from 'react-native-document-picker';
@@ -50,7 +52,7 @@ function MenuScreen({navigation}) {
 
   useEffect((): void => {
     getUserData();
-  }, []);
+  }, [imageUri]);
 
   const selectUserAvatar = async () => {
     try {
@@ -96,6 +98,10 @@ function MenuScreen({navigation}) {
     navigation.navigate('Ingressar em um grupo');
   };
 
+  const goToPreferencesScreen = () => {
+    navigation.navigate('Configurações');
+  };
+
   const signOut = async () => {
     await auth.signOut();
   };
@@ -130,8 +136,16 @@ function MenuScreen({navigation}) {
           </TouchableHighlight>
           <TouchableHighlight style={styles.menuItem} onPress={enterGroup}>
             <View style={styles.rowContainer}>
-              <Image source={GroupsIcon} style={styles.menuItemImage} />
+              <Image source={AddToGroupIcon} style={styles.menuItemImage} />
               <Text style={styles.menuItemText}>Ingressar em um grupo</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.menuItem}
+            onPress={goToPreferencesScreen}>
+            <View style={styles.rowContainer}>
+              <Image source={EngineIcon} style={styles.menuItemImage} />
+              <Text style={styles.menuItemText}>Configurações</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight style={styles.menuItem} onPress={signOut}>
