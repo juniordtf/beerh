@@ -112,7 +112,7 @@ class NewProductionScreen extends React.Component {
       if (value !== null) {
         this.setState({
           sharedRecipes: value.data,
-          selectedGroupId: value.data[0].id,
+          selectedGroupId: value.data[0].ownerId,
         });
       }
     } catch (error) {
@@ -136,6 +136,7 @@ class NewProductionScreen extends React.Component {
               recipes: groupRecipes,
               selectedRecipeName: groupRecipes[0].title,
               selectedRecipeId: groupRecipes[0].id,
+              selectedGroup: this.state.groups[0],
             });
           } else {
             this.setState({
