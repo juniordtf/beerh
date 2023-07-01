@@ -182,8 +182,10 @@ class NewRecipeScreen extends React.Component {
     const _groupsData = await groupService.getAllowedGroups(data);
     if (_groupsData !== null) {
       this.setState({groups: _groupsData.data});
+      var firstGroup = _groupsData.data;
+      this.setState({selectedGroupId: firstGroup.id});
+      this.setState({selectedGroup: firstGroup});
     }
-    console.log(_groupsData.data);
   };
 
   handleSelectedGroupChange = (value) => {
@@ -404,6 +406,8 @@ class NewRecipeScreen extends React.Component {
     this.setState({
       sharedRecipe: !this.state.sharedRecipe,
     });
+    this.setState({selectedGroupId: this.state.groups[0].id});
+    this.setState({selectedGroup: this.state.groups[0]});
   };
 
   setIngridients = () => {
