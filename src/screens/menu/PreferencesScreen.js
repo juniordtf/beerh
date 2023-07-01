@@ -11,21 +11,23 @@ import {
 } from 'react-native';
 import {groupService} from '../../services/groupService';
 import AsyncStorage from '@react-native-community/async-storage';
-import {AUTH_DATA_KEY} from '../../statics/Statics';
+import {PREFERENCES_KEY} from '../../statics/Statics';
 import {styles} from './styles';
 
 function EnterGroupScreen({navigation, route}) {
   const [loading, isLoading] = useState(false);
   const [userData, setUserData] = useState('');
-  const [groupToken, setGroupToken] = useState('');
+  const [ip, setIp] = useState('');
+  const [port, setPort] = useState('');
 
-  const getUserData = async () => {
+  const getPreferences = async () => {
     try {
-      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+      const value = await AsyncStorage.getItem(PREFERENCES_KEY);
       if (value !== null) {
         const data = JSON.parse(value);
 
-        setUserData(data);
+        setIp(data.ip);
+        setPort(data.port);
       }
     } catch (error) {
       console.log(error);
@@ -33,13 +35,29 @@ function EnterGroupScreen({navigation, route}) {
   };
 
   useEffect((): void => {
-    getUserData();
+    getPreferences();
   }, []);
 
-  const enterGroup = async () => {
+  const saveChanges = async () => {
     isLoading(true);
-    await groupService.enterGroup(userData, groupToken);
-    isLoading(false);
+    const preferencesData = {ip, port};
+
+    await AsyncStorage.setItem(
+      PREFERENCES_KEY,
+      JSON.stringify(preferencesData),
+      (err) => {
+        if (err) {
+          console.log('an error occured');
+          throw err;
+        }
+        console.log('Success. Preferences updated');
+        isLoading(false);
+      },
+    )
+      .then(navigation.goBack())
+      .catch((err) => {
+        console.log('error is: ' + err);
+      });
   };
 
   return (
@@ -52,8 +70,8 @@ function EnterGroupScreen({navigation, route}) {
             <Text style={styles.formTitle}>Servidor</Text>
             <Text style={styles.formTitle}>IP</Text>
             <TextInput
-              onChangeText={(p) => setGroupToken(p)}
-              value={groupToken}
+              onChangeText={(p) => setIp(p)}
+              value={ip}
               placeholder="IP"
               underlineColorAndroid="transparent"
               style={styles.inputField}
@@ -61,8 +79,8 @@ function EnterGroupScreen({navigation, route}) {
             />
             <Text style={styles.formTitle}>Porta</Text>
             <TextInput
-              onChangeText={(p) => setGroupToken(p)}
-              value={groupToken}
+              onChangeText={(p) => setPort(p)}
+              value={port}
               placeholder="Porta"
               underlineColorAndroid="transparent"
               style={styles.inputField}
@@ -71,7 +89,7 @@ function EnterGroupScreen({navigation, route}) {
           </View>
           <TouchableHighlight
             style={styles.confirmButtonContainer}
-            onPress={() => enterGroup()}>
+            onPress={() => saveChanges()}>
             <Text style={styles.confirmButtonText}>Enviar</Text>
           </TouchableHighlight>
         </View>

@@ -23,6 +23,12 @@ function GroupsScreen({navigation}) {
   const [loading, isLoading] = useState(false);
   const [userData, setUserData] = useState('');
   const [groups, setGroups] = useState(emptyList);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const onRefresh = () => {
+    setIsFetching(true);
+    getUserData();
+  };
 
   const getUserData = async () => {
     try {
@@ -42,7 +48,7 @@ function GroupsScreen({navigation}) {
   const getGroups = async (data) => {
     const _groupsData = await groupService.getAllowedGroups(data);
     setGroups(_groupsData.data);
-    console.log(_groupsData.data);
+    setIsFetching(false);
   };
 
   useEffect((): void => {
@@ -90,6 +96,8 @@ function GroupsScreen({navigation}) {
                   data={groups}
                   renderItem={renderGroupData}
                   keyExtractor={(item) => item.id}
+                  onRefresh={() => onRefresh()}
+                  refreshing={isFetching}
                 />
               </View>
             </View>

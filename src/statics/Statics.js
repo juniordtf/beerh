@@ -2,6 +2,7 @@ export const RECIPES_KEY = 'RECIPES_TOKEN_PR';
 export const PRODUCTIONS_KEY = 'PRODUCTIONS_TOKEN_PR';
 export const CURRENT_PRODUCTION_KEY = 'CURRENT_PRODUCTION_TOKEN_PR';
 export const AUTH_DATA_KEY = '@AuthData';
+export const PREFERENCES_KEY = 'PREFERENCES_TOKEN_KEY';
 
 export const Units = [
   {unit: 'g', name: 'grama'},
