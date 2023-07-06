@@ -16,10 +16,11 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Plus from '../../assets/plus.png';
 import Minus from '../../assets/minus.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {RECIPES_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
 import {Units} from '../statics/Statics';
 import {CarbonationMethods} from '../statics/Statics';
 import {format} from 'date-fns';
+import {recipeService} from '../services/recipeService';
 
 class EditRecipeScreen extends React.Component {
   constructor(props) {
@@ -40,6 +41,8 @@ class EditRecipeScreen extends React.Component {
       color: '',
       carbonationValue: '',
       annotation: '',
+      ownerName: '',
+      ownerId: '',
       recipes: [],
       units: Units,
       carbonationUnit: CarbonationMethods[0].unit,
@@ -142,16 +145,18 @@ class EditRecipeScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getRecipes();
+    this.getUserData();
     this.getCurrentRecipe();
   }
 
-  getRecipes = async () => {
+  getUserData = async () => {
     try {
-      const value = await AsyncStorage.getItem(RECIPES_KEY);
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
       if (value !== null) {
-        this.setState({recipes: JSON.parse(value)});
-        console.log(JSON.parse(value));
+        const data = JSON.parse(value);
+        this.setState({userData: data});
+        this.getGroups(data);
       }
     } catch (error) {
       console.log(error);
@@ -174,6 +179,8 @@ class EditRecipeScreen extends React.Component {
       annotation: recipe.annotation,
       carbonationUnit: recipe.carbonationUnit,
       carbonationMethod: recipe.carbonationMethod,
+      ownerName: recipe.ownerName,
+      ownerId: recipe.ownerId,
       inputSecondIngridientClicked:
         recipe.ingredients[1] != null ? true : false,
       inputThirdIngridientClicked: recipe.ingredients[2] != null ? true : false,
@@ -845,7 +852,6 @@ class EditRecipeScreen extends React.Component {
     }
 
     const currentRecipe = {
-      id: this.state.id,
       title: this.state.title,
       volume: this.state.volume,
       style: this.state.style,
@@ -864,33 +870,11 @@ class EditRecipeScreen extends React.Component {
       carbonationUnit: this.state.carbonationUnit,
       estimatedTime: elapsedTime,
       annotation: this.state.annotation,
-      createdAt: this.state.todaysDatePt,
-      lastUpdateDate: this.state.todaysDatePt,
+      ownerName: this.state.ownerName,
+      ownerId: this.state.ownerId,
     };
 
-    let allRecipes = this.state.recipes;
-    const recipe = allRecipes.find((x) => x.id === currentRecipe.id);
-    const index = allRecipes.indexOf(recipe);
-
-    if (index !== -1) {
-      allRecipes[index] = currentRecipe;
-    }
-
-    await AsyncStorage.setItem(
-      RECIPES_KEY,
-      JSON.stringify(allRecipes),
-      (err) => {
-        if (err) {
-          console.log('an error occured');
-          throw err;
-        }
-        console.log('Success. Recipe updated');
-      },
-    )
-      .then(this.props.navigation.navigate('Receitas'))
-      .catch((err) => {
-        console.log('error is: ' + err);
-      });
+    recipeService.updateRecipe(currentRecipe, this.state.userData);
 
     if (window.productionsScreen !== undefined) {
       window.productionsScreen.getUserData();
@@ -899,6 +883,8 @@ class EditRecipeScreen extends React.Component {
     if (window.brewScreen !== undefined) {
       window.brewScreen.getUserData();
     }
+
+    this.props.navigation.navigate('Receitas');
   };
 
   render() {

@@ -17,7 +17,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Plus from '../../assets/plus.png';
 import Minus from '../../assets/minus.png';
 import AsyncStorage from '@react-native-community/async-storage';
-import {RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
 import {Units} from '../statics/Statics';
 import {CarbonationMethods} from '../statics/Statics';
 import {format} from 'date-fns';
@@ -149,20 +149,8 @@ class NewRecipeScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getRecipes();
     this.getUserData();
   }
-
-  getRecipes = async () => {
-    try {
-      const value = await AsyncStorage.getItem(RECIPES_KEY);
-      if (value !== null) {
-        this.setState({recipes: JSON.parse(value)});
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   getUserData = async () => {
     try {
@@ -736,55 +724,6 @@ class NewRecipeScreen extends React.Component {
       elapsedTime += parseFloat(this.state.TimeBoil01);
     }
 
-    // const recipe = {
-    //   id: Date.now() + this.state.title,
-    //   title: this.state.title,
-    //   volume: this.state.volume,
-    //   style: this.state.style,
-    //   og: this.state.og,
-    //   fg: this.state.fg,
-    //   ibu: this.state.ibu,
-    //   abv: this.state.abv,
-    //   color: this.state.color,
-    //   ingredients: ingredients,
-    //   ramps: ramps,
-    //   boil: boil,
-    //   fermentation: fermentation,
-    //   ageing: ageing,
-    //   carbonationMethod: this.state.carbonationMethod,
-    //   carbonationValue: this.state.carbonationValue,
-    //   carbonationUnit: this.state.carbonationUnit,
-    //   estimatedTime: elapsedTime,
-    //   annotation: this.state.annotation,
-    //   createdAt: this.state.todaysDatePt,
-    //   lastUpdateDate: this.state.todaysDatePt,
-    // };
-
-    // const recipes = this.state.recipes;
-    // let allRecipes = [this.state.recipes, recipe];
-
-    // if (recipes != null) {
-    //   if (recipes.length === 0) {
-    //     allRecipes = [recipe];
-    //   } else {
-    //     allRecipes = recipes.concat(recipe);
-    //   }
-    // }
-
-    // await AsyncStorage.setItem(
-    //   RECIPES_KEY,
-    //   JSON.stringify(allRecipes),
-    //   (err) => {
-    //     if (err) {
-    //       console.log('an error occured');
-    //       throw err;
-    //     }
-    //     console.log('Success. Recipe added');
-    //   },
-    // ).catch((err) => {
-    //   console.log('error is: ' + err);
-    // });
-
     const newRecipe = {
       title: this.state.title,
       volume: this.state.volume,
@@ -812,12 +751,7 @@ class NewRecipeScreen extends React.Component {
         : this.state.userData.id,
     };
 
-    recipeService.createRecipe(
-      newRecipe,
-      this.state.userData,
-      this.state.userData.id,
-      this.props.navigation,
-    );
+    recipeService.createRecipe(newRecipe, this.state.userData);
 
     if (window.productionsScreen !== undefined) {
       window.productionsScreen.getUserData();
