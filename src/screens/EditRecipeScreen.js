@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   TextInput,
-  Alert,
+  Modal,
 } from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import SafeAreaView from 'react-native-safe-area-view';

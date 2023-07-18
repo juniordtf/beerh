@@ -10,7 +10,7 @@ import {
   TouchableHighlight,
   Switch,
   TextInput,
-  Alert,
+  Modal,
 } from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -145,6 +145,7 @@ class NewRecipeScreen extends React.Component {
       TimeAgeing01: '',
       TimeAgeing02: '',
       TimeAgeing03: '',
+      addIngridientModalVisible: true,
     };
   }
 
@@ -388,6 +389,12 @@ class NewRecipeScreen extends React.Component {
         inputThirdAgeingClicked: false,
       });
     }
+  };
+
+  closeAddIngridientModal = () => {
+    this.setState({
+      addIngridientModalVisible: false,
+    });
   };
 
   toggleSharingSwitch = () => {
@@ -855,7 +862,16 @@ class NewRecipeScreen extends React.Component {
             </View>
           </View>
           <View marginTop={10}>
-            <Text style={styles.sectionText}>Ingredientes:</Text>
+            <View style={styles.rowContainer}>
+              <Text style={styles.sectionText}>Ingredientes:</Text>
+              <View style={styles.addButtonContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => this.handleAddIngridientInput('0')}>
+                  <Image source={Plus} />
+                </TouchableOpacity>
+              </View>
+            </View>
             <View style={styles.parametersRow}>
               <TextInput
                 style={styles.bodyInputMask}
@@ -2442,6 +2458,66 @@ class NewRecipeScreen extends React.Component {
               <Text style={styles.bodyText}>Salvar</Text>
             </TouchableHighlight>
           </View>
+          <Modal
+            name="AddIngridientModal"
+            animationType="slide"
+            transparent={true}
+            visible={this.state.addIngridientModalVisible}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalTitle}>Adicionar ingrediente</Text>
+                <View style={styles.parametersRow}>
+                  <TextInput
+                    style={styles.bodyInputMask}
+                    onChangeText={(QteIng01) => this.setState({QteIng01})}
+                    value={this.state.QteIng01}
+                    placeholder="Qte"
+                    keyboardType="numeric"
+                    underlineColorAndroid="transparent"
+                    width={70}
+                  />
+                  <View style={styles.onePickerContainer}>
+                    <Picker
+                      style={styles.onePicker}
+                      itemStyle={styles.onePickerItem}
+                      selectedValue={this.state.UntIng01}
+                      onValueChange={(itemValue, itemIndex) =>
+                        this.setState({UntIng01: itemValue})
+                      }>
+                      {this.state.units.map((item, value) => {
+                        return (
+                          <Picker.Item
+                            label={item.unit}
+                            value={item.unit}
+                            key={item.unit}
+                          />
+                        );
+                      })}
+                    </Picker>
+                  </View>
+                </View>
+                <TextInput
+                  style={styles.bodyInputMask}
+                  onChangeText={(NameIng01) => this.setState({NameIng01})}
+                  value={this.state.NameIng01}
+                  placeholder="Nome"
+                  underlineColorAndroid="transparent"
+                />
+                <View style={styles.rowContainer}>
+                  <TouchableHighlight
+                    style={styles.cancelButton}
+                    onPress={this.closeAddIngridientModal}>
+                    <Text style={styles.textStyle}>Cancelar</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    style={styles.confirmButton}
+                    onPress={this.closeAddIngridientModal}>
+                    <Text style={styles.textStyle}>Confirmar</Text>
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </View>
+          </Modal>
         </ScrollView>
       </SafeAreaView>
     );
@@ -2461,7 +2537,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   sectionText: {
-    fontSize: 12,
+    fontSize: 15,
     color: 'black',
     textAlign: 'left',
     paddingLeft: 10,
@@ -2608,6 +2684,67 @@ const styles = StyleSheet.create({
     height: 32,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  confirmButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 10,
+    width: 100,
+    marginRight: 'auto',
+    marginLeft: 15,
+    backgroundColor: '#2196F3',
+  },
+  cancelButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 10,
+    width: 100,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    backgroundColor: '#99C7EB',
+  },
+  modalText: {
+    marginBottom: 5,
+    fontSize: 15,
+    textAlign: 'center',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  rowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+  },
+  modalTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    padding: 15,
+    color: '#000',
   },
 });
 

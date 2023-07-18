@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import MainViewsTabs from './MainViewsTabs';
 import NewProductionScreen from '../screens/NewProductionScreen';
 import EditProductionScreen from '../screens/EditProductionScreen';
-import NewRecipeScreen from '../screens/NewRecipeScreen';
+import NewRecipeScreen from '../screens/recipe/NewRecipeScreen';
 import EditRecipeScreen from '../screens/EditRecipeScreen';
 
 const Stack = createStackNavigator();
