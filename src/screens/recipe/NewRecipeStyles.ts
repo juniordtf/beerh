@@ -221,19 +221,21 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 'auto',
     alignItems: 'center',
+    marginTop: 7
   },
   modalTitle: {
+    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 20,
     padding: 15,
     color: '#000',
   },
   sectionHeaderText: {
-    fontSize: 17,
+    fontSize: 15,
     color: 'black',
     textAlign: 'center',
     paddingLeft: 10,
-    marginLeft: 10,
+    marginLeft: 15,
   },
   bodySectionText: {
     fontSize: 13,
@@ -296,6 +298,52 @@ export const styles = StyleSheet.create({
   },
   loadingText: {
     textAlign: 'center',
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
+  bodySectionText2: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: 'black',
+    textAlign: 'center',
+    marginLeft: 10,
+    height: 35,
+    lineHeight: 35,
+  },
+  sectionContainer2: {
+    marginLeft: '15%',
+    marginRight: '15%',
+    marginTop: 10,
+  },
+  sectionContainer3: {
+    marginLeft: '10%',
+    marginRight: '10%',
+    marginTop: 10,
+  },
+  genericBodySectionText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: 'black',
+    textAlign: 'center',
+    marginLeft: 5,
+    height: 35,
+    lineHeight: 35,
+  },
+  genericItemValuesArea: {
+    width: 50,
+    display: 'flex',
+    flexDirection: 'row',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  boilItemValuesArea: {
+    width: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    justifyContent: "center",
+    alignItems: "center"
+  },
 });
