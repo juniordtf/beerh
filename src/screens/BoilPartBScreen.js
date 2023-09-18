@@ -45,7 +45,7 @@ class BoilPartBScreen extends Component {
 
   componentDidMount() {
     this.preloadSound();
-    this.getUserData().then(this.startTimer());
+    this.getUserData();
   }
 
   getUserData = async () => {
@@ -84,6 +84,7 @@ class BoilPartBScreen extends Component {
       const value = await recipeService.getRecipe(data, recipeId);
       if (value !== null) {
         this.setState({todaysRecipe: value.data});
+        this.startTimer(value.data);
       }
     } catch (error) {
       console.log(error);
@@ -95,9 +96,8 @@ class BoilPartBScreen extends Component {
     window.stopwatchComponent.continueStopwatch(duration);
   };
 
-  startTimer() {
+  startTimer(currentRecipe) {
     let rampDuration = 59;
-    const currentRecipe = this.state.todaysRecipe;
 
     if (currentRecipe != null && currentRecipe.boil !== undefined) {
       if (currentRecipe.boil[2]) {

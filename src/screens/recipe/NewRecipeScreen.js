@@ -26,7 +26,7 @@ import {groupService} from '../../services/groupService';
 
 import {styles} from './NewRecipeStyles';
 
-function NewRecipeScreen({navigation}) {
+function NewRecipeScreen({navigation, route}) {
   const [loading, isLoading] = useState(false);
   const [userData, setUserData] = useState('');
   const [sharedRecipe, setSharedRecipe] = useState(false);
@@ -75,6 +75,8 @@ function NewRecipeScreen({navigation}) {
   const [ingridientsModalVisible, setIngridientsModalVisible] = useState(false);
   const [genericModalVisible, setGenericModalVisible] = useState(false);
   const [boilModalVisible, setBoilModalVisible] = useState(false);
+  const [isEdditingMode, setEdditingMode] = useState(false);
+  const [recipeId, setRecipeId] = useState('');
 
   /**
    * Gets user and group data
@@ -99,6 +101,38 @@ function NewRecipeScreen({navigation}) {
 
   useEffect((): void => {
     getUserData();
+
+    const getRecipeData = async () => {
+      if (route.params?.recipe) {
+        setEdditingMode(true);
+
+        const recipeData = route.params.recipe;
+        //console.log(recipeData);
+
+        setRecipeId(recipeData.id);
+        setTitle(recipeData.title);
+        setVolume(recipeData.volume.toString());
+        setStyle(recipeData.style);
+        setOg(recipeData.og.toString());
+        setFg(recipeData.fg.toString());
+        setIbu(recipeData.ibu.toString());
+        setAbv(recipeData.abv.toString());
+        setColor(recipeData.color.toString());
+        setIngridients(recipeData.ingredients);
+        setRamps(recipeData.ramps);
+        setBoilSteps(recipeData.boil);
+        setFermentationSteps(recipeData.fermentation);
+        setAgeingSteps(recipeData.ageing);
+        setAnnotation(recipeData.annotation);
+        setCarbonationMethod(recipeData.carbonationMethod);
+        setCarbonationUnit(recipeData.carbonationUnit);
+        setCarbonationValue(recipeData.carbonationValue.toString());
+      } else {
+        setEdditingMode(false);
+      }
+    };
+
+    getRecipeData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -584,8 +618,16 @@ function NewRecipeScreen({navigation}) {
   };
 
   /**
-   * Create Recipe Method
+   * Create and Edit Recipe Methods
    */
+  const handleSaveRecipe = async () => {
+    if (isEdditingMode) {
+      editRecipe();
+    } else {
+      addRecipe();
+    }
+  };
+
   const addRecipe = async () => {
     let elapsedTime = 0;
 
@@ -632,6 +674,8 @@ function NewRecipeScreen({navigation}) {
 
     navigation.navigate('Receitas');
   };
+
+  const editRecipe = async () => {};
 
   /**
    *  Render methods
@@ -1047,7 +1091,7 @@ function NewRecipeScreen({navigation}) {
           <View marginTop={10} marginBottom={10}>
             <TouchableHighlight
               style={styles.buttonContainer}
-              onPress={() => addRecipe()}>
+              onPress={() => handleSaveRecipe()}>
               <Text style={styles.bodyText}>Salvar</Text>
             </TouchableHighlight>
           </View>

@@ -241,7 +241,7 @@ class RecipeDetailScreen extends React.Component {
   };
 
   goToEditView = (currentRecipe) => {
-    this.props.navigation.navigate('Editar Receita', {
+    this.props.navigation.navigate('Nova Receita', {
       recipe: currentRecipe,
     });
   };

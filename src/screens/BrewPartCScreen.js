@@ -45,7 +45,7 @@ class BrewPartCScreen extends Component {
 
   componentDidMount() {
     this.preloadSound();
-    this.getUserData().then(this.startTimer());
+    this.getUserData();
   }
 
   getUserData = async () => {
@@ -84,6 +84,7 @@ class BrewPartCScreen extends Component {
       const value = await recipeService.getRecipe(data, recipeId);
       if (value !== null) {
         this.setState({todaysRecipe: value.data});
+        this.startTimer(value.data);
       }
     } catch (error) {
       console.log(error);
@@ -95,9 +96,7 @@ class BrewPartCScreen extends Component {
     window.stopwatchComponent.continueStopwatch(duration);
   };
 
-  startTimer() {
-    const currentRecipe = this.state.todaysRecipe;
-
+  startTimer(currentRecipe) {
     let rampDuration = 59;
     if (currentRecipe != null && currentRecipe.ramps !== undefined) {
       rampDuration = parseInt(currentRecipe.ramps[1].time, 10) - 1;
