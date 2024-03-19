@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   Alert,
@@ -33,64 +33,58 @@ const ProductionSource = [
   },
 ];
 
-class ProductionScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    window.productionsScreen = this;
-    this.state = {
-      initialGroupRecipes: [],
-      initialGroupProductions: [],
-      sharedProductions: [],
-      initialUserRecipes: [],
-      initialUserProductions: [],
-      sharedRecipes: [],
-      userProductions: [],
-      userRecipes: [],
-      userData: [],
-      source: 0,
-      searchText: '',
-      isFetching: false,
-    };
-  }
+function ProductionScreen({navigation}) {
+  const [initialGroupRecipes, setInitialGroupRecipes] = useState([]);
+  const [initialGroupProductions, setInitialGroupProductions] = useState([]);
+  const [sharedProductions, setSharedProductions] = useState([]);
+  const [initialUserRecipes, setInitialUserRecipes] = useState([]);
+  const [initialUserProductions, setInitialUserProductions] = useState([]);
+  const [sharedRecipes, setSharedRecipes] = useState([]);
+  const [userProductions, setUserProductions] = useState([]);
+  const [userRecipes, setUserRecipes] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [source, setSource] = useState(0);
+  const [searchText, setSearchText] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
-  componentDidMount() {
-    this.getUserData();
-  }
+  useEffect((): void => {
+    const getUserData = async () => {
+      try {
+        const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
 
-  getUserData = async () => {
-    try {
-      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
-
-      if (value !== null) {
-        const data = JSON.parse(value);
-        this.setState({userData: data});
-        this.getUserProductions(data);
-        this.getSharedProductions(data);
-        this.setState({isFetching: false});
+        if (value !== null) {
+          const data = JSON.parse(value);
+          setUserData(data);
+          getUserProductions(data);
+          getSharedProductions(data);
+          setIsFetching(false);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
 
-  getUserProductions = async (data) => {
+    getUserData();
+  }, []);
+
+  const getUserProductions = async (data) => {
     try {
       const value = await productionService.getOwnProductions(data);
       if (value !== null) {
-        this.setState({initialUserProductions: value.data});
-        this.setState({userProductions: value.data});
+        setInitialUserProductions(value.data);
+        setUserProductions(value.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  getSharedProductions = async (data) => {
+  const getSharedProductions = async (data) => {
     try {
       const value = await productionService.getSharedProductions(data);
       if (value !== null) {
-        this.setState({initialGroupProductions: value.data});
-        this.setState({sharedProductions: value.data});
+        setInitialGroupProductions(value.data);
+        setSharedProductions(value.data);
         console.log(value.data);
       }
     } catch (error) {
@@ -98,55 +92,47 @@ class ProductionScreen extends React.Component {
     }
   };
 
-  onRefresh() {
-    this.setState({isFetching: true}, () => {
-      this.getUserData();
-      this.setState({searchText: ''});
+  function onRefresh() {
+    setIsFetching(true, () => {
+      //getUserData();
+      setSearchText('');
     });
   }
 
-  searchText = (text) => {
-    this.setState({searchText: text.e});
+  const filterProductions = (text) => {
+    setSearchText(text.e);
     console.log(text.e);
 
-    if (this.state.source.toString() === ProductionSource[0].value) {
-      let filteredData = this.state.initialGroupProductions.filter(function (
-        item,
-      ) {
+    if (source.toString() === ProductionSource[0].value) {
+      let filteredData = initialGroupProductions.filter(function (item) {
         return item.name.includes(text.e);
       });
 
       if (!text.e || text.e === '') {
         console.log('-------');
-        this.setState({
-          sharedProductions: this.state.initialGroupProductions,
-        });
+        setSharedProductions(initialGroupProductions);
       } else {
         console.log('---[][][][][][][]----');
         console.log(filteredData);
-        this.setState({sharedProductions: filteredData});
+        setSharedProductions(filteredData);
       }
     } else {
-      let filteredData = this.state.initialUserProductions.filter(function (
-        item,
-      ) {
+      let filteredData = initialUserProductions.filter(function (item) {
         return item.name.includes(text.e);
       });
 
       if (!text.e || text.e === '') {
         console.log('-------');
-        this.setState({
-          userRecipes: this.state.initialUserProductions,
-        });
+        setUserRecipes(initialUserProductions);
       } else {
         console.log('---================----');
         console.log(filteredData);
-        this.setState({userProductions: filteredData});
+        setUserProductions(filteredData);
       }
     }
   };
 
-  renderProductionStatusImage(status) {
+  function renderProductionStatusImage(status) {
     var imgSource;
 
     if (status === 'in progress') {
@@ -159,23 +145,21 @@ class ProductionScreen extends React.Component {
     return <Image source={imgSource} />;
   }
 
-  goToDetailView = (currentProduction) => {
-    this.props.navigation.navigate('Detalhe de Produção', {
+  const goToDetailView = (currentProduction) => {
+    navigation.navigate('Detalhe de Produção', {
       production: currentProduction,
     });
   };
 
-  goToCreationView = () => {
-    this.props.navigation.navigate('Nova Produção');
+  const goToCreationView = () => {
+    navigation.navigate('Nova Produção');
   };
 
-  goToCreateGroupScreen = () => {
-    this.props.navigation.navigate('Criar grupo');
+  const goToCreateGroupScreen = () => {
+    navigation.navigate('Criar grupo');
   };
 
-  importProduction = async (production) => {
-    const sharedProductions = this.state.sharedProductions;
-    const sharedRecipes = this.state.sharedRecipes;
+  const importProduction = async (production) => {
     let allProductions = [];
     let isNotDuplicated = true;
 
@@ -227,7 +211,7 @@ class ProductionScreen extends React.Component {
     }
   };
 
-  renderEmptyView = () => {
+  const renderEmptyView = () => {
     return (
       <View>
         <Image source={EmptyBox} style={styles.image} />
@@ -239,83 +223,79 @@ class ProductionScreen extends React.Component {
 
         <TouchableHighlight
           style={styles.buttonContainer}
-          onPress={() => this.goToCreationView()}>
+          onPress={() => goToCreationView()}>
           <Text style={styles.bodyText}>Começar uma produção</Text>
         </TouchableHighlight>
       </View>
     );
   };
 
-  renderProductions = (sharedProductions) => {
+  const renderProductions = (productions) => {
     return (
       <View style={styles.listContainer}>
         <FlatList
-          data={sharedProductions}
-          renderItem={this.renderItem}
+          data={productions}
+          renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          onRefresh={() => this.onRefresh()}
-          refreshing={this.state.isFetching}
+          onRefresh={() => onRefresh()}
+          refreshing={isFetching}
           style={styles.flatList}
         />
       </View>
     );
   };
 
-  decideRenderUserList = () => {
-    let userProductions = this.state.userProductions;
-
+  const decideRenderUserList = () => {
     return (
       <View>
         {userProductions === null ||
         userProductions === '' ||
         userProductions.length === 0
-          ? this.renderEmptyView()
-          : this.renderProductions(userProductions)}
+          ? renderEmptyView()
+          : renderProductions(userProductions)}
       </View>
     );
   };
 
-  decideRenderGroupList = () => {
-    let groupProductions = this.state.sharedProductions;
+  const decideRenderGroupList = () => {
+    let groupProductions = sharedProductions;
 
     return (
       <View>
         {groupProductions === null ||
         groupProductions === '' ||
         groupProductions.length === 0
-          ? this.renderEmptyView()
-          : this.renderProductions(groupProductions)}
+          ? renderEmptyView()
+          : renderProductions(groupProductions)}
       </View>
     );
   };
 
-  handleViewToRender = (source) => {
+  const handleViewToRender = (source) => {
     return (
       <View>
-        {source === 'group'
-          ? this.decideRenderGroupList()
-          : this.decideRenderUserList()}
+        {source === 'group' ? decideRenderGroupList() : decideRenderUserList()}
       </View>
     );
   };
 
-  chooseViewToRender = () => {
+  const chooseViewToRender = () => {
     return (
       <View>
-        {this.state.source.toString() === ProductionSource[0].value
-          ? this.handleViewToRender('group')
-          : this.handleViewToRender('user')}
+        {source.toString() === ProductionSource[0].value
+          ? handleViewToRender('group')
+          : handleViewToRender('user')}
       </View>
     );
   };
 
-  renderItem = ({item}) => {
+  const renderItem = ({item}) => {
     return (
       <View>
-        <TouchableOpacity onPress={() => this.goToDetailView(item)}>
+        <TouchableOpacity onPress={() => goToDetailView(item)}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              {this.renderProductionStatusImage(item.status)}
+              {renderProductionStatusImage(item.status)}
             </View>
             <View style={styles.boxContainerRight}>
               <View style={styles.listItemContainer}>
@@ -339,29 +319,27 @@ class ProductionScreen extends React.Component {
     );
   };
 
-  render() {
-    return (
-      <View style={styles.mainContainer}>
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
-        <ChonseSelect
-          height={35}
-          style={styles.choosenSelectContainer}
-          data={ProductionSource}
-          initValue={this.state.source}
-          onPress={(item) => this.setState({source: item.value})}
-        />
-        <TextInput
-          onChangeText={(e) => this.searchText({e})}
-          value={this.state.searchText}
-          style={styles.searchField}
-          placeholder="Buscar..."
-          underlineColorAndroid="transparent"
-        />
-        <View style={styles.line} />
-        <View style={styles.listContainer}>{this.chooseViewToRender()}</View>
-      </View>
-    );
-  }
+  return (
+    <View style={styles.mainContainer}>
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <ChonseSelect
+        height={35}
+        style={styles.choosenSelectContainer}
+        data={ProductionSource}
+        initValue={source}
+        onPress={(item) => setSource(item.value)}
+      />
+      <TextInput
+        onChangeText={(e) => filterProductions({e})}
+        value={searchText}
+        style={styles.searchField}
+        placeholder="Buscar..."
+        underlineColorAndroid="transparent"
+      />
+      <View style={styles.line} />
+      <View style={styles.listContainer}>{chooseViewToRender()}</View>
+    </View>
+  );
 }
 
 const marginHorizontal = 1;
