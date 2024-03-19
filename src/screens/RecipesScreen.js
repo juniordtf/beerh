@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   TextInput,
@@ -35,82 +35,74 @@ const RecipeSource = [
   },
 ];
 
-class RecipesScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    window.recipesScreen = this;
-    this.state = {
-      initialGroupRecipes: [],
-      sharedRecipes: [],
-      initialUserRecipes: [],
-      userRecipes: [],
-      userData: [],
-      source: 0,
-      searchText: '',
-      isFetching: false,
-    };
-  }
+function RecipesScreen({navigation}) {
+  const [initialGroupRecipes, setInitialGroupRecipes] = useState([]);
+  const [sharedRecipes, setSharedRecipes] = useState([]);
+  const [initialUserRecipes, setInitialUserRecipes] = useState([]);
+  const [userRecipes, setUserRecipes] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [source, setSource] = useState(0);
+  const [searchText, setSearchText] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
-  componentDidMount() {
-    this.getUserData();
-    //this.getRecipes();
-  }
+  useEffect((): void => {
+    const getUserData = async () => {
+      try {
+        const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
 
-  getUserData = async () => {
-    try {
-      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
-
-      if (value !== null) {
-        const data = JSON.parse(value);
-        this.setState({userData: data});
-        this.getUserRecipes(data);
-        this.getSharedRecipes(data);
-        this.setState({isFetching: false});
+        if (value !== null) {
+          const data = JSON.parse(value);
+          setUserData(data);
+          getUserRecipes(data);
+          getSharedRecipes(data);
+          setIsFetching(false);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
 
-  getUserRecipes = async (data) => {
+    getUserData();
+  }, []);
+
+  const getUserRecipes = async (data) => {
     try {
       const value = await recipeService.getOwnRecipes(data);
       if (value !== null) {
-        this.setState({initialUserRecipes: value.data});
-        this.setState({userRecipes: value.data});
+        setInitialUserRecipes(value.data);
+        setUserRecipes(value.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  getSharedRecipes = async (data) => {
+  const getSharedRecipes = async (data) => {
     try {
       const value = await recipeService.getSharedRecipes(data);
       if (value !== null) {
-        this.setState({initialGroupRecipes: value.data});
-        this.setState({sharedRecipes: value.data});
+        setInitialGroupRecipes(value.data);
+        setSharedRecipes(value.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  onRefresh() {
-    this.setState({isFetching: true}, () => {
-      this.getUserData();
-      this.setState({searchText: ''});
+  function onRefresh() {
+    setIsFetching(true, () => {
+      getUserData();
+      setSearchText('');
     });
   }
 
-  goToDetailView = (currentRecipe) => {
-    this.props.navigation.navigate('Detalhe de Receita', {
+  const goToDetailView = (currentRecipe) => {
+    navigation.navigate('Detalhe de Receita', {
       recipe: currentRecipe,
     });
   };
 
-  importRecipe = async (recipe) => {
-    const sharedRecipes = this.state.sharedRecipes;
+  const importRecipe = async (recipe) => {
     let allRecipes = [];
     let isNotDuplicated = true;
 
@@ -129,72 +121,40 @@ class RecipesScreen extends React.Component {
         }
       }
     }
-
-    // if (isNotDuplicated) {
-    //   await AsyncStorage.setItem(
-    //     RECIPES_KEY,
-    //     JSON.stringify(allRecipes),
-    //     (err) => {
-    //       if (err) {
-    //         console.log('an error occured');
-    //         throw err;
-    //       }
-    //       console.log('Success. Recipe added');
-    //     },
-    //   ).catch((err) => {
-    //     console.log('error is: ' + err);
-    //   });
-
-    //   Alert.alert('Receita importada com sucesso!');
-
-    //   if (window.recipesScreen !== undefined) {
-    //     window.recipesScreen.getRecipes();
-    //   }
-
-    //   if (window.productionsScreen !== undefined) {
-    //     window.productionsScreen
-    //       .getRecipes()
-    //       .then(window.productionsScreen.getProductions());
-    //   }
-    // }
   };
 
-  searchText = (text) => {
-    this.setState({searchText: text.e});
+  const filterRecipes = (text) => {
+    setSearchText(text.e);
     console.log(text.e);
 
-    if (this.state.source.toString() === RecipeSource[0].value) {
-      let filteredData = this.state.initialGroupRecipes.filter(function (item) {
+    if (source.toString() === RecipeSource[0].value) {
+      let filteredData = initialGroupRecipes.filter(function (item) {
         return item.title.includes(text.e);
       });
 
       if (!text.e || text.e === '') {
         console.log('-------');
-        this.setState({
-          sharedRecipes: this.state.initialGroupRecipes,
-        });
+        setSharedRecipes(initialGroupRecipes);
       } else {
         console.log(filteredData);
-        this.setState({sharedRecipes: filteredData});
+        setSharedRecipes(filteredData);
       }
     } else {
-      let filteredData = this.state.initialUserRecipes.filter(function (item) {
+      let filteredData = initialUserRecipes.filter(function (item) {
         return item.title.includes(text.e);
       });
 
       if (!text.e || text.e === '') {
         console.log('-------');
-        this.setState({
-          userRecipes: this.state.initialUserRecipes,
-        });
+        setUserRecipes(initialUserRecipes);
       } else {
         console.log(filteredData);
-        this.setState({userRecipes: filteredData});
+        setUserRecipes(filteredData);
       }
     }
   };
 
-  renderCupImage(color) {
+  function renderCupImage(color) {
     var imgSource;
 
     if (color < 10) {
@@ -211,15 +171,15 @@ class RecipesScreen extends React.Component {
     return <Image source={imgSource} />;
   }
 
-  renderItem = ({item}) => {
+  const renderItem = ({item}) => {
     const createdAt = format(parseISO(item.createdAt), 'dd/MM/yyyy');
 
     return (
       <View>
-        <TouchableOpacity onPress={() => this.goToDetailView(item)}>
+        <TouchableOpacity onPress={() => goToDetailView(item)}>
           <View style={styles.sectionContainer}>
             <View style={styles.boxContainerLeft}>
-              {this.renderCupImage(item.color)}
+              {renderCupImage(item.color)}
             </View>
             <View style={styles.boxContainerRight}>
               <View style={styles.listItemContainer}>
@@ -257,7 +217,7 @@ class RecipesScreen extends React.Component {
     );
   };
 
-  renderEmptyView = () => {
+  const renderEmptyView = () => {
     return (
       <View>
         <Image source={Chefhat} style={styles.image} />
@@ -266,97 +226,91 @@ class RecipesScreen extends React.Component {
         </View>
         <TouchableHighlight
           style={styles.buttonContainer}
-          onPress={() => this.props.navigation.navigate('Nova Receita')}>
+          onPress={() => navigation.navigate('Nova Receita')}>
           <Text style={styles.bodyText}>Criar uma receita</Text>
         </TouchableHighlight>
       </View>
     );
   };
 
-  renderRecipies = (sharedRecipes) => {
+  const renderRecipies = (sharedRecipes) => {
     return (
       <View style={styles.listContainer}>
         <FlatList
           data={sharedRecipes}
-          renderItem={this.renderItem}
+          renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          onRefresh={() => this.onRefresh()}
-          refreshing={this.state.isFetching}
+          onRefresh={() => onRefresh()}
+          refreshing={isFetching}
           style={styles.flatList}
         />
       </View>
     );
   };
 
-  decideRenderUserList = () => {
-    let userRecipes = this.state.userRecipes;
-
+  const decideRenderUserList = () => {
     return (
       <View>
         {userRecipes === null || userRecipes === '' || userRecipes.length === 0
-          ? this.renderEmptyView()
-          : this.renderRecipies(userRecipes)}
+          ? renderEmptyView()
+          : renderRecipies(userRecipes)}
       </View>
     );
   };
 
-  decideRenderGroupList = () => {
-    let groupRecipes = this.state.sharedRecipes;
+  const decideRenderGroupList = () => {
+    let groupRecipes = sharedRecipes;
 
     return (
       <View>
         {groupRecipes === null ||
         groupRecipes === '' ||
         groupRecipes.length === 0
-          ? this.renderEmptyView()
-          : this.renderRecipies(groupRecipes)}
+          ? renderEmptyView()
+          : renderRecipies(groupRecipes)}
       </View>
     );
   };
 
-  handleViewToRender = (source) => {
+  const handleViewToRender = (source) => {
     return (
       <View>
-        {source === 'group'
-          ? this.decideRenderGroupList()
-          : this.decideRenderUserList()}
+        {source === 'group' ? decideRenderGroupList() : decideRenderUserList()}
       </View>
     );
   };
 
-  chooseViewToRender = () => {
+  const chooseViewToRender = () => {
     return (
       <View>
-        {this.state.source.toString() === RecipeSource[0].value
-          ? this.handleViewToRender('group')
-          : this.handleViewToRender('user')}
+        {source.toString() === RecipeSource[0].value
+          ? handleViewToRender('group')
+          : handleViewToRender('user')}
       </View>
     );
   };
 
-  render() {
-    return (
-      <View style={styles.mainContainer}>
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
-        <ChonseSelect
-          height={35}
-          style={styles.choosenSelectContainer}
-          data={RecipeSource}
-          initValue={this.state.source}
-          onPress={(item) => this.setState({source: item.value})}
-        />
-        <TextInput
-          onChangeText={(e) => this.searchText({e})}
-          value={this.state.searchText}
-          style={styles.searchField}
-          placeholder="Buscar..."
-          underlineColorAndroid="transparent"
-        />
-        <View style={styles.line} />
-        <View style={styles.listContainer}>{this.chooseViewToRender()}</View>
-      </View>
-    );
-  }
+  return (
+    <View style={styles.mainContainer}>
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <ChonseSelect
+        height={35}
+        style={styles.choosenSelectContainer}
+        data={RecipeSource}
+        initValue={source}
+        onPress={(item) => setSource(item.value)}
+      />
+      <TextInput
+        onChangeText={(e) => filterRecipes({e})}
+        value={searchText}
+        style={styles.searchField}
+        placeholder="Buscar..."
+        underlineColorAndroid="transparent"
+      />
+      <View style={styles.line} />
+      <View style={styles.listContainer}>{chooseViewToRender()}</View>
+    </View>
+  );
 }
 
 const marginHorizontal = 2;
