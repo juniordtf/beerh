@@ -92,9 +92,17 @@ function ProductionScreen({navigation}) {
     }
   };
 
-  function onRefresh() {
-    setIsFetching(true, () => {
-      //getUserData();
+  async function onRefresh() {
+    setIsFetching(true, async () => {
+      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
+      if (value !== null) {
+        const data = JSON.parse(value);
+        setUserData(data);
+        getUserProductions(data);
+        getSharedProductions(data);
+        setIsFetching(false);
+      }
       setSearchText('');
     });
   }

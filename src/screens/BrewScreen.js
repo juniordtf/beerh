@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -11,124 +11,93 @@ import SafeAreaView from 'react-native-safe-area-view';
 import Beach from '../../assets/beach.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {format} from 'date-fns';
-import {PRODUCTIONS_KEY, RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
 import {productionService} from '../services/productionService';
 import {recipeService} from '../services/recipeService';
 
-class BrewScreen extends React.Component {
-  constructor(props) {
-    const todayPt = format(new Date(), 'dd/MM/yyyy');
+function BrewScreen({navigation}) {
+  const [todaysDatePt, setTodaysDatePt] = useState(
+    format(new Date(), 'dd/MM/yyyy'),
+  );
+  const [userData, setUserData] = useState([]);
+  const [productions, setProductions] = useState([]);
+  const [sharedProductions, setSharedProductions] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+  const [sharedRecipes, setSharedRecipes] = useState([]);
 
-    super(props);
-    window.brewScreen = this;
-    this.state = {
-      todaysDatePt: todayPt,
-      userData: [],
-      productions: [],
-      sharedProductions: [],
-      recipes: [],
-      sharedRecipes: [],
+  useEffect((): void => {
+    const getUserProductions = async (data) => {
+      try {
+        const value = await productionService.getOwnProductions(data);
+        if (value !== null) {
+          setProductions(value.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     };
-  }
 
-  componentDidMount() {
-    this.getUserData();
-  }
-
-  getUserData = async () => {
-    try {
-      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
-
-      if (value !== null) {
-        const data = JSON.parse(value);
-        this.setState({userData: data});
-        this.getUserProductions(data).then(this.getSharedProductions(data));
-        this.getUserRecipes(data).then(this.getSharedRecipes(data));
+    const getSharedProductions = async (data) => {
+      try {
+        const value = await productionService.getSharedProductions(data);
+        if (value !== null) {
+          setSharedProductions(value.data);
+          var allProductions = productions;
+          allProductions = allProductions.concat(value.data);
+          setProductions(allProductions);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
 
-  getUserProductions = async (data) => {
-    try {
-      const value = await productionService.getOwnProductions(data);
-      if (value !== null) {
-        this.setState({productions: value.data});
+    const getUserRecipes = async (data) => {
+      try {
+        const value = await recipeService.getOwnRecipes(data);
+        if (value !== null) {
+          setRecipes(value.data);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
 
-  getSharedProductions = async (data) => {
-    try {
-      const value = await productionService.getSharedProductions(data);
-      if (value !== null) {
-        this.setState({sharedProductions: value.data});
-        var allProductions = this.state.productions;
-        allProductions = allProductions.concat(value.data);
-        console.log('------------All Productions----------');
-        console.log(value.data);
-        this.setState({productions: allProductions});
+    const getSharedRecipes = async (data) => {
+      try {
+        const value = await recipeService.getSharedRecipes(data);
+        if (value !== null) {
+          setSharedRecipes(value.data);
+          var allRecipes = recipes;
+          allRecipes = allRecipes.concat(value.data);
+          setRecipes(allRecipes);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
 
-  getUserRecipes = async (data) => {
-    try {
-      const value = await recipeService.getOwnRecipes(data);
-      if (value !== null) {
-        this.setState({recipes: value.data});
+    const getUserData = async () => {
+      try {
+        const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+
+        if (value !== null) {
+          const data = JSON.parse(value);
+          setUserData(data);
+          getUserProductions(data).then(getSharedProductions(data));
+          getUserRecipes(data).then(getSharedRecipes(data));
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    };
+
+    if (productions.length === 0) {
+      getUserData();
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  getSharedRecipes = async (data) => {
-    try {
-      const value = await recipeService.getSharedRecipes(data);
-      if (value !== null) {
-        this.setState({sharedRecipes: value.data});
-        var allRecipes = this.state.recipes;
-        allRecipes = allRecipes.concat(value.data);
-        console.log('------------All Recipes----------');
-        console.log(value.data);
-        this.setState({recipes: allRecipes});
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // getProductions = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem(PRODUCTIONS_KEY);
-  //     if (value !== null) {
-  //       this.setState({productions: JSON.parse(value)});
-  //       console.log(JSON.parse(value));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // getRecipes = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem(RECIPES_KEY);
-  //     if (value !== null) {
-  //       this.setState({recipes: JSON.parse(value)});
-  //       console.log(JSON.parse(value));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  startBrewing = (todaysProduction) => {
+  const startBrewing = (todaysProduction) => {
     const currentProduction = {
       id: todaysProduction.id,
       name: todaysProduction.name,
@@ -158,14 +127,14 @@ class BrewScreen extends React.Component {
       ownerName: todaysProduction.ownerName,
     };
 
-    this.updateProduction(currentProduction).then(
-      this.props.navigation.navigate('Checklist de Limpeza', {
+    updateProduction(currentProduction).then(
+      navigation.navigate('Checklist de Limpeza', {
         currentProduction: currentProduction,
       }),
     );
   };
 
-  continueBrewing = (todaysProduction) => {
+  const continueBrewing = (todaysProduction) => {
     const currentProduction = {
       id: todaysProduction.id,
       name: todaysProduction.name,
@@ -195,22 +164,19 @@ class BrewScreen extends React.Component {
       ownerName: todaysProduction.ownerName,
     };
 
-    this.updateProduction(currentProduction).then(
-      this.props.navigation.navigate(todaysProduction.viewToRestore, {
+    updateProduction(currentProduction).then(
+      navigation.navigate(todaysProduction.viewToRestore, {
         currentProduction: currentProduction,
       }),
     );
   };
 
-  updateProduction = async (currentProduction) => {
-    productionService.editProduction(currentProduction, this.state.userData);
+  const updateProduction = async (currentProduction) => {
+    productionService.editProduction(currentProduction, userData);
   };
 
-  render() {
-    let productions = this.state.productions;
-    let currentDate = this.state.todaysDatePt;
-    console.log(currentDate);
-
+  function getTodaysProduction() {
+    let currentDate = todaysDatePt;
     let todaysProductions = null;
 
     if (productions != null && productions.length > 0) {
@@ -219,138 +185,117 @@ class BrewScreen extends React.Component {
       );
     }
 
-    console.log(todaysProductions);
+    return todaysProductions;
+  }
 
-    if (todaysProductions != null) {
-      const todaysInProgressProduction = productions.find(
-        (x) => x.brewDate === currentDate && x.status === 'in progress',
+  if (getTodaysProduction() != null) {
+    const todaysInProgressProduction = productions.find(
+      (x) => x.brewDate === todaysDatePt && x.status === 'in progress',
+    );
+
+    const todaysNewProduction = productions.find(
+      (x) => x.brewDate === todaysDatePt && x.status === 'not started',
+    );
+
+    if (todaysInProgressProduction != null) {
+      const duration = (
+        parseInt(todaysInProgressProduction.estimatedTime, 10) / 60
+      ).toFixed(2);
+
+      return (
+        <SafeAreaView>
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
+          <View>
+            <Text style={styles.title}>Fala, cervejeiro!</Text>
+            <Text style={styles.bodyText2}>
+              Você possui uma brassagem em andamento:
+            </Text>
+          </View>
+          <View style={styles.cardContainer}>
+            <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
+              <Text style={styles.listItemTitle}>
+                {todaysInProgressProduction.name}
+              </Text>
+              <Text style={styles.listItemTitle2}> - </Text>
+              <Text style={styles.listItemTitle2}>
+                {todaysInProgressProduction.volume} L
+              </Text>
+            </View>
+            <View marginTop={15}>
+              <View style={styles.rowContainer} marginLeft={20}>
+                <Text style={styles.bodyText}>Estilo: </Text>
+                <Text style={styles.bodyText}>
+                  {todaysInProgressProduction.style}
+                </Text>
+              </View>
+              <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                <Text style={styles.bodyText}>Data: </Text>
+                <Text style={styles.bodyText}>
+                  {todaysInProgressProduction.brewDate}
+                </Text>
+              </View>
+              <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                <Text style={styles.bodyText}>Tempo estimado: </Text>
+                <Text style={styles.bodyText}>{duration} hrs</Text>
+              </View>
+            </View>
+
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={() => continueBrewing(todaysInProgressProduction)}>
+              <Text style={styles.bodyText}>Retomar</Text>
+            </TouchableHighlight>
+          </View>
+        </SafeAreaView>
       );
+    } else if (todaysNewProduction != null) {
+      const duration = (
+        parseInt(todaysNewProduction.estimatedTime, 10) / 60
+      ).toFixed(2);
+      return (
+        <SafeAreaView>
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
+          <View>
+            <Text style={styles.title}>Fala, cervejeiro!</Text>
+            <Text style={styles.bodyText2}>
+              Você possui uma brassagem agendada para hoje:
+            </Text>
+          </View>
+          <View style={styles.cardContainer}>
+            <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
+              <Text style={styles.listItemTitle}>
+                {todaysNewProduction.name}
+              </Text>
+              <Text style={styles.listItemTitle2}> - </Text>
+              <Text style={styles.listItemTitle2}>
+                {todaysNewProduction.volume} L
+              </Text>
+            </View>
+            <View marginTop={15}>
+              <View style={styles.rowContainer} marginLeft={20}>
+                <Text style={styles.bodyText}>Estilo: </Text>
+                <Text style={styles.bodyText}>{todaysNewProduction.style}</Text>
+              </View>
+              <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                <Text style={styles.bodyText}>Data: </Text>
+                <Text style={styles.bodyText}>
+                  {todaysNewProduction.brewDate}
+                </Text>
+              </View>
+              <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
+                <Text style={styles.bodyText}>Tempo estimado: </Text>
+                <Text style={styles.bodyText}>{duration} hrs</Text>
+              </View>
+            </View>
 
-      const todaysNewProduction = productions.find(
-        (x) => x.brewDate === currentDate && x.status === 'not started',
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={() => startBrewing(todaysNewProduction)}>
+              <Text style={styles.bodyText}>Iniciar</Text>
+            </TouchableHighlight>
+          </View>
+        </SafeAreaView>
       );
-
-      console.log(todaysProductions);
-
-      if (todaysInProgressProduction != null) {
-        const duration = (
-          parseInt(todaysInProgressProduction.estimatedTime, 10) / 60
-        ).toFixed(2);
-
-        return (
-          <SafeAreaView>
-            <StatusBar barStyle="light-content" backgroundColor="#000000" />
-            <View>
-              <Text style={styles.title}>Fala, cervejeiro!</Text>
-              <Text style={styles.bodyText2}>
-                Você possui uma brassagem em andamento:
-              </Text>
-            </View>
-            <View style={styles.cardContainer}>
-              <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
-                <Text style={styles.listItemTitle}>
-                  {todaysInProgressProduction.name}
-                </Text>
-                <Text style={styles.listItemTitle2}> - </Text>
-                <Text style={styles.listItemTitle2}>
-                  {todaysInProgressProduction.volume} L
-                </Text>
-              </View>
-              <View marginTop={15}>
-                <View style={styles.rowContainer} marginLeft={20}>
-                  <Text style={styles.bodyText}>Estilo: </Text>
-                  <Text style={styles.bodyText}>
-                    {todaysInProgressProduction.style}
-                  </Text>
-                </View>
-                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
-                  <Text style={styles.bodyText}>Data: </Text>
-                  <Text style={styles.bodyText}>
-                    {todaysInProgressProduction.brewDate}
-                  </Text>
-                </View>
-                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
-                  <Text style={styles.bodyText}>Tempo estimado: </Text>
-                  <Text style={styles.bodyText}>{duration} hrs</Text>
-                </View>
-              </View>
-
-              <TouchableHighlight
-                style={styles.buttonContainer}
-                onPress={() =>
-                  this.continueBrewing(todaysInProgressProduction)
-                }>
-                <Text style={styles.bodyText}>Retomar</Text>
-              </TouchableHighlight>
-            </View>
-          </SafeAreaView>
-        );
-      } else if (todaysNewProduction != null) {
-        const duration = (
-          parseInt(todaysNewProduction.estimatedTime, 10) / 60
-        ).toFixed(2);
-        return (
-          <SafeAreaView>
-            <StatusBar barStyle="light-content" backgroundColor="#000000" />
-            <View>
-              <Text style={styles.title}>Fala, cervejeiro!</Text>
-              <Text style={styles.bodyText2}>
-                Você possui uma brassagem agendada para hoje:
-              </Text>
-            </View>
-            <View style={styles.cardContainer}>
-              <View style={styles.rowContainer} marginLeft={20} marginTop={10}>
-                <Text style={styles.listItemTitle}>
-                  {todaysNewProduction.name}
-                </Text>
-                <Text style={styles.listItemTitle2}> - </Text>
-                <Text style={styles.listItemTitle2}>
-                  {todaysNewProduction.volume} L
-                </Text>
-              </View>
-              <View marginTop={15}>
-                <View style={styles.rowContainer} marginLeft={20}>
-                  <Text style={styles.bodyText}>Estilo: </Text>
-                  <Text style={styles.bodyText}>
-                    {todaysNewProduction.style}
-                  </Text>
-                </View>
-                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
-                  <Text style={styles.bodyText}>Data: </Text>
-                  <Text style={styles.bodyText}>
-                    {todaysNewProduction.brewDate}
-                  </Text>
-                </View>
-                <View style={styles.rowContainer} marginLeft={20} marginTop={5}>
-                  <Text style={styles.bodyText}>Tempo estimado: </Text>
-                  <Text style={styles.bodyText}>{duration} hrs</Text>
-                </View>
-              </View>
-
-              <TouchableHighlight
-                style={styles.buttonContainer}
-                onPress={() => this.startBrewing(todaysNewProduction)}>
-                <Text style={styles.bodyText}>Iniciar</Text>
-              </TouchableHighlight>
-            </View>
-          </SafeAreaView>
-        );
-      } else {
-        return (
-          <SafeAreaView>
-            <StatusBar barStyle="light-content" backgroundColor="#000000" />
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Day off</Text>
-            </View>
-            <Image source={Beach} style={styles.image} />
-            <View style={styles.container}>
-              <Text style={styles.bodyText}>
-                Nenhuma brassagem agendada para hoje...
-              </Text>
-            </View>
-          </SafeAreaView>
-        );
-      }
     } else {
       return (
         <SafeAreaView>
@@ -367,6 +312,21 @@ class BrewScreen extends React.Component {
         </SafeAreaView>
       );
     }
+  } else {
+    return (
+      <SafeAreaView>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>Day off</Text>
+        </View>
+        <Image source={Beach} style={styles.image} />
+        <View style={styles.container}>
+          <Text style={styles.bodyText}>
+            Nenhuma brassagem agendada para hoje...
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
   }
 }
 

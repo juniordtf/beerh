@@ -97,8 +97,7 @@ function RecipesStack() {
             </View>
           ),
           headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => window.recipesScreen.getUserData()}>
+            <TouchableOpacity onPress={() => navigation.navigate('Receitas')}>
               <View marginLeft={20}>
                 <Image source={Refresh} />
               </View>

@@ -65,6 +65,10 @@ const selectProductionFile = async () => {
   }
 };
 
+const goToCreateProductionView = (navigation) => {
+  navigation.navigate('Nova Produção');
+};
+
 function ProductionsStack() {
   return (
     <Stack.Navigator>
@@ -89,7 +93,7 @@ function ProductionsStack() {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => window.productionsScreen.goToCreationView()}>
+                onPress={() => goToCreateProductionView(navigation)}>
                 <View marginRight={20}>
                   <Image source={Add} />
                 </View>
@@ -97,12 +101,7 @@ function ProductionsStack() {
             </View>
           ),
           headerLeft: () => (
-            <TouchableOpacity
-              onPress={() =>
-                window.productionsScreen
-                  .getUserData()
-                  .then(window.productionsScreen.getUserData())
-              }>
+            <TouchableOpacity onPress={() => navigation.navigate('Produções')}>
               <View marginLeft={20}>
                 <Image source={Refresh} />
               </View>
