@@ -87,11 +87,6 @@ function ProductionsStack() {
           headerTitleAlign: 'center',
           headerRight: () => (
             <View style={styles.rowContainer}>
-              <TouchableOpacity onPress={() => selectProductionFile()}>
-                <View marginRight={20}>
-                  <Image source={Import} />
-                </View>
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => goToCreateProductionView(navigation)}>
                 <View marginRight={20}>
@@ -99,13 +94,6 @@ function ProductionsStack() {
                 </View>
               </TouchableOpacity>
             </View>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Produções')}>
-              <View marginLeft={20}>
-                <Image source={Refresh} />
-              </View>
-            </TouchableOpacity>
           ),
         })}
       />

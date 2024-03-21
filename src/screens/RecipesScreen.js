@@ -11,7 +11,6 @@ import {
   TouchableHighlight,
   Alert,
 } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
 import Chefhat from '../../assets/chef-hat.png';
 import BeerCupYellow from '../../assets/beerCupYellow.png';
 import BeerCupOrange from '../../assets/beerCupOrange.png';
@@ -20,7 +19,7 @@ import BeerCupBrown from '../../assets/beerCupBrown.png';
 import BeerCupBlack from '../../assets/beerCupBlack.png';
 import AsyncStorage from '@react-native-community/async-storage';
 import {ChonseSelect} from 'react-native-chonse-select';
-import {RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
+import {AUTH_DATA_KEY} from '../statics/Statics';
 import {recipeService} from '../services/recipeService';
 import {format, parseISO} from 'date-fns';
 
@@ -89,38 +88,18 @@ function RecipesScreen({navigation}) {
     }
   };
 
-  function onRefresh() {
-    setIsFetching(true, () => {
-      getUserData();
-      setSearchText('');
-    });
+  async function onRefresh() {
+    setIsFetching(true);
+    getUserRecipes(userData);
+    getSharedRecipes(userData);
+    setIsFetching(false);
+    setSearchText('');
   }
 
   const goToDetailView = (currentRecipe) => {
     navigation.navigate('Detalhe de Receita', {
       recipe: currentRecipe,
     });
-  };
-
-  const importRecipe = async (recipe) => {
-    let allRecipes = [];
-    let isNotDuplicated = true;
-
-    if (sharedRecipes != null) {
-      if (sharedRecipes.length === 0) {
-        allRecipes = [recipe];
-      } else {
-        if (sharedRecipes.some((x) => x.id === recipe.id)) {
-          isNotDuplicated = false;
-          Alert.alert(
-            'Atençāo',
-            'A receita não pôde ser importada, pois já existe outra idêntica à ela!',
-          );
-        } else {
-          allRecipes = sharedRecipes.concat(recipe);
-        }
-      }
-    }
   };
 
   const filterRecipes = (text) => {

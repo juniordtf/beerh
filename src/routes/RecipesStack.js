@@ -83,11 +83,6 @@ function RecipesStack() {
           headerTitleAlign: 'center',
           headerRight: () => (
             <View style={styles.rowContainer}>
-              <TouchableOpacity onPress={() => selectRecipeFile()}>
-                <View marginRight={20}>
-                  <Image source={Import} />
-                </View>
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Nova Receita')}>
                 <View marginRight={20}>
@@ -95,13 +90,6 @@ function RecipesStack() {
                 </View>
               </TouchableOpacity>
             </View>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Receitas')}>
-              <View marginLeft={20}>
-                <Image source={Refresh} />
-              </View>
-            </TouchableOpacity>
           ),
         })}
       />

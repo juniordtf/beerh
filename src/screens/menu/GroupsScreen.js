@@ -1,14 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
-  Button,
   Text,
-  TextInput,
   View,
   Image,
   FlatList,
   TouchableOpacity,
-  TouchableHighlight,
 } from 'react-native';
 import {styles} from './styles';
 import SadFace from '../../../assets/sad.png';
@@ -20,40 +17,40 @@ import {format, parseISO} from 'date-fns';
 const emptyList: Object = [];
 
 function GroupsScreen({navigation}) {
-  const [loading, isLoading] = useState(false);
+  const [loading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState('');
   const [groups, setGroups] = useState(emptyList);
   const [isFetching, setIsFetching] = useState(false);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setIsFetching(true);
-    getUserData();
-  };
-
-  const getUserData = async () => {
-    try {
-      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
-      if (value !== null) {
-        const data = JSON.parse(value);
-        setUserData(data);
-        console.log(JSON.parse(value));
-
-        getGroups(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await getGroups(userData);
+    setIsLoading(false);
+    setIsFetching(false);
   };
 
   const getGroups = async (data) => {
     const _groupsData = await groupService.getAllowedGroups(data);
     setGroups(_groupsData.data);
-    setIsFetching(false);
   };
 
   useEffect((): void => {
+    const getUserData = async () => {
+      try {
+        setIsLoading(true);
+        const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
+        if (value !== null) {
+          const data = JSON.parse(value);
+          setUserData(data);
+          await getGroups(data);
+          setIsLoading(false);
+          setIsFetching(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderGroupData = ({item}) => {

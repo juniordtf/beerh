@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   Text,
-  Alert,
   View,
   StatusBar,
   StyleSheet,
@@ -12,14 +11,12 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import SafeAreaView from 'react-native-safe-area-view';
 import EmptyBox from '../../assets/EmptyBox.png';
 import GoldCircle from '../../assets/goldCircle.png';
 import GreenCircle from '../../assets/greenCircle.png';
 import GreyCircle from '../../assets/greyCircle.png';
 import {ChonseSelect} from 'react-native-chonse-select';
-import {PRODUCTIONS_KEY, RECIPES_KEY, AUTH_DATA_KEY} from '../statics/Statics';
-import {recipeService} from '../services/recipeService';
+import {AUTH_DATA_KEY} from '../statics/Statics';
 import {productionService} from '../services/productionService';
 
 const ProductionSource = [
@@ -93,18 +90,11 @@ function ProductionScreen({navigation}) {
   };
 
   async function onRefresh() {
-    setIsFetching(true, async () => {
-      const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
-
-      if (value !== null) {
-        const data = JSON.parse(value);
-        setUserData(data);
-        getUserProductions(data);
-        getSharedProductions(data);
-        setIsFetching(false);
-      }
-      setSearchText('');
-    });
+    setIsFetching(true);
+    await getUserProductions(userData);
+    await getSharedProductions(userData);
+    setIsFetching(false);
+    setSearchText('');
   }
 
   const filterProductions = (text) => {
@@ -161,62 +151,6 @@ function ProductionScreen({navigation}) {
 
   const goToCreationView = () => {
     navigation.navigate('Nova Produção');
-  };
-
-  const goToCreateGroupScreen = () => {
-    navigation.navigate('Criar grupo');
-  };
-
-  const importProduction = async (production) => {
-    let allProductions = [];
-    let isNotDuplicated = true;
-
-    if (sharedRecipes.some((x) => x.title === production.name)) {
-      if (sharedProductions != null) {
-        if (sharedProductions.length === 0) {
-          allProductions = [production];
-        } else {
-          if (sharedProductions.some((x) => x.id === production.id)) {
-            isNotDuplicated = false;
-            Alert.alert(
-              'Atençāo',
-              'A produção não pôde ser importada, pois já existe outra idêntica à ela!',
-            );
-          } else {
-            allProductions = sharedProductions.concat(production);
-          }
-        }
-      }
-
-      if (isNotDuplicated) {
-        await AsyncStorage.setItem(
-          PRODUCTIONS_KEY,
-          JSON.stringify(allProductions),
-          (err) => {
-            if (err) {
-              console.log('an error occured');
-              throw err;
-            }
-            console.log('Success. Production added');
-          },
-        ).catch((err) => {
-          console.log('error is: ' + err);
-        });
-
-        Alert.alert('Produção importada com sucesso!');
-
-        if (window.productionsScreen !== undefined) {
-          window.productionsScreen.getProductions();
-        }
-      }
-    } else {
-      Alert.alert(
-        'Atençāo',
-        'A produção não pôde ser importada, pois você não possui uma receita com o nome "' +
-          production.name +
-          '".',
-      );
-    }
   };
 
   const renderEmptyView = () => {
