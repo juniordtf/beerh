@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Text,
   View,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import Beach from '../../assets/beach.png';
@@ -14,6 +15,7 @@ import {format} from 'date-fns';
 import {AUTH_DATA_KEY} from '../statics/Statics';
 import {productionService} from '../services/productionService';
 import {recipeService} from '../services/recipeService';
+import Refresh from '../../assets/refreshButton.png';
 
 function BrewScreen({navigation}) {
   const [todaysDatePt, setTodaysDatePt] = useState(
@@ -24,58 +26,9 @@ function BrewScreen({navigation}) {
   const [sharedProductions, setSharedProductions] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [sharedRecipes, setSharedRecipes] = useState([]);
+  let brewScreenRef = useRef(this);
 
   useEffect((): void => {
-    const getUserProductions = async (data) => {
-      try {
-        const value = await productionService.getOwnProductions(data);
-        if (value !== null) {
-          setProductions(value.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const getSharedProductions = async (data) => {
-      try {
-        const value = await productionService.getSharedProductions(data);
-        if (value !== null) {
-          setSharedProductions(value.data);
-          var allProductions = productions;
-          allProductions = allProductions.concat(value.data);
-          setProductions(allProductions);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const getUserRecipes = async (data) => {
-      try {
-        const value = await recipeService.getOwnRecipes(data);
-        if (value !== null) {
-          setRecipes(value.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const getSharedRecipes = async (data) => {
-      try {
-        const value = await recipeService.getSharedRecipes(data);
-        if (value !== null) {
-          setSharedRecipes(value.data);
-          var allRecipes = recipes;
-          allRecipes = allRecipes.concat(value.data);
-          setRecipes(allRecipes);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     const getUserData = async () => {
       try {
         const value = await AsyncStorage.getItem(AUTH_DATA_KEY);
@@ -94,8 +47,75 @@ function BrewScreen({navigation}) {
     if (productions.length === 0) {
       getUserData();
     }
+
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => onRefresh()}>
+          <View marginLeft={20}>
+            <Image source={Refresh} />
+          </View>
+        </TouchableOpacity>
+      ),
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [navigation]);
+
+  const getUserProductions = async (data) => {
+    try {
+      const value = await productionService.getOwnProductions(data);
+      if (value !== null) {
+        setProductions(value.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSharedProductions = async (data) => {
+    try {
+      const value = await productionService.getSharedProductions(data);
+      if (value !== null) {
+        setSharedProductions(value.data);
+        var allProductions = productions;
+        allProductions = allProductions.concat(value.data);
+        setProductions(allProductions);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUserRecipes = async (data) => {
+    try {
+      const value = await recipeService.getOwnRecipes(data);
+      if (value !== null) {
+        setRecipes(value.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSharedRecipes = async (data) => {
+    try {
+      const value = await recipeService.getSharedRecipes(data);
+      if (value !== null) {
+        setSharedRecipes(value.data);
+        var allRecipes = recipes;
+        allRecipes = allRecipes.concat(value.data);
+        setRecipes(allRecipes);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onRefresh = async () => {
+    getUserProductions(userData).then(getSharedProductions(userData));
+    getUserRecipes(userData).then(getSharedRecipes(userData));
+    console.log('oi');
+  };
 
   const startBrewing = (todaysProduction) => {
     const currentProduction = {
@@ -308,6 +328,11 @@ function BrewScreen({navigation}) {
             <Text style={styles.bodyText}>
               Nenhuma brassagem agendada para hoje...
             </Text>
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={() => onRefresh()}>
+              <Text style={styles.bodyText}>Atualizar</Text>
+            </TouchableHighlight>
           </View>
         </SafeAreaView>
       );

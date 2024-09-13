@@ -28,7 +28,9 @@ function EditGroupScreen({navigation, route}) {
   const [group, setGroup] = useState(emptyList);
   const [userData, setUserData] = useState('');
 
-  const saveChanges = () => {};
+  const saveChanges = () => {
+    navigation.navigate('Grupos');
+  };
 
   const getUserData = async () => {
     try {
@@ -49,7 +51,9 @@ function EditGroupScreen({navigation, route}) {
       setGroup(currentGroup);
       setName(currentGroup.name);
       setDescription(currentGroup.description);
-      setImageUri('http://192.168.15.5:8001/v1/uploads/' + currentGroup.avatar);
+      setImageUri(
+        'http://192.168.2.124:8001/v1/uploads/' + currentGroup.avatar,
+      );
     }
   }, [route.params?.group]);
 
@@ -112,6 +116,9 @@ function EditGroupScreen({navigation, route}) {
               }
               value={description}
               placeholder="Descrição"
+              height={90}
+              multiline={true}
+              fontSize={12}
               underlineColorAndroid="transparent"
             />
             <Text style={styles.formTitle}>Avatar: </Text>

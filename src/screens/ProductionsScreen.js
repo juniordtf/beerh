@@ -107,11 +107,8 @@ function ProductionScreen({navigation}) {
       });
 
       if (!text.e || text.e === '') {
-        console.log('-------');
         setSharedProductions(initialGroupProductions);
       } else {
-        console.log('---[][][][][][][]----');
-        console.log(filteredData);
         setSharedProductions(filteredData);
       }
     } else {
@@ -120,11 +117,8 @@ function ProductionScreen({navigation}) {
       });
 
       if (!text.e || text.e === '') {
-        console.log('-------');
         setUserRecipes(initialUserProductions);
       } else {
-        console.log('---================----');
-        console.log(filteredData);
         setUserProductions(filteredData);
       }
     }

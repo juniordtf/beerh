@@ -43,13 +43,6 @@ function BrewStack() {
             fontWeight: 'bold',
           },
           headerTitleAlign: 'center',
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => window.brewScreen.getUserData()}>
-              <View marginLeft={20}>
-                <Image source={Refresh} />
-              </View>
-            </TouchableOpacity>
-          ),
         })}
       />
       <Stack.Screen

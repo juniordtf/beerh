@@ -42,7 +42,9 @@ function MenuScreen({navigation}) {
         setUserToken(userData.token);
 
         if (userData.avatar != null && userData.avatar !== undefined) {
-          setImageUri('http://192.168.15.5:8001/v1/uploads/' + userData.avatar);
+          setImageUri(
+            'http://192.168.2.124:8001/v1/uploads/' + userData.avatar,
+          );
         }
       }
     } catch (error) {

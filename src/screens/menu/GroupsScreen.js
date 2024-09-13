@@ -78,13 +78,15 @@ function GroupsScreen({navigation}) {
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator color={'#000'} animating={true} size="small" />
+        <View style={styles.centeredContainer}>
+          <ActivityIndicator color={'#000'} animating={true} size="large" />
+        </View>
       ) : (
         <View>
-          {groups === emptyList || groups === null ? (
+          {groups.length === 0 ? (
             <View style={styles.centeredContainer}>
               <Image source={SadFace} style={styles.imageContainer} />
-              <Text>Você ainda não faz parte de nenhum grupo.</Text>
+              <Text>Você ainda não faz parte de nenhum grupo</Text>
             </View>
           ) : (
             <View>

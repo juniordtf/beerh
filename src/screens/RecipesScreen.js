@@ -9,7 +9,6 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableHighlight,
-  Alert,
 } from 'react-native';
 import Chefhat from '../../assets/chef-hat.png';
 import BeerCupYellow from '../../assets/beerCupYellow.png';
@@ -21,6 +20,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {ChonseSelect} from 'react-native-chonse-select';
 import {AUTH_DATA_KEY} from '../statics/Statics';
 import {recipeService} from '../services/recipeService';
+import {groupService} from '../services/groupService';
 import {format, parseISO} from 'date-fns';
 
 const RecipeSource = [
@@ -43,6 +43,7 @@ function RecipesScreen({navigation}) {
   const [source, setSource] = useState(0);
   const [searchText, setSearchText] = useState('');
   const [isFetching, setIsFetching] = useState(false);
+  const [groups, setGroups] = useState(false);
 
   useEffect((): void => {
     const getUserData = async () => {
@@ -54,6 +55,7 @@ function RecipesScreen({navigation}) {
           setUserData(data);
           getUserRecipes(data);
           getSharedRecipes(data);
+          getGroups(data);
           setIsFetching(false);
         }
       } catch (error) {
@@ -86,6 +88,11 @@ function RecipesScreen({navigation}) {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const getGroups = async (data) => {
+    const _groupsData = await groupService.getAllowedGroups(data);
+    setGroups(_groupsData.data);
   };
 
   async function onRefresh() {
@@ -212,11 +219,29 @@ function RecipesScreen({navigation}) {
     );
   };
 
-  const renderRecipies = (sharedRecipes) => {
+  const renderNoGroupView = () => {
+    return (
+      <View>
+        <Image source={Chefhat} style={styles.image} />
+        <View style={styles.container}>
+          <Text style={styles.bodyText}>
+            Você ainda não faz parte de nenhum grupo
+          </Text>
+        </View>
+        <TouchableHighlight
+          style={styles.buttonContainer}
+          onPress={() => navigation.navigate('Grupos')}>
+          <Text style={styles.bodyText}>Ver grupos</Text>
+        </TouchableHighlight>
+      </View>
+    );
+  };
+
+  const renderRecipies = (recipes) => {
     return (
       <View style={styles.listContainer}>
         <FlatList
-          data={sharedRecipes}
+          data={recipes}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           onRefresh={() => onRefresh()}
@@ -245,16 +270,16 @@ function RecipesScreen({navigation}) {
         {groupRecipes === null ||
         groupRecipes === '' ||
         groupRecipes.length === 0
-          ? renderEmptyView()
+          ? decideEmptyOrnoGroupView()
           : renderRecipies(groupRecipes)}
       </View>
     );
   };
 
-  const handleViewToRender = (source) => {
+  const decideEmptyOrnoGroupView = () => {
     return (
       <View>
-        {source === 'group' ? decideRenderGroupList() : decideRenderUserList()}
+        {groups.length === 0 ? renderNoGroupView() : renderEmptyView()}
       </View>
     );
   };
@@ -263,8 +288,8 @@ function RecipesScreen({navigation}) {
     return (
       <View>
         {source.toString() === RecipeSource[0].value
-          ? handleViewToRender('group')
-          : handleViewToRender('user')}
+          ? decideRenderGroupList()
+          : decideRenderUserList()}
       </View>
     );
   };
